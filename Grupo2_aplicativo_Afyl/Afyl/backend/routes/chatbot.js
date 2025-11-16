@@ -1,0 +1,130 @@
+const express = require('express');
+const { protect } = require('../middleware/auth');
+
+const router = express.Router();
+
+// Base de conocimiento del chatbot
+const knowledgeBase = {
+  greetings: [
+    'Hola, ¿en qué puedo ayudarte hoy?',
+    '¡Hola! Estoy aquí para ayudarte con tus consultas legales y financieras.',
+    'Bienvenido, ¿qué necesitas saber?'
+  ],
+  farewells: [
+    '¡Hasta luego! Si tienes más preguntas, no dudes en consultarme.',
+    'Fue un placer ayudarte. ¡Que tengas un buen día!',
+    'Adiós, espero haberte sido de ayuda.'
+  ],
+  questions: {
+    'caso': {
+      keywords: ['caso', 'casos', 'expediente', 'proceso'],
+      response: 'Para crear un nuevo caso, ve a la sección "Casos" en el menú y haz clic en "Nuevo Caso". Puedes agregar documentos, información relevante y se te asignará un asesor legal.'
+    },
+    'cita': {
+      keywords: ['cita', 'citas', 'reunión', 'consulta', 'agendar'],
+      response: 'Puedes agendar una cita desde la sección "Citas" en el menú. Selecciona la fecha y hora que prefieras, y un asesor confirmará la cita contigo.'
+    },
+    'pago': {
+      keywords: ['pago', 'pagos', 'factura', 'cobro', 'tarifa'],
+      response: 'En la sección "Pagos" puedes ver el historial de tus pagos, facturas pendientes y realizar nuevos pagos. Si tienes dudas sobre algún cargo, contacta a tu asesor.'
+    },
+    'documento': {
+      keywords: ['documento', 'documentos', 'archivo', 'subir'],
+      response: 'Puedes subir documentos desde la página de detalle de tu caso. Los documentos se almacenan de forma segura y solo tú y tu asesor pueden acceder a ellos.'
+    },
+    'asesor': {
+      keywords: ['asesor', 'abogado', 'abogada', 'consultor'],
+      response: 'Un asesor legal será asignado a tu caso una vez que lo crees. Puedes comunicarte con él a través del foro o mediante mensajes privados en tu caso.'
+    },
+    'foro': {
+      keywords: ['foro', 'comunidad', 'pregunta', 'ayuda'],
+      response: 'El foro es un espacio donde puedes hacer preguntas públicas y recibir ayuda de otros usuarios y asesores. Es ideal para consultas generales y compartir experiencias.'
+    },
+    'perfil': {
+      keywords: ['perfil', 'cuenta', 'datos', 'información personal'],
+      response: 'Puedes actualizar tu información personal desde "Mi Perfil" en el menú superior. Allí puedes cambiar tu nombre, email, teléfono y dirección.'
+    },
+    'contacto': {
+      keywords: ['contacto', 'soporte', 'ayuda', 'asistencia'],
+      response: 'Puedes obtener ayuda de varias formas: 1) Usando el foro para preguntas públicas, 2) Contactando a tu asesor asignado, 3) Enviando un mensaje desde tu caso.'
+    }
+  },
+  default: 'Lo siento, no estoy seguro de cómo ayudarte con eso. Puedes intentar reformular tu pregunta o usar el foro para obtener ayuda de otros usuarios y asesores.'
+};
+
+// Función para encontrar la mejor respuesta
+function findResponse(userMessage) {
+  const message = userMessage.toLowerCase().trim();
+
+  // Saludos
+  if (message.match(/^(hola|buenos días|buenas tardes|buenas noches|hi|hello)/i)) {
+    return knowledgeBase.greetings[Math.floor(Math.random() * knowledgeBase.greetings.length)];
+  }
+
+  // Despedidas
+  if (message.match(/(adiós|hasta luego|gracias|chao|bye)/i)) {
+    return knowledgeBase.farewells[Math.floor(Math.random() * knowledgeBase.farewells.length)];
+  }
+
+  // Buscar en la base de conocimiento
+  for (const [key, data] of Object.entries(knowledgeBase.questions)) {
+    if (data.keywords.some(keyword => message.includes(keyword))) {
+      return data.response;
+    }
+  }
+
+  // Respuesta por defecto
+  return knowledgeBase.default;
+}
+
+// @route   POST /api/chatbot/message
+// @desc    Send a message to the chatbot
+// @access  Private
+router.post('/message', protect, async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ message: 'El mensaje es requerido' });
+    }
+
+    // Simular un pequeño delay para hacerlo más realista
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const response = findResponse(message);
+
+    res.json({
+      success: true,
+      response,
+      timestamp: new Date()
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al procesar mensaje', error: error.message });
+  }
+});
+
+// @route   GET /api/chatbot/suggestions
+// @desc    Get suggested questions for the chatbot
+// @access  Private
+router.get('/suggestions', protect, async (req, res) => {
+  try {
+    const suggestions = [
+      '¿Cómo creo un nuevo caso?',
+      '¿Cómo agendo una cita?',
+      '¿Dónde veo mis pagos?',
+      '¿Cómo subo documentos?',
+      '¿Cómo contacto a mi asesor?',
+      '¿Qué es el foro?'
+    ];
+
+    res.json({
+      success: true,
+      suggestions
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener sugerencias', error: error.message });
+  }
+});
+
+module.exports = router;
+

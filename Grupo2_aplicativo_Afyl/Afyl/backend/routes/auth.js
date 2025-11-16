@@ -1,0 +1,224 @@
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
+const User = require('../models/User');
+const { protect } = require('../middleware/auth');
+
+const router = express.Router();
+
+// Validar que JWT_SECRET esté definido
+const JWT_SECRET = process.env.JWT_SECRET || 'afyl_default_secret_key_change_in_production_2024';
+const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
+
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️  ADVERTENCIA: JWT_SECRET no está definido en .env. Usando clave por defecto (NO SEGURO PARA PRODUCCIÓN)');
+  console.warn('💡 Agrega JWT_SECRET=tu_clave_secreta_muy_segura_aqui en tu archivo backend/.env');
+}
+
+// Generate JWT Token
+const generateToken = (id) => {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET no está configurado');
+  }
+  return jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRE
+  });
+};
+
+// @route   POST /api/auth/register
+// @desc    Register a new user
+// @access  Public
+router.post('/register', [
+  body('name').trim().notEmpty().withMessage('El nombre es requerido'),
+  body('email').isEmail().withMessage('Email inválido'),
+  body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+  body('role').optional().isIn(['cliente', 'asesor', 'admin']).withMessage('Rol inválido')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, email, password, role, phone } = req.body;
+
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: 'El usuario ya existe' });
+    }
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: role || 'cliente',
+      phone
+    });
+
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al registrar usuario', error: error.message });
+  }
+});
+
+// @route   POST /api/auth/login
+// @desc    Login user
+// @access  Public
+// WARNING: This endpoint is intentionally vulnerable to NoSQL injection for pentesting purposes
+// DO NOT use this in production without proper sanitization
+router.post('/login', async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+
+    if (!identifier || !password) {
+      return res.status(400).json({ message: 'Email/Usuario y contraseña son requeridos' });
+    }
+
+    // VULNERABLE: Direct use of user input without sanitization
+    // This allows NoSQL injection attacks for pentesting
+    // Example payload: {"identifier": {"$ne": null}, "password": {"$ne": null}}
+    
+    // Build query object directly from user input (VULNERABLE)
+    let query = {};
+    
+    // Allow identifier to be an object (for NoSQL injection)
+    if (typeof identifier === 'object') {
+      query.$or = [
+        { email: identifier },
+        { name: identifier }
+      ];
+    } else {
+      // Normal string input - search by email or name
+      const identifierLower = typeof identifier === 'string' ? identifier.toLowerCase().trim() : identifier;
+      query.$or = [
+        { email: identifierLower },
+        { name: identifier.trim() }
+      ];
+    }
+    
+    // VULNERABLE: Allow password to be an object (for NoSQL injection)
+    // This bypasses password checking if password is an object
+    let user = await User.findOne(query).select('+password');
+    
+    if (!user) {
+      console.log('Login failed: User not found with identifier:', identifier);
+      return res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+
+    // Check if user is active
+    if (!user.isActive) {
+      console.log('Login failed: User is inactive:', user.email);
+      return res.status(401).json({ message: 'Usuario inactivo' });
+    }
+
+    // VULNERABLE: If password is an object, skip password verification
+    // This allows bypassing password check with NoSQL injection
+    if (typeof password === 'object') {
+      // NoSQL injection: password check bypassed
+      // Example: {"password": {"$ne": null}} will bypass password check
+    } else {
+      // Normal password check
+      if (typeof password !== 'string') {
+        return res.status(400).json({ message: 'Contraseña inválida' });
+      }
+      
+      // Verificar que la contraseña del usuario existe y está hasheada
+      if (!user.password) {
+        console.log('Login failed: User has no password stored');
+        return res.status(401).json({ message: 'Credenciales inválidas' });
+      }
+      
+      // Verificar que la contraseña está hasheada (debe empezar con $2a$)
+      const isHashed = user.password.startsWith('$2a$') || user.password.startsWith('$2b$') || user.password.startsWith('$2y$');
+      if (!isHashed) {
+        console.log('Login failed: Password is not hashed (stored in plain text)');
+        console.log('Password type:', typeof user.password);
+        console.log('Password length:', user.password ? user.password.length : 0);
+        // Si la contraseña no está hasheada, comparar directamente (solo para debugging)
+        if (user.password === password) {
+          console.log('⚠️  WARNING: Password matches but is stored in plain text. This should be hashed!');
+          // No permitir login con contraseña en texto plano por seguridad
+          return res.status(401).json({ message: 'Credenciales inválidas. La contraseña necesita ser actualizada.' });
+        }
+        return res.status(401).json({ message: 'Credenciales inválidas' });
+      }
+      
+      // Comparar contraseña usando bcrypt
+      const isMatch = await user.comparePassword(password);
+      
+      if (!isMatch) {
+        console.log('Login failed: Password does not match for user:', user.email);
+        return res.status(401).json({ message: 'Credenciales inválidas' });
+      }
+      console.log('Password verified successfully for user:', user.email);
+    }
+
+    // Check if user has permission to access admin panel (only admin and asesor)
+    // This check is done AFTER password validation to ensure proper error messages
+    const userRole = user.role ? user.role.trim().toLowerCase() : '';
+    
+    if (userRole !== 'admin' && userRole !== 'asesor') {
+      console.log(`Login attempt rejected - User role: "${user.role}" for user: ${user.email}`);
+      return res.status(403).json({ message: 'No tienes permisos para acceder al panel de administración. Solo usuarios administradores y asesores pueden acceder.' });
+    }
+
+    // Generar token JWT
+    let token;
+    try {
+      token = generateToken(user._id);
+    } catch (tokenError) {
+      console.error('Error generating token:', tokenError);
+      return res.status(500).json({ 
+        message: 'Error al generar token de autenticación', 
+        error: tokenError.message 
+      });
+    }
+
+    console.log('✅ Login successful for user:', user.email, 'with role:', user.role);
+
+    res.json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
+  }
+});
+
+// @route   GET /api/auth/me
+// @desc    Get current user
+// @access  Private
+router.get('/me', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    res.json({
+      success: true,
+      user
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuario', error: error.message });
+  }
+});
+
+module.exports = router;
+
