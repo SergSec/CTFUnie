@@ -116,10 +116,33 @@ Afyl/
 
 ## Configuración de Servicios Externos
 
-### Calendly
-1. Obtener API key de Calendly
-2. Configurar webhook para eventos
-3. Actualizar variables en `.env`
+### 📅 Calendly (Agenda de Citas)
+
+La integración con Calendly permite que los clientes agenden citas directamente desde la aplicación.
+
+#### Configuración Rápida (5 minutos)
+Ver guía: **[INICIO_RAPIDO_CALENDLY.md](INICIO_RAPIDO_CALENDLY.md)**
+
+#### Configuración Completa
+Ver guía detallada: **[GUIA_COMPLETA_CALENDLY.md](GUIA_COMPLETA_CALENDLY.md)**
+
+#### Verificar Configuración
+```bash
+cd backend
+node scripts/checkCalendly.js
+```
+
+#### Pasos Básicos:
+1. Crear cuenta en [Calendly](https://calendly.com)
+2. Crear un evento (ej: "Consulta Legal - 30 min")
+3. Copiar la URL del evento
+4. Configurar en `frontend/.env`:
+   ```env
+   REACT_APP_CALENDLY_URL=https://calendly.com/tu-usuario/tu-evento
+   ```
+5. Reiniciar el frontend
+
+**Nota**: Los webhooks son opcionales y requieren plan de pago de Calendly.
 
 ### Microsoft Teams
 1. Registrar aplicación en Azure AD

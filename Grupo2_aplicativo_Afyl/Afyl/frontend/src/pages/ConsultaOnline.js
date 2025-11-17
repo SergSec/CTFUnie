@@ -58,13 +58,21 @@ export default function ConsultaOnline() {
   });
   const [selectedService, setSelectedService] = useState(null);
   const [showCalendly, setShowCalendly] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Cargar script de Calendly
     if (!window.Calendly) {
       const script = document.createElement('script');
       script.src = 'https://assets.calendly.com/assets/external/widget.js';
       script.async = true;
       document.body.appendChild(script);
+      
+      // Cargar estilos de Calendly
+      const link = document.createElement('link');
+      link.href = 'https://assets.calendly.com/assets/external/widget.css';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
     }
   }, []);
 
@@ -87,22 +95,41 @@ export default function ConsultaOnline() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Formulario enviado:', formData);
-    setShowCalendly(true);
+    setIsLoading(true);
+    
+    // Simular un pequeño delay para mejor UX
     setTimeout(() => {
-      document.querySelector('.calendly-inline-widget')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+      setShowCalendly(true);
+      setIsLoading(false);
+      
+      // Scroll suave al widget de Calendly
+      setTimeout(() => {
+        document.querySelector('.calendly-inline-widget')?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 300);
+    }, 500);
   };
 
-  const calendlyUrl = process.env.REACT_APP_CALENDLY_URL || 'https://calendly.com/example/30min';
+  const calendlyUrl = process.env.REACT_APP_CALENDLY_URL || 'https://calendly.com/afyl-legal/consulta-30min';
 
   const buildCalendlyUrl = () => {
     if (!calendlyUrl) return calendlyUrl;
     const params = new URLSearchParams();
+    
+    // Pre-llenar datos del usuario
     if (formData.nombre) params.set('name', formData.nombre);
     if (formData.email) params.set('email', formData.email);
     if (formData.servicio) params.set('a1', formData.servicio);
+    if (formData.consulta) params.set('consulta', formData.consulta);
+    
+    // Configuración visual
     params.set('hide_event_type_details', '1');
     params.set('background_color', 'ffffff');
+    params.set('text_color', '333333');
+    params.set('primary_color', '1a237e'); // Color azul de AFYL
+    
     return `${calendlyUrl}?${params.toString()}`;
   };
 
@@ -255,9 +282,10 @@ export default function ConsultaOnline() {
                   variant="contained"
                   fullWidth
                   size="large"
+                  disabled={isLoading}
                   sx={{ mt: 3, py: 1.5 }}
                 >
-                  Enviar y Agendar Cita
+                  {isLoading ? 'Cargando calendario...' : 'Enviar y Agendar Cita'}
                 </Button>
               </form>
             </Paper>
@@ -269,11 +297,24 @@ export default function ConsultaOnline() {
           <Box sx={{ mt: 6 }}>
             <Paper elevation={0} sx={{ p: 4, border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
               <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-                Agenda tu Cita
+                📅 Agenda tu Cita
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Selecciona el día y la hora que mejor te convenga para tu consulta
+                Selecciona el día y la hora que mejor te convenga para tu consulta. 
+                Recibirás una confirmación por email.
               </Typography>
+              
+              {/* Advertencia si se está usando URL de ejemplo */}
+              {calendlyUrl.includes('example') || calendlyUrl.includes('afyl-legal/consulta-30min') ? (
+                <Box sx={{ mb: 3, p: 2, bgcolor: '#fff3cd', borderRadius: 2, border: '1px solid #ffc107' }}>
+                  <Typography variant="body2" sx={{ color: '#856404' }}>
+                    ⚠️ <strong>Configuración pendiente:</strong> Este es un calendario de ejemplo. 
+                    Para activar las reservas reales, configura tu cuenta de Calendly siguiendo 
+                    las instrucciones en <code>GUIA_COMPLETA_CALENDLY.md</code>
+                  </Typography>
+                </Box>
+              ) : null}
+              
               <Box
                 className="calendly-inline-widget"
                 data-url={buildCalendlyUrl()}
@@ -281,7 +322,8 @@ export default function ConsultaOnline() {
                   minWidth: '320px',
                   height: '700px',
                   borderRadius: '8px',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  border: '1px solid #e0e0e0'
                 }}
               />
             </Paper>

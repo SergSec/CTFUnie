@@ -7,8 +7,27 @@ const router = express.Router();
 // Middleware para verificar la firma de Calendly (opcional pero recomendado)
 const verifyCalendlySignature = (req, res, next) => {
   // Calendly envía un header 'Calendly-Webhook-Signature'
-  // En producción, deberías verificar esta firma usando tu webhook signing key
-  // Por ahora, lo dejamos como opcional para desarrollo
+  const signature = req.headers['calendly-webhook-signature'];
+  const signingKey = process.env.CALENDLY_SIGNING_KEY;
+  
+  // Si está configurado el signing key, verificar la firma
+  if (signingKey && signature) {
+    const crypto = require('crypto');
+    const payload = JSON.stringify(req.body);
+    const expectedSignature = crypto
+      .createHmac('sha256', signingKey)
+      .update(payload)
+      .digest('base64');
+    
+    if (signature !== expectedSignature) {
+      console.warn('⚠️ Firma de webhook de Calendly inválida');
+      return res.status(401).json({ error: 'Firma inválida' });
+    }
+    console.log('✅ Firma de webhook verificada');
+  } else {
+    console.log('ℹ️ Webhook recibido sin verificación de firma (modo desarrollo)');
+  }
+  
   next();
 };
 
@@ -19,20 +38,24 @@ router.post('/webhook', verifyCalendlySignature, async (req, res) => {
   try {
     const event = req.body;
     
+    console.log('📩 Webhook recibido de Calendly:', event.event);
+    
     // Calendly envía diferentes tipos de eventos
-    // Los más importantes son: invitation.created, invitation.canceled
-    if (event.event === 'invitation.created') {
+    // Los más importantes son: invitee.created, invitee.canceled
+    if (event.event === 'invitee.created') {
       await handleAppointmentCreated(event);
-    } else if (event.event === 'invitation.canceled') {
+    } else if (event.event === 'invitee.canceled') {
       await handleAppointmentCanceled(event);
-    } else if (event.event === 'invitation.updated') {
+    } else if (event.event === 'invitee.updated') {
       await handleAppointmentUpdated(event);
+    } else {
+      console.log(`ℹ️ Evento no manejado: ${event.event}`);
     }
 
     // Responder rápidamente a Calendly (máximo 5 segundos)
     res.status(200).json({ received: true });
   } catch (error) {
-    console.error('Error procesando webhook de Calendly:', error);
+    console.error('❌ Error procesando webhook de Calendly:', error);
     // Aún así respondemos 200 para que Calendly no reintente
     res.status(200).json({ received: true, error: error.message });
   }
