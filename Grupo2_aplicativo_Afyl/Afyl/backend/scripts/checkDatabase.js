@@ -16,7 +16,7 @@ if (mongoURI.includes('mongodb+srv://')) {
   if (match) {
     dbName = match[1];
   } else {
-    dbName = 'test (default)';
+    dbName = 'Afyl (default)';
   }
 } else if (mongoURI.includes('mongodb://')) {
   // MongoDB local
@@ -24,7 +24,7 @@ if (mongoURI.includes('mongodb+srv://')) {
   if (match) {
     dbName = match[1];
   } else {
-    dbName = 'test (default)';
+    dbName = 'Afyl (default)';
   }
 }
 
