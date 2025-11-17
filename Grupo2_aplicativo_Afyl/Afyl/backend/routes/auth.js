@@ -166,14 +166,10 @@ router.post('/login', async (req, res) => {
       console.log('Password verified successfully for user:', user.email);
     }
 
-    // Check if user has permission to access admin panel (only admin and asesor)
-    // This check is done AFTER password validation to ensure proper error messages
+    // Allow all roles (cliente, asesor, admin) to login
+    // Frontend will handle routing based on role
     const userRole = user.role ? user.role.trim().toLowerCase() : '';
-    
-    if (userRole !== 'admin' && userRole !== 'asesor') {
-      console.log(`Login attempt rejected - User role: "${user.role}" for user: ${user.email}`);
-      return res.status(403).json({ message: 'No tienes permisos para acceder al panel de administración. Solo usuarios administradores y asesores pueden acceder.' });
-    }
+    console.log(`Login successful - User role: "${user.role}" for user: ${user.email}`);
 
     // Generar token JWT
     let token;

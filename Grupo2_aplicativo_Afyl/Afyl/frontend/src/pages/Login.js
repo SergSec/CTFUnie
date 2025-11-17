@@ -33,7 +33,13 @@ export default function Login() {
     const result = await login(identifier, password);
 
     if (result.success) {
-      navigate('/admin/dashboard');
+      // Redirigir según el rol del usuario
+      const userRole = result.user?.role || 'cliente';
+      if (userRole === 'admin' || userRole === 'asesor') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/cliente/dashboard');
+      }
     } else {
       setError(result.message);
     }
@@ -174,10 +180,17 @@ export default function Login() {
                 </Button>
                 <Divider sx={{ my: 3 }} />
                 <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="body2" color="text.secondary">
-                    El acceso al panel se gestiona por el equipo de Afyl. 
-                    Contacta con un administrador para crear o activar tu cuenta.
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    ¿No tienes cuenta? Regístrate para acceder a nuestros servicios legales.
                   </Typography>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => navigate('/register')}
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Crear Cuenta Nueva
+                  </Button>
                 </Box>
               </Box>
             </CardContent>

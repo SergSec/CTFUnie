@@ -6,10 +6,12 @@ import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import PublicLayout from './components/PublicLayout';
 import Layout from './components/Layout';
+import ClientLayout from './components/ClientLayout';
 import Home from './pages/Home';
 import ConsultaOnline from './pages/ConsultaOnline';
 import Contacto from './pages/Contacto';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Cases from './pages/Cases';
 import CaseDetail from './pages/CaseDetail';
@@ -17,6 +19,13 @@ import Appointments from './pages/Appointments';
 import Payments from './pages/Payments';
 import Profile from './pages/Profile';
 import AdvisorManagement from './pages/AdvisorManagement';
+import ClientDashboard from './pages/cliente/ClientDashboard';
+import ClientCases from './pages/cliente/ClientCases';
+import ClientAppointments from './pages/cliente/ClientAppointments';
+import ClientForum from './pages/cliente/ClientForum';
+import ClientPayments from './pages/cliente/ClientPayments';
+import ClientMessages from './pages/cliente/ClientMessages';
+import ClientProfile from './pages/cliente/ClientProfile';
 import legalTheme from './theme/legalTheme';
 
 function App() {
@@ -32,8 +41,79 @@ function App() {
             <Route path="contacto" element={<Contacto />} />
           </Route>
 
-          {/* Rutas de autenticación del admin */}
+          {/* Rutas de autenticación */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/admin/login" element={<Login />} />
+          
+          {/* Rutas privadas del portal de clientes */}
+          <Route
+            path="/cliente"
+            element={
+              <PrivateRoute allowedRoles={['cliente']}>
+                <ClientLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Navigate to="/cliente/dashboard" replace />} />
+            <Route
+              path="dashboard"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="casos"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientCases />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="citas"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientAppointments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="foro"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientForum />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="pagos"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientPayments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="mensajes"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientMessages />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="perfil"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientProfile />
+                </PrivateRoute>
+              }
+            />
+          </Route>
+
           {/* Rutas privadas del panel de administrador */}
           <Route
             path="/admin"

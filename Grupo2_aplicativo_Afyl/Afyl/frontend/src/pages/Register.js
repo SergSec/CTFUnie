@@ -61,7 +61,13 @@ export default function Register() {
     });
 
     if (result.success) {
-      navigate('/admin/dashboard');
+      // Redirigir según el rol del usuario
+      const userRole = result.user?.role || 'cliente';
+      if (userRole === 'admin' || userRole === 'asesor') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/cliente/dashboard');
+      }
     } else {
       setError(result.message);
     }

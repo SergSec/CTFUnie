@@ -60,19 +60,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      // Validate that user has admin or asesor role
-      // Normalize role for comparison (trim and lowercase)
-      const userRole = user.role ? user.role.trim().toLowerCase() : '';
-      console.log('Frontend role check - Original:', user.role, 'Normalized:', userRole);
-      
-      if (userRole !== 'admin' && userRole !== 'asesor') {
-        console.log('Frontend: Login rejected - Invalid role:', user.role);
-        return {
-          success: false,
-          message: 'No tienes permisos para acceder al panel de administración. Solo usuarios administradores y asesores pueden acceder.',
-        };
-      }
-      
+      // Allow all roles to login (cliente, asesor, admin)
       console.log('Frontend: Login successful for role:', user.role);
 
       localStorage.setItem('token', token);
