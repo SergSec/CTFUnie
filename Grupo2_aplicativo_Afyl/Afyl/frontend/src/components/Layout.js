@@ -29,6 +29,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import GavelIcon from '@mui/icons-material/Gavel';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import { useAuth } from '../contexts/AuthContext';
 import Chatbot from './Chatbot';
 
@@ -73,6 +74,7 @@ export default function Layout() {
     if (isAdmin) {
       items.push(
         { text: 'Asesores', icon: <SupportAgentIcon />, path: '/admin/advisors' },
+        { text: 'Servicios', icon: <MiscellaneousServicesIcon />, path: '/admin/services' },
         { text: 'Citas', icon: <CalendarTodayIcon />, path: '/admin/appointments' },
         { text: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' }
       );

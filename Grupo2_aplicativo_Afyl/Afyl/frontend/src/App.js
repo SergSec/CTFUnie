@@ -19,6 +19,7 @@ import Appointments from './pages/Appointments';
 import Payments from './pages/Payments';
 import Profile from './pages/Profile';
 import AdvisorManagement from './pages/AdvisorManagement';
+import ServiceManagement from './pages/ServiceManagement';
 import ClientDashboard from './pages/cliente/ClientDashboard';
 import ClientCases from './pages/cliente/ClientCases';
 import ClientAppointments from './pages/cliente/ClientAppointments';
@@ -153,6 +154,14 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={['admin']}>
                   <AdvisorManagement />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="services"
+              element={
+                <PrivateRoute allowedRoles={['admin']}>
+                  <ServiceManagement />
                 </PrivateRoute>
               }
             />

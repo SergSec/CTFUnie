@@ -22,9 +22,10 @@ app.use('/api/documents', require('./routes/documents'));
 app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/messages', require('./routes/messages'));
-app.use('/api/forum', require('./routes/forum'));
 app.use('/api/chatbot', require('./routes/chatbot'));
 app.use('/api/calendly', require('./routes/calendly'));
+app.use('/api/services', require('./routes/services'));
+app.use('/api/consultations', require('./routes/consultations'));
 // Development routes (ONLY FOR PENTESTING/DEV)
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/dev', require('./routes/dev'));

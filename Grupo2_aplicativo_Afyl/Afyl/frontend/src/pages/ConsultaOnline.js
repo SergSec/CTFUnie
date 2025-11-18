@@ -14,53 +14,37 @@ import {
   MenuItem,
   Paper,
   Chip,
+  Alert,
+  CircularProgress,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
 } from '@mui/material';
-
-const services = [
-  {
-    id: 'laboral',
-    title: 'Laboral',
-    description: 'Despidos, contratos, indemnizaciones, incapacidades…',
-  },
-  {
-    id: 'mercantil',
-    title: 'Mercantil / Empresarial',
-    description: 'Contratos, constitución de empresas, cambios societarios…',
-  },
-  {
-    id: 'familia',
-    title: 'Familia',
-    description: 'Separaciones, herencias, custodias, pensiones de alimentos…',
-  },
-  {
-    id: 'proteccion-datos',
-    title: 'Protección de datos',
-    description: 'Páginas web, servicios profesionales, venta electrónica.',
-  },
-  {
-    id: 'seguros',
-    title: 'Seguros / Contratos / Inmobiliario',
-    description: 'Redacción y revisión de contratos. Reclamaciones de consumo y contra seguros.',
-  },
-  {
-    id: 'extranjeria',
-    title: 'Extranjería',
-    description: 'Certificado UE, Visa nómada digital, permisos de residencia, residencia no lucrativa…',
-  },
-];
+import { AttachFile as AttachFileIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import api from '../services/api';
 
 export default function ConsultaOnline() {
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
+    telefono: '',
     consulta: '',
     servicio: '',
   });
   const [selectedService, setSelectedService] = useState(null);
   const [showCalendly, setShowCalendly] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [services, setServices] = useState([]);
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
   useEffect(() => {
+    // Cargar servicios desde la API
+    fetchServices();
+    
     // Cargar script de Calendly
     if (!window.Calendly) {
       const script = document.createElement('script');
@@ -75,6 +59,21 @@ export default function ConsultaOnline() {
       document.head.appendChild(link);
     }
   }, []);
+
+  const fetchServices = async () => {
+    try {
+      const response = await api.get('/services');
+      setServices(response.data.data);
+    } catch (error) {
+      console.error('Error al cargar servicios:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: 'Error al cargar los servicios. Por favor, recarga la página.'
+      });
+    } finally {
+      setLoadingServices(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,24 +91,90 @@ export default function ConsultaOnline() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Formulario enviado:', formData);
-    setIsLoading(true);
-    
-    // Simular un pequeño delay para mejor UX
-    setTimeout(() => {
-      setShowCalendly(true);
-      setIsLoading(false);
-      
-      // Scroll suave al widget de Calendly
-      setTimeout(() => {
-        document.querySelector('.calendly-inline-widget')?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const validFiles = files.filter(file => {
+      // Validar tamaño (máx 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setSubmitStatus({
+          type: 'error',
+          message: `El archivo ${file.name} es demasiado grande. Máximo 10MB.`
         });
-      }, 300);
-    }, 500);
+        return false;
+      }
+      return true;
+    });
+
+    // Limitar a 5 archivos
+    const totalFiles = selectedFiles.length + validFiles.length;
+    if (totalFiles > 5) {
+      setSubmitStatus({
+        type: 'warning',
+        message: 'Máximo 5 archivos permitidos.'
+      });
+      setSelectedFiles([...selectedFiles, ...validFiles].slice(0, 5));
+    } else {
+      setSelectedFiles([...selectedFiles, ...validFiles]);
+      setSubmitStatus({ type: '', message: '' });
+    }
+  };
+
+  const handleRemoveFile = (index) => {
+    setSelectedFiles(selectedFiles.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      // Crear FormData para enviar archivos
+      const formDataToSend = new FormData();
+      formDataToSend.append('nombre', formData.nombre);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('telefono', formData.telefono || '');
+      formDataToSend.append('servicio', formData.servicio);
+      formDataToSend.append('consulta', formData.consulta);
+
+      // Agregar archivos
+      selectedFiles.forEach((file) => {
+        formDataToSend.append('archivos', file);
+      });
+
+      // Enviar consulta
+      await api.post('/consultations', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      setSubmitStatus({
+        type: 'success',
+        message: '¡Consulta enviada exitosamente! Ahora puedes agendar tu cita.'
+      });
+
+      // Mostrar Calendly después de enviar
+      setTimeout(() => {
+        setShowCalendly(true);
+        setIsLoading(false);
+        
+        // Scroll suave al widget de Calendly
+        setTimeout(() => {
+          document.querySelector('.calendly-inline-widget')?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }, 300);
+      }, 1000);
+    } catch (error) {
+      console.error('Error al enviar consulta:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: error.response?.data?.message || 'Error al enviar la consulta. Por favor, intenta de nuevo.'
+      });
+      setIsLoading(false);
+    }
   };
 
   const calendlyUrl = process.env.REACT_APP_CALENDLY_URL || 'https://calendly.com/afyl-legal/consulta-30min';
@@ -178,49 +243,64 @@ export default function ConsultaOnline() {
           Completa el formulario y agenda tu cita con nuestro equipo de expertos
         </Typography>
 
+        {submitStatus.message && (
+          <Alert severity={submitStatus.type} sx={{ mb: 3 }} onClose={() => setSubmitStatus({ type: '', message: '' })}>
+            {submitStatus.message}
+          </Alert>
+        )}
+
         <Grid container spacing={4}>
           {/* Servicios Disponibles */}
           <Grid item xs={12} md={6}>
             <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
               Servicios Disponibles
             </Typography>
-            <Grid container spacing={2}>
-              {services.map((service) => (
-                <Grid item xs={12} sm={6} key={service.id}>
-                  <Card
-                    onClick={() => handleServiceSelect(service)}
-                    sx={{
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      border: selectedService?.id === service.id ? '2px solid' : '1px solid',
-                      borderColor: selectedService?.id === service.id ? 'primary.main' : 'divider',
-                      bgcolor: selectedService?.id === service.id ? 'rgba(26, 35, 126, 0.05)' : 'white',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0px 8px 24px rgba(26, 35, 126, 0.15)',
-                      },
-                    }}
-                  >
-                    <CardContent>
-                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                        {service.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {service.description}
-                      </Typography>
-                      {selectedService?.id === service.id && (
-                        <Chip
-                          label="Seleccionado"
-                          size="small"
-                          color="primary"
-                          sx={{ mt: 1 }}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+            
+            {loadingServices ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : services.length === 0 ? (
+              <Alert severity="info">No hay servicios disponibles en este momento.</Alert>
+            ) : (
+              <Grid container spacing={2}>
+                {services.map((service) => (
+                  <Grid item xs={12} sm={6} key={service.id}>
+                    <Card
+                      onClick={() => handleServiceSelect(service)}
+                      sx={{
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        border: selectedService?.id === service.id ? '2px solid' : '1px solid',
+                        borderColor: selectedService?.id === service.id ? 'primary.main' : 'divider',
+                        bgcolor: selectedService?.id === service.id ? 'rgba(26, 35, 126, 0.05)' : 'white',
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0px 8px 24px rgba(26, 35, 126, 0.15)',
+                        },
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                          {service.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {service.description}
+                        </Typography>
+                        {selectedService?.id === service.id && (
+                          <Chip
+                            label="Seleccionado"
+                            size="small"
+                            color="primary"
+                            sx={{ mt: 1 }}
+                          />
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </Grid>
 
           {/* Formulario */}
@@ -247,6 +327,15 @@ export default function ConsultaOnline() {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
+                  margin="normal"
+                />
+                <TextField
+                  fullWidth
+                  label="Teléfono (opcional)"
+                  name="telefono"
+                  type="tel"
+                  value={formData.telefono}
+                  onChange={handleInputChange}
                   margin="normal"
                 />
                 <FormControl fullWidth margin="normal">
@@ -277,6 +366,52 @@ export default function ConsultaOnline() {
                   margin="normal"
                   placeholder="Describe tu situación o necesidad..."
                 />
+
+                {/* Sección de archivos */}
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Adjuntar archivos (opcional)
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 2 }}>
+                    Máximo 5 archivos. Tamaño máximo: 10MB por archivo.
+                    Formatos: PDF, DOC, DOCX, JPG, PNG, XLS, XLSX
+                  </Typography>
+                  
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    startIcon={<AttachFileIcon />}
+                    fullWidth
+                  >
+                    Seleccionar archivos
+                    <input
+                      type="file"
+                      hidden
+                      multiple
+                      accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.xls,.xlsx,.txt"
+                      onChange={handleFileSelect}
+                    />
+                  </Button>
+
+                  {selectedFiles.length > 0 && (
+                    <List sx={{ mt: 2 }}>
+                      {selectedFiles.map((file, index) => (
+                        <ListItem key={index} sx={{ bgcolor: 'grey.50', mb: 1, borderRadius: 1 }}>
+                          <ListItemText
+                            primary={file.name}
+                            secondary={`${(file.size / 1024).toFixed(2)} KB`}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton edge="end" onClick={() => handleRemoveFile(index)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      ))}
+                    </List>
+                  )}
+                </Box>
+
                 <Button
                   type="submit"
                   variant="contained"
@@ -285,7 +420,7 @@ export default function ConsultaOnline() {
                   disabled={isLoading}
                   sx={{ mt: 3, py: 1.5 }}
                 >
-                  {isLoading ? 'Cargando calendario...' : 'Enviar y Agendar Cita'}
+                  {isLoading ? 'Enviando...' : 'Enviar y Agendar Cita'}
                 </Button>
               </form>
             </Paper>
