@@ -63,19 +63,37 @@ npm run client  # Frontend en puerto 3000
 ```
 Afyl/
 ├── backend/
-│   ├── models/          # Modelos de MongoDB
-│   ├── routes/          # Rutas de la API
-│   ├── middleware/      # Middleware (auth, etc.)
-│   ├── uploads/         # Archivos subidos
-│   └── server.js        # Servidor principal
+│   ├── models/                      # Modelos de MongoDB
+│   ├── routes/                      # Rutas de la API
+│   ├── middleware/                  # Middleware (auth, etc.)
+│   ├── scripts/                     # Comandos
+│   ├── uploads/                     # Archivos subidos
+│   ├── .gitignore                   # Bloquea subida de archivos con datos privados
+│   ├── .env.example                 # Credenciales
+│   ├── package.json                 # Version, dependencias...
+│   ├── package-lock.json            # Detalles package
+│   ├── update-env-password.js       # Scrypt cambio contraseña MongoDB
+│   ├── CONFIGURACION_ATLAS.md       # Configuración de MongoDB
+│   └── server.js                    # Servidor principal
 ├── frontend/
 │   ├── src/
-│   │   ├── components/  # Componentes React
-│   │   ├── pages/       # Páginas de la aplicación
-│   │   ├── contexts/    # Contextos (Auth, etc.)
-│   │   └── services/    # Servicios API
+│   │   ├── components/              # Componentes React
+│   │   ├── pages/                   # Páginas de la aplicación
+│   │   ├── contexts/                # Contextos (Auth, etc.)
+│   │   ├── theme/                   # Contextos (Auth, etc.)
+│   │   └── services/                # Servicios API
 │   └── public/
-└── package.json
+├── CHECKLIST_CALENDLY.md            # Comprobar funcionamiento Calendly 
+├── CORRECCIONES_APLICADAS.md        # Servicios API
+├── GUIA_COMPLETA_CALENDLY.md        # Configuración de Calendly
+├── INICIO_RAPIDO.md                 # Inicio Rápido - Plataforma
+├── MONGODB_SETUP.md                 # Configuración de MongoDB
+├── QUE_PASA_DESPUES_DE_AGENDAR.md   # ??
+├── RESUMEN_CALENDLY.md              # Resumen de Configuración de Calendly 
+├── SOLUCION_NOMBRE_CALENDLY.md      # ??
+├── package.json                     # Version, dependencias...
+├── package-lock.json                # Detalles package
+└── README.md                       
 ```
 
 ## API Endpoints
