@@ -38,8 +38,18 @@ const consultationSchema = new mongoose.Schema({
   }],
   status: {
     type: String,
-    enum: ['pendiente', 'en-revision', 'respondida', 'cerrada'],
+    enum: ['pendiente', 'en-revision', 'aceptada', 'rechazada', 'cerrada'],
     default: 'pendiente'
+  },
+  caseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Case',
+    default: null
+  },
+  temporaryUserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
   },
   calendlyEventUri: {
     type: String,

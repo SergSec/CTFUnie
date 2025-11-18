@@ -27,8 +27,25 @@ const caseSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['nuevo', 'en_analisis', 'pendiente_cita', 'en_proceso', 'cerrado'],
-    default: 'nuevo'
+    enum: ['pendiente_revision', 'aceptado', 'rechazado', 'pendiente_cita', 'en_proceso', 'cerrado'],
+    default: 'pendiente_revision'
+  },
+  reviewedAt: {
+    type: Date,
+    default: null
+  },
+  rejectionReason: {
+    type: String,
+    default: null
+  },
+  serviceType: {
+    type: String,
+    default: null
+  },
+  consultationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Consultation',
+    default: null
   },
   priority: {
     type: String,

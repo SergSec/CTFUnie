@@ -2,7 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const Consultation = require('../models/Consultation');
+const Case = require('../models/Case');
+const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
@@ -47,7 +50,7 @@ const upload = multer({
 });
 
 // @route   POST /api/consultations
-// @desc    Create new consultation with optional files
+// @desc    Create new consultation with optional files, create case and temporary user
 // @access  Public
 router.post('/', upload.array('archivos', 5), async (req, res) => {
   try {
@@ -68,6 +71,56 @@ router.post('/', upload.array('archivos', 5), async (req, res) => {
       });
     }
 
+    // Verificar si ya existe un usuario con ese email
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser && !existingUser.isTemporary) {
+      // Si existe y no es temporal, eliminar archivos y retornar error
+      if (req.files) {
+        req.files.forEach(file => {
+          fs.unlinkSync(file.path);
+        });
+      }
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Ya existe una cuenta con este email. Por favor, inicia sesión.'
+      });
+    }
+
+    // Generar contraseña temporal
+    const temporaryPassword = crypto.randomBytes(4).toString('hex'); // 8 caracteres aleatorios
+    
+    // Crear usuario temporal (válido 10 días)
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 10);
+    
+    let tempUser;
+    if (existingUser && existingUser.isTemporary) {
+      // Si ya existe un usuario temporal, actualizarlo
+      tempUser = existingUser;
+      tempUser.name = nombre;
+      tempUser.phone = telefono;
+      tempUser.password = temporaryPassword;
+      tempUser.temporaryPassword = temporaryPassword;
+      tempUser.expiresAt = expiresAt;
+      tempUser.isActive = true;
+      tempUser.deleteAt = null;
+      await tempUser.save();
+    } else {
+      // Crear nuevo usuario temporal
+      tempUser = await User.create({
+        name: nombre,
+        email: email.toLowerCase(),
+        phone: telefono,
+        password: temporaryPassword,
+        temporaryPassword: temporaryPassword,
+        role: 'cliente',
+        isTemporary: true,
+        expiresAt: expiresAt,
+        isActive: true
+      });
+    }
+
     // Procesar archivos subidos
     const archivos = req.files ? req.files.map(file => ({
       filename: file.filename,
@@ -77,20 +130,46 @@ router.post('/', upload.array('archivos', 5), async (req, res) => {
       size: file.size
     })) : [];
 
-    // Crear consulta
+    // Crear caso
+    const newCase = await Case.create({
+      clientId: tempUser._id,
+      title: `Consulta de ${servicio}`,
+      description: consulta,
+      category: 'otro',
+      serviceType: servicio,
+      status: 'pendiente_revision',
+      priority: 'media'
+    });
+
+    // Crear consulta vinculada al caso y usuario
     const consultation = await Consultation.create({
       nombre,
-      email,
+      email: email.toLowerCase(),
       telefono,
       servicio,
       consulta,
-      archivos
+      archivos,
+      caseId: newCase._id,
+      temporaryUserId: tempUser._id,
+      status: 'pendiente'
     });
+
+    // Actualizar usuario con el ID del caso
+    tempUser.caseId = newCase._id;
+    await tempUser.save();
 
     res.status(201).json({
       success: true,
-      message: 'Consulta enviada exitosamente',
-      data: consultation
+      message: 'Consulta enviada exitosamente. Recibirás un email con tus credenciales de acceso.',
+      data: {
+        consultation,
+        credentials: {
+          email: tempUser.email,
+          password: temporaryPassword,
+          expiresAt: expiresAt
+        },
+        caseId: newCase._id
+      }
     });
   } catch (error) {
     // Limpiar archivos en caso de error

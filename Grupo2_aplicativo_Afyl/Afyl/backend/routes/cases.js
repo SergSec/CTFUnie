@@ -61,6 +61,26 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
   }
 });
 
+// @route   GET /api/cases/pending-review
+// @desc    Get cases pending review (for advisors/admins)
+// @access  Private (Admin/Asesor)
+router.get('/pending-review', protect, authorize('admin', 'asesor'), async (req, res) => {
+  try {
+    const cases = await Case.find({ status: 'pendiente_revision' })
+      .populate('clientId', 'name email phone')
+      .populate('consultationId')
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      count: cases.length,
+      data: cases
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener casos pendientes', error: error.message });
+  }
+});
+
 // @route   GET /api/cases
 // @desc    Get all cases (filtered by role)
 // @access  Private
@@ -228,6 +248,108 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar caso', error: error.message });
+  }
+});
+
+// @route   PUT /api/cases/:id/review
+// @desc    Accept or reject a case (asesor/admin)
+// @access  Private (Admin/Asesor)
+router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res) => {
+  try {
+    const { action, price, rejectionReason } = req.body;
+    
+    if (!action || !['accept', 'reject'].includes(action)) {
+      return res.status(400).json({ 
+        message: 'Acción inválida. Debe ser "accept" o "reject"' 
+      });
+    }
+
+    const caseData = await Case.findById(req.params.id)
+      .populate('clientId');
+
+    if (!caseData) {
+      return res.status(404).json({ message: 'Caso no encontrado' });
+    }
+
+    if (caseData.status !== 'pendiente_revision') {
+      return res.status(400).json({ 
+        message: 'Este caso ya ha sido revisado' 
+      });
+    }
+
+    if (action === 'accept') {
+      if (!price || price <= 0) {
+        return res.status(400).json({ 
+          message: 'El precio es requerido para aceptar el caso' 
+        });
+      }
+
+      // Aceptar caso
+      caseData.status = 'aceptado';
+      caseData.advisorId = req.user._id;
+      caseData.estimatedCost = price;
+      caseData.reviewedAt = new Date();
+      
+      // Hacer permanente el usuario temporal
+      const tempUser = await User.findById(caseData.clientId._id);
+      if (tempUser && tempUser.isTemporary) {
+        tempUser.isTemporary = false;
+        tempUser.expiresAt = null;
+        tempUser.deleteAt = null;
+        await tempUser.save();
+      }
+
+      // Actualizar consulta
+      const Consultation = require('../models/Consultation');
+      await Consultation.updateOne(
+        { caseId: caseData._id },
+        { status: 'aceptada', assignedTo: req.user._id }
+      );
+
+      await caseData.save();
+
+      res.json({
+        success: true,
+        message: 'Caso aceptado exitosamente',
+        data: caseData
+      });
+
+    } else {
+      // Rechazar caso
+      caseData.status = 'rechazado';
+      caseData.rejectionReason = rejectionReason || 'No especificado';
+      caseData.reviewedAt = new Date();
+
+      // Marcar usuario para eliminación en 48 horas
+      const tempUser = await User.findById(caseData.clientId._id);
+      if (tempUser && tempUser.isTemporary) {
+        const deleteDate = new Date();
+        deleteDate.setHours(deleteDate.getHours() + 48);
+        tempUser.deleteAt = deleteDate;
+        tempUser.isActive = false;
+        await tempUser.save();
+      }
+
+      // Actualizar consulta
+      const Consultation = require('../models/Consultation');
+      await Consultation.updateOne(
+        { caseId: caseData._id },
+        { status: 'rechazada' }
+      );
+
+      await caseData.save();
+
+      res.json({
+        success: true,
+        message: 'Caso rechazado. El usuario será eliminado en 48 horas.',
+        data: caseData
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Error al revisar caso', 
+      error: error.message 
+    });
   }
 });
 

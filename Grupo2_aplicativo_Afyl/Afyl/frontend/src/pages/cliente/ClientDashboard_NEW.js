@@ -32,7 +32,6 @@ export default function ClientDashboard() {
   const navigate = useNavigate();
   const [caseData, setCaseData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showCalendly, setShowCalendly] = useState(false);
 
   useEffect(() => {
     if (user && user.caseId) {
@@ -40,80 +39,18 @@ export default function ClientDashboard() {
     } else {
       setLoading(false);
     }
-
-    // Cargar script de Calendly
-    if (!window.Calendly) {
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async = true;
-      document.body.appendChild(script);
-      
-      // Cargar estilos de Calendly
-      const link = document.createElement('link');
-      link.href = 'https://assets.calendly.com/assets/external/widget.css';
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-    }
   }, [user]);
 
   const fetchCaseData = async () => {
     try {
       const response = await api.get(`/cases/${user.caseId}`);
-      setCaseData(response.data.case);
-      
-      // Si el caso está aceptado, mostrar Calendly
-      if (response.data.case.status === 'aceptado') {
-        setShowCalendly(true);
-      }
+      setCaseData(response.data);
     } catch (error) {
       console.error('Error al cargar caso:', error);
     } finally {
       setLoading(false);
     }
   };
-
-  const calendlyUrl = process.env.REACT_APP_CALENDLY_URL || 'https://calendly.com/afyl-legal/consulta-30min';
-
-  const buildCalendlyUrl = () => {
-    if (!calendlyUrl) return calendlyUrl;
-    const params = new URLSearchParams();
-    
-    // Pre-llenar datos del usuario
-    if (user?.name) params.set('name', user.name);
-    if (user?.email) params.set('email', user.email);
-    
-    // Configuración visual
-    params.set('hide_event_type_details', '1');
-    params.set('background_color', 'ffffff');
-    params.set('text_color', '333333');
-    params.set('primary_color', '1a237e'); // Color azul de AFYL
-    
-    return `${calendlyUrl}?${params.toString()}`;
-  };
-
-  useEffect(() => {
-    if (!showCalendly) return;
-    const url = buildCalendlyUrl();
-
-    if (window.Calendly && typeof window.Calendly.initInlineWidget === 'function') {
-      const container = document.querySelector('.calendly-inline-widget');
-      if (container) {
-        try {
-          window.Calendly.initInlineWidget({
-            url,
-            parentElement: container,
-            prefill: {},
-            utm: {}
-          });
-        } catch (err) {
-          container.setAttribute('data-url', url);
-        }
-      }
-    } else {
-      const container = document.querySelector('.calendly-inline-widget');
-      if (container) container.setAttribute('data-url', url);
-    }
-  }, [showCalendly, user]);
 
   const getCaseStatusInfo = () => {
     if (!caseData) return null;
@@ -254,46 +191,20 @@ export default function ClientDashboard() {
               {statusInfo.message}
             </Alert>
             
-            {statusInfo.showAppointment && showCalendly && (
+            {statusInfo.showAppointment && (
               <Box sx={{ mt: 3 }}>
-                <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                  📅 Agenda tu Cita
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Ya puedes agendar tu cita con el asesor asignado:
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Selecciona el día y la hora que mejor te convenga para tu consulta. 
-                  Recibirás una confirmación por email.
-                </Typography>
-                
-                {/* Advertencia si se está usando URL de ejemplo */}
-                {calendlyUrl.includes('example') || calendlyUrl.includes('afyl-legal/consulta-30min') ? (
-                  <Box sx={{ mb: 3, p: 2, bgcolor: '#fff3cd', borderRadius: 2, border: '1px solid #ffc107' }}>
-                    <Typography variant="body2" sx={{ color: '#856404' }}>
-                      ⚠️ <strong>Configuración pendiente:</strong> Este es un calendario de ejemplo. 
-                      Para activar las reservas reales, configura tu cuenta de Calendly.
-                    </Typography>
-                  </Box>
-                ) : null}
-                
-                <Box
-                  className="calendly-inline-widget"
-                  data-url={buildCalendlyUrl()}
-                  style={{
-                    minWidth: '320px',
-                    height: '700px',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    border: '1px solid #e0e0e0',
-                    marginTop: '16px'
-                  }}
-                />
-              </Box>
-            )}
-
-            {!statusInfo.showAppointment && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  <strong>Nota:</strong> Una vez que tu caso sea aceptado, podrás agendar una cita aquí mismo.
-                </Typography>
+                <Button
+                  variant="contained"
+                  color="success"
+                  startIcon={<AppointmentIcon />}
+                  onClick={() => navigate('/cliente/citas')}
+                  sx={{ mt: 1 }}
+                >
+                  Agendar Cita Ahora
+                </Button>
               </Box>
             )}
 

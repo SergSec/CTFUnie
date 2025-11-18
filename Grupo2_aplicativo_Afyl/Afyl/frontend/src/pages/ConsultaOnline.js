@@ -34,30 +34,16 @@ export default function ConsultaOnline() {
     servicio: '',
   });
   const [selectedService, setSelectedService] = useState(null);
-  const [showCalendly, setShowCalendly] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+  const [credentials, setCredentials] = useState(null);
 
   useEffect(() => {
     // Cargar servicios desde la API
     fetchServices();
-    
-    // Cargar script de Calendly
-    if (!window.Calendly) {
-      const script = document.createElement('script');
-      script.src = 'https://assets.calendly.com/assets/external/widget.js';
-      script.async = true;
-      document.body.appendChild(script);
-      
-      // Cargar estilos de Calendly
-      const link = document.createElement('link');
-      link.href = 'https://assets.calendly.com/assets/external/widget.css';
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-    }
   }, []);
 
   const fetchServices = async () => {
@@ -143,30 +129,40 @@ export default function ConsultaOnline() {
       });
 
       // Enviar consulta
-      await api.post('/consultations', formDataToSend, {
+      const response = await api.post('/consultations', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
+      // Guardar credenciales
+      if (response.data.data && response.data.data.credentials) {
+        setCredentials(response.data.data.credentials);
+      } else if (response.data.credentials) {
+        setCredentials(response.data.credentials);
+      }
+
       setSubmitStatus({
         type: 'success',
-        message: '¡Consulta enviada exitosamente! Ahora puedes agendar tu cita.'
+        message: '¡Consulta enviada exitosamente! Se ha creado tu cuenta temporal.'
       });
 
-      // Mostrar Calendly después de enviar
+      // Limpiar formulario
+      setFormData({
+        nombre: '',
+        email: '',
+        telefono: '',
+        consulta: '',
+        servicio: '',
+      });
+      setSelectedService(null);
+      setSelectedFiles([]);
+      setIsLoading(false);
+
+      // Scroll suave a las credenciales
       setTimeout(() => {
-        setShowCalendly(true);
-        setIsLoading(false);
-        
-        // Scroll suave al widget de Calendly
-        setTimeout(() => {
-          document.querySelector('.calendly-inline-widget')?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }, 300);
-      }, 1000);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
     } catch (error) {
       console.error('Error al enviar consulta:', error);
       setSubmitStatus({
@@ -177,50 +173,7 @@ export default function ConsultaOnline() {
     }
   };
 
-  const calendlyUrl = process.env.REACT_APP_CALENDLY_URL || 'https://calendly.com/afyl-legal/consulta-30min';
 
-  const buildCalendlyUrl = () => {
-    if (!calendlyUrl) return calendlyUrl;
-    const params = new URLSearchParams();
-    
-    // Pre-llenar datos del usuario
-    if (formData.nombre) params.set('name', formData.nombre);
-    if (formData.email) params.set('email', formData.email);
-    if (formData.servicio) params.set('a1', formData.servicio);
-    if (formData.consulta) params.set('consulta', formData.consulta);
-    
-    // Configuración visual
-    params.set('hide_event_type_details', '1');
-    params.set('background_color', 'ffffff');
-    params.set('text_color', '333333');
-    params.set('primary_color', '1a237e'); // Color azul de AFYL
-    
-    return `${calendlyUrl}?${params.toString()}`;
-  };
-
-  useEffect(() => {
-    if (!showCalendly) return;
-    const url = buildCalendlyUrl();
-
-    if (window.Calendly && typeof window.Calendly.initInlineWidget === 'function') {
-      const container = document.querySelector('.calendly-inline-widget');
-      if (container) {
-        try {
-          window.Calendly.initInlineWidget({
-            url,
-            parentElement: container,
-            prefill: {},
-            utm: {}
-          });
-        } catch (err) {
-          container.setAttribute('data-url', url);
-        }
-      }
-    } else {
-      const container = document.querySelector('.calendly-inline-widget');
-      if (container) container.setAttribute('data-url', url);
-    }
-  }, [showCalendly, formData]);
 
   return (
     <Box sx={{ py: 8, minHeight: '100vh', bgcolor: 'white' }}>
@@ -247,6 +200,83 @@ export default function ConsultaOnline() {
           <Alert severity={submitStatus.type} sx={{ mb: 3 }} onClose={() => setSubmitStatus({ type: '', message: '' })}>
             {submitStatus.message}
           </Alert>
+        )}
+
+        {/* Mostrar credenciales temporales */}
+        {credentials && (
+          <Paper 
+            elevation={3} 
+            sx={{ 
+              p: 4, 
+              mb: 4, 
+              bgcolor: 'success.light', 
+              color: 'success.contrastText',
+              border: '2px solid',
+              borderColor: 'success.main'
+            }}
+          >
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
+              ✅ ¡Consulta Enviada Exitosamente!
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+              Se ha creado una cuenta temporal para que puedas seguir el estado de tu caso.
+            </Typography>
+            
+            <Box sx={{ bgcolor: 'white', p: 3, borderRadius: 2, mb: 3 }}>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 600 }}>
+                📧 Tus Credenciales de Acceso:
+              </Typography>
+              <Box sx={{ my: 2 }}>
+                <Typography variant="body1" sx={{ color: 'text.primary', mb: 1 }}>
+                  <strong>Email:</strong> {credentials.email}
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.primary', mb: 1 }}>
+                  <strong>Contraseña Temporal:</strong> <code style={{ 
+                    background: '#f5f5f5', 
+                    padding: '4px 8px', 
+                    borderRadius: '4px',
+                    fontSize: '1.1em',
+                    fontWeight: 'bold'
+                  }}>{credentials.password}</code>
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 2 }}>
+                  Esta cuenta es válida hasta: {new Date(credentials.expiresAt).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              <strong>⚠️ Importante:</strong> Guarda estas credenciales en un lugar seguro.
+            </Alert>
+
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              <strong>¿Qué pasa ahora?</strong>
+            </Typography>
+            <Typography variant="body2" component="div" sx={{ ml: 2, mb: 2 }}>
+              • Nuestro equipo revisará tu caso<br />
+              • Si es aceptado, podrás agendar una cita y tu cuenta se hará permanente<br />
+              • Si es rechazado, recibirás una notificación y tu cuenta se eliminará en 48 horas
+            </Typography>
+
+            <Button
+              variant="contained"
+              size="large"
+              href="/admin/login"
+              sx={{ 
+                bgcolor: 'white', 
+                color: 'success.main',
+                '&:hover': {
+                  bgcolor: 'grey.100'
+                }
+              }}
+            >
+              Ir al Panel de Cliente
+            </Button>
+          </Paper>
         )}
 
         <Grid container spacing={4}>
@@ -420,50 +450,12 @@ export default function ConsultaOnline() {
                   disabled={isLoading}
                   sx={{ mt: 3, py: 1.5 }}
                 >
-                  {isLoading ? 'Enviando...' : 'Enviar y Agendar Cita'}
+                  {isLoading ? 'Enviando...' : 'Enviar Consulta'}
                 </Button>
               </form>
             </Paper>
           </Grid>
         </Grid>
-
-        {/* Calendly Widget */}
-        {showCalendly && (
-          <Box sx={{ mt: 6 }}>
-            <Paper elevation={0} sx={{ p: 4, border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
-              <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-                📅 Agenda tu Cita
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Selecciona el día y la hora que mejor te convenga para tu consulta. 
-                Recibirás una confirmación por email.
-              </Typography>
-              
-              {/* Advertencia si se está usando URL de ejemplo */}
-              {calendlyUrl.includes('example') || calendlyUrl.includes('afyl-legal/consulta-30min') ? (
-                <Box sx={{ mb: 3, p: 2, bgcolor: '#fff3cd', borderRadius: 2, border: '1px solid #ffc107' }}>
-                  <Typography variant="body2" sx={{ color: '#856404' }}>
-                    ⚠️ <strong>Configuración pendiente:</strong> Este es un calendario de ejemplo. 
-                    Para activar las reservas reales, configura tu cuenta de Calendly siguiendo 
-                    las instrucciones en <code>GUIA_COMPLETA_CALENDLY.md</code>
-                  </Typography>
-                </Box>
-              ) : null}
-              
-              <Box
-                className="calendly-inline-widget"
-                data-url={buildCalendlyUrl()}
-                style={{
-                  minWidth: '320px',
-                  height: '700px',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  border: '1px solid #e0e0e0'
-                }}
-              />
-            </Paper>
-          </Box>
-        )}
 
         {/* Información adicional */}
         <Box sx={{ mt: 6, textAlign: 'center' }}>

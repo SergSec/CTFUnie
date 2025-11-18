@@ -43,6 +43,27 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  isTemporary: {
+    type: Boolean,
+    default: false
+  },
+  temporaryPassword: {
+    type: String,
+    default: null
+  },
+  expiresAt: {
+    type: Date,
+    default: null
+  },
+  deleteAt: {
+    type: Date,
+    default: null
+  },
+  caseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Case',
+    default: null
+  },
   specialization: {
     type: String,
     trim: true

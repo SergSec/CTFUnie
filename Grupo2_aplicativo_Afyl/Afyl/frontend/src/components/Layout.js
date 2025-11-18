@@ -30,6 +30,7 @@ import GavelIcon from '@mui/icons-material/Gavel';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import { useAuth } from '../contexts/AuthContext';
 import Chatbot from './Chatbot';
 
@@ -68,7 +69,10 @@ export default function Layout() {
     ];
 
     if (isAdmin || isAdvisor) {
-      items.push({ text: 'Casos', icon: <FolderIcon />, path: '/admin/cases' });
+      items.push(
+        { text: 'Casos', icon: <FolderIcon />, path: '/admin/cases' },
+        { text: 'Revisar Casos', icon: <RateReviewIcon />, path: '/admin/cases/review' }
+      );
     }
 
     if (isAdmin) {
