@@ -32,8 +32,8 @@ const appointmentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pendiente', 'confirmada', 'en_curso', 'completada', 'cancelada'],
-    default: 'pendiente'
+    enum: ['solicitada', 'confirmada', 'rechazada', 'en_curso', 'completada', 'cancelada'],
+    default: 'solicitada'
   },
   teamsLink: {
     type: String,
@@ -46,6 +46,19 @@ const appointmentSchema = new mongoose.Schema({
   notes: {
     type: String,
     trim: true
+  },
+  rejectionReason: {
+    type: String,
+    trim: true,
+    default: null
+  },
+  confirmedAt: {
+    type: Date,
+    default: null
+  },
+  rejectedAt: {
+    type: Date,
+    default: null
   },
   reminderSent: {
     type: Boolean,

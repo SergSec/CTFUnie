@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Typography, Paper, Box, Chip, List, ListItem, ListItemText } from '@mui/material';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Typography, Paper, Box, Chip, List, ListItem, ListItemText, Alert, Button } from '@mui/material';
+import { CalendarToday as CalendarIcon } from '@mui/icons-material';
 import api from '../../services/api';
 
 const STATUS_MAP = {
@@ -14,6 +15,7 @@ const STATUS_MAP = {
 
 export default function CaseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [caseData, setCaseData] = useState(null);
 
   useEffect(() => {
@@ -40,13 +42,50 @@ export default function CaseDetail() {
       <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>{caseData.title}</Typography>
       <Chip label={statusInfo.label} color={statusInfo.color} sx={{ mb: 2 }} />
 
+      {['aceptado', 'pendiente_cita', 'en_proceso'].includes(caseData.status) && caseData.advisorId && (
+        <Alert severity="info" sx={{ mb: 3 }} action={
+          <Button 
+            color="inherit" 
+            size="small" 
+            startIcon={<CalendarIcon />}
+            onClick={() => navigate('/cliente/casos')}
+          >
+            Solicitar Cita
+          </Button>
+        }>
+          Tu caso ha sido aceptado. Puedes solicitar una cita con tu asesor para comenzar el proceso.
+        </Alert>
+      )}
+
       <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="subtitle1">Descripción</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>Descripción</Typography>
         <Typography variant="body2" color="text.secondary">{caseData.description}</Typography>
+        
+        {caseData.estimatedCost && caseData.estimatedCost > 0 && (
+          <Box sx={{ mt: 2, p: 2, bgcolor: 'success.light', borderRadius: 1 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'success.dark' }}>
+              Precio Estimado: €{caseData.estimatedCost}
+            </Typography>
+          </Box>
+        )}
+        
+        {caseData.advisorId && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>Asesor Asignado:</Typography>
+            <Typography variant="body2" color="text.secondary">
+              {caseData.advisorId.name || 'Sin asignar'}
+            </Typography>
+            {caseData.advisorId.email && (
+              <Typography variant="body2" color="text.secondary">
+                {caseData.advisorId.email}
+              </Typography>
+            )}
+          </Box>
+        )}
       </Paper>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6">Historial / Timeline</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Historial / Timeline</Typography>
         <List>
           <ListItem>
             <ListItemText primary={`Creado: ${new Date(caseData.createdAt).toLocaleString()}`} />

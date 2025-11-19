@@ -23,6 +23,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FolderIcon from '@mui/icons-material/Folder';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PaymentIcon from '@mui/icons-material/Payment';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -71,7 +72,8 @@ export default function Layout() {
     if (isAdmin || isAdvisor) {
       items.push(
         { text: 'Casos', icon: <FolderIcon />, path: '/admin/cases' },
-        { text: 'Revisar Casos', icon: <RateReviewIcon />, path: '/admin/cases/review' }
+        { text: 'Revisar Casos', icon: <RateReviewIcon />, path: '/admin/cases/review' },
+        { text: 'Solicitudes de Citas', icon: <EventAvailableIcon />, path: '/admin/appointments/requests' }
       );
     }
 

@@ -16,6 +16,7 @@ import Dashboard from './pages/Dashboard';
 import Cases from './pages/Cases';
 import CaseDetail from './pages/CaseDetail';
 import Appointments from './pages/Appointments';
+import AppointmentRequests from './pages/AppointmentRequests';
 import Payments from './pages/Payments';
 import Profile from './pages/Profile';
 import AdvisorManagement from './pages/AdvisorManagement';
@@ -186,8 +187,16 @@ function App() {
             <Route
               path="appointments"
               element={
-                <PrivateRoute allowedRoles={['admin']}>
+                <PrivateRoute allowedRoles={['admin', 'asesor']}>
                   <Appointments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="appointments/requests"
+              element={
+                <PrivateRoute allowedRoles={['admin', 'asesor']}>
+                  <AppointmentRequests />
                 </PrivateRoute>
               }
             />

@@ -67,15 +67,27 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
 // @access  Private (Admin/Asesor)
 router.get('/pending-review', protect, authorize('admin', 'asesor'), async (req, res) => {
   try {
+    const Consultation = require('../models/Consultation');
+    
     const cases = await Case.find({ status: 'pendiente_revision' })
       .populate('clientId', 'name email phone')
-      .populate('consultationId')
       .sort({ createdAt: -1 });
+
+    // Para cada caso, buscar la consulta relacionada
+    const casesWithConsultations = await Promise.all(
+      cases.map(async (caseItem) => {
+        const consultation = await Consultation.findOne({ caseId: caseItem._id });
+        return {
+          ...caseItem.toObject(),
+          consultation: consultation
+        };
+      })
+    );
 
     res.json({
       success: true,
-      count: cases.length,
-      data: cases
+      count: casesWithConsultations.length,
+      data: casesWithConsultations
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener casos pendientes', error: error.message });
@@ -318,13 +330,33 @@ router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res
       try {
         const clientEmail = caseData.clientId.email;
         const subject = 'Tu caso ha sido aceptado - Afyl';
-        const html = `<p>Hola ${caseData.clientId.name || ''},</p>
+        const html = `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #1a237e;">¡Tu caso ha sido aceptado!</h2>
+          <p>Hola ${caseData.clientId.name || ''},</p>
           <p>Nos complace informarte que tu caso <strong>${caseData.title}</strong> ha sido aceptado por nuestro equipo.</p>
-          <p>Asesor asignado: ${req.user.name || 'Asesor'}. Precio estimado: ${price}.</p>
-          <p>Ya puedes acceder al panel de cliente para ver más detalles y proponer/agendar la cita.</p>
-          <p>Saludos,<br/>Equipo Afyl</p>`;
+          
+          <div style="background-color: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0;">
+            <h3 style="color: #2e7d32; margin-top: 0;">Detalles del Caso</h3>
+            <p><strong>Asesor asignado:</strong> ${req.user.name || 'Asesor'}</p>
+            <p><strong>Precio estimado:</strong> €${price}</p>
+          </div>
+          
+          <p>Ya puedes acceder al panel de cliente para:</p>
+          <ul>
+            <li>Ver más detalles del caso</li>
+            <li>Proponer fechas para citas</li>
+            <li>Comunicarte con tu asesor</li>
+          </ul>
+          
+          <p style="margin-top: 30px;">Saludos,<br/>Equipo Afyl</p>
+        </div>`;
 
-        await sendEmail({ to: clientEmail, subject, html, text: `Tu caso ha sido aceptado. Precio estimado: ${price}` });
+        await sendEmail({ 
+          to: clientEmail, 
+          subject, 
+          html, 
+          text: `Tu caso ha sido aceptado. Asesor: ${req.user.name}. Precio estimado: €${price}` 
+        });
       } catch (err) {
         console.error('Error enviando email de aceptación de caso:', err.message);
       }

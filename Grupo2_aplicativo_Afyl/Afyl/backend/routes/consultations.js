@@ -234,6 +234,45 @@ router.get('/', protect, authorize('admin', 'asesor'), async (req, res) => {
   }
 });
 
+// @route   GET /api/consultations/download/:filename
+// @desc    Download file by filename
+// @access  Private/Admin/Asesor
+router.get('/download/:filename', protect, authorize('admin', 'asesor'), async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const filePath = path.join(__dirname, '../uploads/consultations', filename);
+
+    // Verificar que el archivo existe
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({
+        success: false,
+        message: 'Archivo no encontrado'
+      });
+    }
+
+    // Buscar la consulta que tiene este archivo para obtener el nombre original
+    const consultation = await Consultation.findOne({
+      'archivos.filename': filename
+    });
+
+    let originalName = filename;
+    if (consultation) {
+      const file = consultation.archivos.find(f => f.filename === filename);
+      if (file) {
+        originalName = file.originalName;
+      }
+    }
+
+    res.download(filePath, originalName);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al descargar archivo',
+      error: error.message
+    });
+  }
+});
+
 // @route   GET /api/consultations/:id
 // @desc    Get single consultation
 // @access  Private/Admin/Asesor

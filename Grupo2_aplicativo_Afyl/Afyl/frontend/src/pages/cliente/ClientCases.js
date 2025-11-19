@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -16,18 +17,38 @@ import {
   List,
   ListItem,
   ListItemText,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Alert,
 } from '@mui/material';
-import { AttachFile as AttachFileIcon } from '@mui/icons-material';
+import { 
+  AttachFile as AttachFileIcon,
+  CalendarToday as CalendarIcon,
+  VideoCall as VideoIcon,
+  Phone as PhoneIcon,
+  LocationOn as LocationIcon,
+} from '@mui/icons-material';
 import api from '../../services/api';
 
 export default function ClientCases() {
+  const navigate = useNavigate();
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCase, setSelectedCase] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openAppointmentDialog, setOpenAppointmentDialog] = useState(false);
   const [notes, setNotes] = useState('');
   const [appointmentDate, setAppointmentDate] = useState('');
   const [files, setFiles] = useState([]);
+  const [appointmentData, setAppointmentData] = useState({
+    scheduledDate: '',
+    duration: 30,
+    type: 'videollamada',
+    notes: '',
+  });
+  const [alert, setAlert] = useState({ type: '', message: '' });
 
   useEffect(() => {
     fetchCases();
@@ -85,11 +106,74 @@ export default function ClientCases() {
     }
   };
 
+  const handleOpenAppointmentDialog = (caseItem) => {
+    setSelectedCase(caseItem);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const minDate = tomorrow.toISOString().slice(0, 16);
+    setAppointmentData({
+      scheduledDate: minDate,
+      duration: 30,
+      type: 'videollamada',
+      notes: '',
+    });
+    setOpenAppointmentDialog(true);
+  };
+
+  const handleCloseAppointmentDialog = () => {
+    setOpenAppointmentDialog(false);
+    setSelectedCase(null);
+    setAppointmentData({
+      scheduledDate: '',
+      duration: 30,
+      type: 'videollamada',
+      notes: '',
+    });
+  };
+
+  const handleSubmitAppointment = async () => {
+    if (!selectedCase) return;
+    if (!appointmentData.scheduledDate) {
+      setAlert({ type: 'error', message: 'La fecha y hora son requeridas' });
+      return;
+    }
+
+    try {
+      await api.post('/appointments', {
+        caseId: selectedCase._id,
+        ...appointmentData,
+      });
+
+      setAlert({
+        type: 'success',
+        message: 'Solicitud de cita enviada. El asesor confirmará la disponibilidad.',
+      });
+      handleCloseAppointmentDialog();
+      fetchCases();
+    } catch (error) {
+      console.error('Error al crear cita:', error);
+      setAlert({
+        type: 'error',
+        message: error.response?.data?.message || 'Error al crear la solicitud de cita',
+      });
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 2 }}>
         Mis Casos
       </Typography>
+
+      {alert.message && (
+        <Alert
+          severity={alert.type}
+          sx={{ mb: 3 }}
+          onClose={() => setAlert({ type: '', message: '' })}
+        >
+          {alert.message}
+        </Alert>
+      )}
 
       {loading ? (
         <Typography>Cargando...</Typography>
@@ -103,9 +187,26 @@ export default function ClientCases() {
             <Grid item xs={12} md={6} key={c._id}>
               <Paper sx={{ p: 2 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Box>
+                  <Box sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ fontWeight: 600 }}>{c.title}</Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>{c.description}</Typography>
+                    
+                    {c.estimatedCost && c.estimatedCost > 0 && (
+                      <Box sx={{ mt: 1 }}>
+                        <Chip 
+                          label={`Precio: €${c.estimatedCost}`} 
+                          color="success" 
+                          variant="outlined"
+                          size="small"
+                        />
+                      </Box>
+                    )}
+                    
+                    {c.advisorId && (
+                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                        Asesor: {c.advisorId.name}
+                      </Typography>
+                    )}
                   </Box>
                   {
                     (() => {
@@ -123,11 +224,24 @@ export default function ClientCases() {
                   }
                 </Box>
 
-                <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-                  {['aceptado', 'pendiente_cita'].includes(c.status) && (
-                    <Button variant="contained" onClick={() => handleOpen(c)}>Solicitar / Agendar Cita</Button>
+                <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {['aceptado', 'pendiente_cita', 'en_proceso'].includes(c.status) && c.advisorId && (
+                    <Button 
+                      variant="contained" 
+                      startIcon={<CalendarIcon />}
+                      onClick={() => handleOpenAppointmentDialog(c)}
+                      size="small"
+                    >
+                      Solicitar Cita
+                    </Button>
                   )}
-                  <Button variant="outlined" href={`/cliente/casos/${c._id}`}>Ver Detalles</Button>
+                  <Button 
+                    variant="outlined" 
+                    href={`/cliente/casos/${c._id}`}
+                    size="small"
+                  >
+                    Ver Detalles
+                  </Button>
                 </Box>
               </Paper>
             </Grid>
@@ -176,6 +290,85 @@ export default function ClientCases() {
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
           <Button variant="contained" onClick={handleSubmitRequest}>Enviar Solicitud</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Dialog para solicitar cita directamente */}
+      <Dialog open={openAppointmentDialog} onClose={handleCloseAppointmentDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>Solicitar Cita para: {selectedCase?.title}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mt: 2 }}>
+            <Alert severity="info" sx={{ mb: 2 }}>
+              Tu solicitud será enviada al asesor <strong>{selectedCase?.advisorId?.name}</strong> quien confirmará la disponibilidad.
+            </Alert>
+
+            <TextField
+              fullWidth
+              label="Fecha y Hora"
+              type="datetime-local"
+              value={appointmentData.scheduledDate}
+              onChange={(e) => setAppointmentData({ ...appointmentData, scheduledDate: e.target.value })}
+              InputLabelProps={{ shrink: true }}
+              inputProps={{
+                min: new Date().toISOString().slice(0, 16),
+              }}
+              sx={{ mb: 2 }}
+              required
+            />
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Tipo de Cita</InputLabel>
+              <Select
+                value={appointmentData.type}
+                label="Tipo de Cita"
+                onChange={(e) => setAppointmentData({ ...appointmentData, type: e.target.value })}
+              >
+                <MenuItem value="videollamada">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <VideoIcon /> Videollamada
+                  </Box>
+                </MenuItem>
+                <MenuItem value="telefonica">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <PhoneIcon /> Telefónica
+                  </Box>
+                </MenuItem>
+                <MenuItem value="presencial">
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <LocationIcon /> Presencial
+                  </Box>
+                </MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Duración</InputLabel>
+              <Select
+                value={appointmentData.duration}
+                label="Duración"
+                onChange={(e) => setAppointmentData({ ...appointmentData, duration: e.target.value })}
+              >
+                <MenuItem value={30}>30 minutos</MenuItem>
+                <MenuItem value={60}>1 hora</MenuItem>
+                <MenuItem value={90}>1.5 horas</MenuItem>
+                <MenuItem value={120}>2 horas</MenuItem>
+              </Select>
+            </FormControl>
+
+            <TextField
+              fullWidth
+              label="Notas (opcional)"
+              multiline
+              rows={3}
+              value={appointmentData.notes}
+              onChange={(e) => setAppointmentData({ ...appointmentData, notes: e.target.value })}
+              placeholder="Agrega cualquier información adicional..."
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAppointmentDialog}>Cancelar</Button>
+          <Button variant="contained" onClick={handleSubmitAppointment}>Enviar Solicitud</Button>
         </DialogActions>
       </Dialog>
     </Container>
