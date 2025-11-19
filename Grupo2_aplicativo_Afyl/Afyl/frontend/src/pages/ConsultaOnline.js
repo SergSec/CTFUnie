@@ -193,7 +193,7 @@ export default function ConsultaOnline() {
           color="text.secondary"
           sx={{ mb: 6 }}
         >
-          Completa el formulario y agenda tu cita con nuestro equipo de expertos
+          Completa el formulario y nuestro equipo revisará tu caso. No incluyas fecha de cita aquí.
         </Typography>
 
         {submitStatus.message && (

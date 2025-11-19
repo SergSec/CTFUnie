@@ -7,6 +7,7 @@ const Consultation = require('../models/Consultation');
 const Case = require('../models/Case');
 const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
+const { sendEmail } = require('../utils/email');
 
 const router = express.Router();
 
@@ -158,6 +159,21 @@ router.post('/', upload.array('archivos', 5), async (req, res) => {
     tempUser.caseId = newCase._id;
     await tempUser.save();
 
+    // Enviar email con credenciales temporales (si se puede)
+    try {
+      const subject = 'Tus credenciales temporales - Afyl';
+      const html = `<p>Hola ${tempUser.name},</p>
+        <p>Hemos recibido tu consulta y hemos creado una cuenta temporal para que puedas seguir el estado de tu caso.</p>
+        <p><strong>Email:</strong> ${tempUser.email}<br/><strong>Contraseña temporal:</strong> ${temporaryPassword}</p>
+        <p>La cuenta expira el ${expiresAt.toLocaleString()}.</p>
+        <p>Si tu caso es aceptado por un asesor, tu cuenta será permanente y podrás acceder al panel de cliente.</p>
+        <p>Saludos,<br/>Equipo Afyl</p>`;
+
+      await sendEmail({ to: tempUser.email, subject, html, text: `Tu contraseña temporal: ${temporaryPassword}` });
+    } catch (err) {
+      console.error('Error enviando email de credenciales temporales:', err.message);
+    }
+
     res.status(201).json({
       success: true,
       message: 'Consulta enviada exitosamente. Recibirás un email con tus credenciales de acceso.',
@@ -243,6 +259,73 @@ router.get('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
       message: 'Error al obtener consulta',
       error: error.message
     });
+  }
+});
+
+// @route   POST /api/consultations/client
+// @desc    Create a follow-up consultation from an authenticated client (to request/confirm appointment)
+// @access  Private (cliente)
+router.post('/client', protect, authorize('cliente'), upload.array('archivos', 5), async (req, res) => {
+  try {
+    const { consulta, caseId, appointmentDate, servicio, telefono, notes } = req.body;
+
+    // Cliente debe ser usuario permanente (no temporal)
+    if (req.user.isTemporary) {
+      return res.status(403).json({ success: false, message: 'Cuenta temporal. No puede agendar citas hasta que su caso sea aceptado.' });
+    }
+
+    // Validaciones básicas
+    if (!consulta || (!caseId && !req.user.caseId)) {
+      return res.status(400).json({ success: false, message: 'Se requiere la descripción de la consulta y el caso asociado.' });
+    }
+
+    const targetCaseId = caseId || req.user.caseId;
+    const existingCase = await Case.findById(targetCaseId);
+    if (!existingCase) {
+      return res.status(404).json({ success: false, message: 'Caso no encontrado' });
+    }
+
+    // Crear entrada de consulta vinculada al caso y al usuario autenticado
+    const archivos = req.files ? req.files.map(file => ({
+      filename: file.filename,
+      originalName: file.originalname,
+      path: file.path,
+      mimetype: file.mimetype,
+      size: file.size
+    })) : [];
+
+    const newConsultation = await Consultation.create({
+      nombre: req.user.name,
+      email: req.user.email,
+      telefono: telefono || req.user.phone,
+      servicio: servicio || existingCase.serviceType || 'otro',
+      consulta,
+      archivos,
+      caseId: existingCase._id,
+      temporaryUserId: null,
+      status: 'pendiente',
+      assignedTo: existingCase.advisorId || null,
+      appointmentDate: appointmentDate || null,
+      notes: notes || ''
+    });
+
+    // Si se provee fecha de cita, marcar caso como pendiente de cita
+    if (appointmentDate) {
+      existingCase.status = 'pendiente_cita';
+      await existingCase.save();
+    }
+
+    res.status(201).json({ success: true, message: 'Solicitud enviada.', data: newConsultation });
+  } catch (error) {
+    // Limpiar archivos en caso de error
+    if (req.files) {
+      req.files.forEach(file => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
+    res.status(500).json({ success: false, message: 'Error al crear la consulta', error: error.message });
   }
 });
 

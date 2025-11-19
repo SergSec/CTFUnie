@@ -23,6 +23,7 @@ import ServiceManagement from './pages/ServiceManagement';
 import CaseReview from './pages/CaseReview';
 import ClientDashboard from './pages/cliente/ClientDashboard';
 import ClientCases from './pages/cliente/ClientCases';
+import ClientCaseDetail from './pages/cliente/CaseDetail';
 import ClientAppointments from './pages/cliente/ClientAppointments';
 import ClientForum from './pages/cliente/ClientForum';
 import ClientPayments from './pages/cliente/ClientPayments';
@@ -71,6 +72,14 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={['cliente']}>
                   <ClientCases />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="casos/:id"
+              element={
+                <PrivateRoute allowedRoles={['cliente']}>
+                  <ClientCaseDetail />
                 </PrivateRoute>
               }
             />

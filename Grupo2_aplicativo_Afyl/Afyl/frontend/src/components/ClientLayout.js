@@ -68,8 +68,8 @@ export default function ClientLayout() {
 
   const drawer = (
     <div>
-      <Toolbar sx={{ background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)', color: 'white' }}>
-        <GavelIcon sx={{ mr: 1 }} />
+      <Toolbar sx={{ background: 'linear-gradient(135deg, #1976d2 0%, #1565c0 100%)', color: 'white', display: 'flex', alignItems: 'center' }}>
+        <Box component="img" src="/logo-afyl.png" alt="Afyl" sx={{ height: 44, mr: 2 }} />
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 700 }}>
           Afyl Legal
         </Typography>

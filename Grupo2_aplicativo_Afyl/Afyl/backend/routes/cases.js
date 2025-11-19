@@ -3,6 +3,7 @@ const Case = require('../models/Case');
 const Document = require('../models/Document');
 const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
+const { sendEmail } = require('../utils/email');
 
 const router = express.Router();
 
@@ -160,9 +161,9 @@ router.get('/:id', protect, async (req, res) => {
 });
 
 // @route   PUT /api/cases/:id
-// @desc    Update case (admin only)
-// @access  Private (Admin)
-router.put('/:id', protect, authorize('admin'), async (req, res) => {
+// @desc    Update case (admin or asesor)
+// @access  Private (Admin/Asesor)
+router.put('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
   try {
     const caseData = await Case.findById(req.params.id);
 
@@ -194,6 +195,11 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
       }
     }
     if (advisorId !== undefined) {
+      if (req.user.role === 'asesor' && advisorId && advisorId !== req.user._id.toString()) {
+        // Asesores no pueden reasignar el caso a otro asesor desde este endpoint
+        return res.status(403).json({ message: 'No autorizado para reasignar el caso' });
+      }
+
       if (advisorId) {
         const advisor = await User.findById(advisorId);
         if (!advisor || advisor.role !== 'asesor') {
@@ -308,6 +314,21 @@ router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res
 
       await caseData.save();
 
+      // Enviar email al cliente notificando aceptación
+      try {
+        const clientEmail = caseData.clientId.email;
+        const subject = 'Tu caso ha sido aceptado - Afyl';
+        const html = `<p>Hola ${caseData.clientId.name || ''},</p>
+          <p>Nos complace informarte que tu caso <strong>${caseData.title}</strong> ha sido aceptado por nuestro equipo.</p>
+          <p>Asesor asignado: ${req.user.name || 'Asesor'}. Precio estimado: ${price}.</p>
+          <p>Ya puedes acceder al panel de cliente para ver más detalles y proponer/agendar la cita.</p>
+          <p>Saludos,<br/>Equipo Afyl</p>`;
+
+        await sendEmail({ to: clientEmail, subject, html, text: `Tu caso ha sido aceptado. Precio estimado: ${price}` });
+      } catch (err) {
+        console.error('Error enviando email de aceptación de caso:', err.message);
+      }
+
       res.json({
         success: true,
         message: 'Caso aceptado exitosamente',
@@ -338,6 +359,21 @@ router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res
       );
 
       await caseData.save();
+
+      // Enviar email al cliente notificando rechazo
+      try {
+        const clientEmail = caseData.clientId.email;
+        const subject = 'Tu caso ha sido rechazado - Afyl';
+        const html = `<p>Hola ${caseData.clientId.name || ''},</p>
+          <p>Lamentamos informarte que tu caso <strong>${caseData.title}</strong> ha sido rechazado.</p>
+          <p>Motivo: ${caseData.rejectionReason || 'No especificado'}.</p>
+          <p>Tu cuenta temporal será eliminada en 48 horas si no se realiza ninguna acción.</p>
+          <p>Saludos,<br/>Equipo Afyl</p>`;
+
+        await sendEmail({ to: clientEmail, subject, html, text: `Tu caso ha sido rechazado. Motivo: ${caseData.rejectionReason || 'No especificado'}` });
+      } catch (err) {
+        console.error('Error enviando email de rechazo de caso:', err.message);
+      }
 
       res.json({
         success: true,
