@@ -85,17 +85,18 @@ export default function PublicLayout() {
       >
         <Container maxWidth="lg">
           <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
-            <Typography
-              variant="h5"
-              component="div"
+            <Box
+              component="img"
+              src="/logo-afyl.png"
+              alt="Afyl"
               sx={{
-                fontWeight: 700,
+                height: 50,
+                width: 'auto',
+                objectFit: 'contain',
                 cursor: 'pointer',
               }}
               onClick={() => navigate('/')}
-            >
-              AFYL
-            </Typography>
+            />
 
             {isMobile ? (
               <IconButton

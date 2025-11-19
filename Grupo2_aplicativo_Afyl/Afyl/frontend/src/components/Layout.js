@@ -98,27 +98,19 @@ export default function Layout() {
           color: 'white',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'center',
           gap: 2,
         }}
       >
-        <Avatar
-          sx={{
-            bgcolor: 'rgba(255, 255, 255, 0.2)',
-            width: 48,
-            height: 48,
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          <GavelIcon />
-        </Avatar>
-        <Box>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
-            Afyl Legal
-          </Typography>
-          <Typography variant="caption" sx={{ opacity: 0.8 }}>
-            Asesoría Profesional
-          </Typography>
-        </Box>
+        <img 
+          src="/logo-afyl.png" 
+          alt="Afyl Logo" 
+          style={{ 
+            height: '60px',
+            width: 'auto',
+            objectFit: 'contain'
+          }} 
+        />
       </Box>
       <Divider />
       <List sx={{ flexGrow: 1, pt: 2 }}>

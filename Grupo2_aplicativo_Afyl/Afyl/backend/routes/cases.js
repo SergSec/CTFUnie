@@ -269,6 +269,95 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
   }
 });
 
+// @route   DELETE /api/cases/:id/complete
+// @desc    Delete case completely including consultations, documents, appointments and user (asesor/admin)
+// @access  Private (Admin/Asesor)
+router.delete('/:id/complete', protect, authorize('admin', 'asesor'), async (req, res) => {
+  try {
+    const caseData = await Case.findById(req.params.id).populate('clientId');
+
+    if (!caseData) {
+      return res.status(404).json({ message: 'Caso no encontrado' });
+    }
+
+    // Verificar que el asesor sea el asignado al caso
+    if (req.user.role === 'asesor' && caseData.advisorId && caseData.advisorId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'No autorizado. Este caso está asignado a otro asesor.' });
+    }
+
+    const clientId = caseData.clientId._id;
+    const caseId = caseData._id;
+
+    // 1. Eliminar consultas relacionadas
+    const Consultation = require('../models/Consultation');
+    const consultations = await Consultation.find({ caseId });
+    
+    // Eliminar archivos de las consultas
+    const fs = require('fs');
+    const path = require('path');
+    for (const consultation of consultations) {
+      if (consultation.archivos && consultation.archivos.length > 0) {
+        for (const archivo of consultation.archivos) {
+          const filePath = path.join(__dirname, '..', archivo);
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+        }
+      }
+    }
+    await Consultation.deleteMany({ caseId });
+
+    // 2. Eliminar documentos relacionados
+    const documents = await Document.find({ caseId });
+    for (const doc of documents) {
+      if (doc.filePath) {
+        const filePath = path.join(__dirname, '..', doc.filePath);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+    }
+    await Document.deleteMany({ caseId });
+
+    // 3. Eliminar citas relacionadas
+    const Appointment = require('../models/Appointment');
+    await Appointment.deleteMany({ caseId });
+
+    // 4. Verificar si el cliente tiene otros casos
+    const otherCases = await Case.find({ 
+      clientId, 
+      _id: { $ne: caseId } 
+    });
+
+    // 5. Eliminar el caso
+    await caseData.deleteOne();
+
+    // 6. Si el cliente no tiene más casos, eliminar el usuario
+    if (otherCases.length === 0) {
+      await User.findByIdAndDelete(clientId);
+      
+      res.json({
+        success: true,
+        message: 'Caso, consultas, documentos, citas y usuario eliminados completamente',
+        deletedUser: true
+      });
+    } else {
+      res.json({
+        success: true,
+        message: 'Caso, consultas, documentos y citas eliminados. El usuario tiene otros casos activos.',
+        deletedUser: false
+      });
+    }
+
+  } catch (error) {
+    console.error('Error al eliminar caso completamente:', error);
+    res.status(500).json({ 
+      message: 'Error al eliminar caso completamente', 
+      error: error.message 
+    });
+  }
+});
+
 // @route   PUT /api/cases/:id/review
 // @desc    Accept or reject a case (asesor/admin)
 // @access  Private (Admin/Asesor)
