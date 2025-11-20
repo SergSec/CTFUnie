@@ -67,13 +67,14 @@ Afyl/
 │   ├── routes/                      # Rutas de la API
 │   ├── middleware/                  # Middleware (auth, etc.)
 │   ├── scripts/                     # Comandos
-│   ├── uploads/                     # Archivos subidos
-│   ├── .gitignore                   # Bloquea subida de archivos con datos privados
+│   ├── tests/                       # Tests
+│   ├── scripts/                     # Comandosutils
+│   ├── utils/                       # Utilidades
+│   ├── .env                         # Credenciales
 │   ├── .env.example                 # Credenciales
 │   ├── package.json                 # Version, dependencias...
 │   ├── package-lock.json            # Detalles package
 │   ├── update-env-password.js       # Scrypt cambio contraseña MongoDB
-│   ├── CONFIGURACION_ATLAS.md       # Configuración de MongoDB
 │   └── server.js                    # Servidor principal
 ├── frontend/
 │   ├── src/
@@ -83,14 +84,14 @@ Afyl/
 │   │   ├── theme/                   # Contextos (Auth, etc.)
 │   │   └── services/                # Servicios API
 │   └── public/
-├── CHECKLIST_CALENDLY.md            # Comprobar funcionamiento Calendly 
-├── CORRECCIONES_APLICADAS.md        # Servicios API
-├── GUIA_COMPLETA_CALENDLY.md        # Configuración de Calendly
-├── INICIO_RAPIDO.md                 # Inicio Rápido - Plataforma
-├── MONGODB_SETUP.md                 # Configuración de MongoDB
-├── QUE_PASA_DESPUES_DE_AGENDAR.md   # ??
-├── RESUMEN_CALENDLY.md              # Resumen de Configuración de Calendly 
-├── SOLUCION_NOMBRE_CALENDLY.md      # ??
+│   ├── .env                         # Credenciales
+│   ├── .env.example                 # Credenciales
+│   ├── package.json                 # Version, dependencias...
+│   ├── package-lock.json            # Detalles package
+│   ├── .gitignore                   # Bloquea subida de archivos con datos privados
+├── .gitignore                       # Bloquea subida de archivos con datos privados
+├── CAMBIOS_LOGO_ELIMINACION.md      # Cambios 
+├── NUEVAS_FUNCIONALIDADES.md        # Nuevas funcionalidades
 ├── package.json                     # Version, dependencias...
 ├── package-lock.json                # Detalles package
 └── README.md                       
