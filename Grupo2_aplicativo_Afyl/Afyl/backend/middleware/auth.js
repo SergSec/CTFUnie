@@ -14,6 +14,11 @@ exports.protect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
     }
 
+    // Also allow token from cookie named 'token' for persistent sessions
+    if (!token && req.cookies && req.cookies.token) {
+      token = req.cookies.token;
+    }
+
     if (!token) {
       return res.status(401).json({ message: 'No autorizado, token no proporcionado' });
     }
@@ -28,6 +33,22 @@ exports.protect = async (req, res, next) => {
 
       if (!req.user.isActive) {
         return res.status(401).json({ message: 'Usuario inactivo' });
+      }
+
+      // Store decoded token info for additional validation
+      req.tokenData = {
+        role: decoded.role,
+        loginSource: decoded.loginSource,
+        timestamp: decoded.timestamp
+      };
+
+      // Validate that token role matches current user role (prevents role escalation)
+      if (decoded.role && decoded.role !== req.user.role) {
+        console.log(`Token role mismatch: Token has role "${decoded.role}" but user has role "${req.user.role}"`);
+        return res.status(401).json({ 
+          message: 'Token inválido - inconsistencia de rol detectada',
+          requireReauth: true
+        });
       }
 
       next();

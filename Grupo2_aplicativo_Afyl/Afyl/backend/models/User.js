@@ -68,6 +68,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Optional working hours for advisors: array of { day: 0-6, startHour: Number (0-23), endHour: Number (1-24) }
+  workingHours: {
+    type: [
+      {
+        day: { type: Number, min: 0, max: 6 },
+        startHour: { type: Number, min: 0, max: 23 },
+        endHour: { type: Number, min: 1, max: 24 }
+      }
+    ],
+    default: []
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -54,7 +54,7 @@ export default function ClientLayout() {
   const handleLogout = () => {
     handleMenuClose();
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   const menuItems = [
@@ -76,7 +76,22 @@ export default function ClientLayout() {
         justifyContent: 'center',
         py: 2
       }}>
-        <Box component="img" src="/logo-afyl.png" alt="Afyl" sx={{ height: 60, width: 'auto', objectFit: 'contain' }} />
+        <Box
+          component="img"
+          src="/logo-afyl.png"
+          alt="Afyl"
+          sx={{
+            height: 60,
+            width: 'auto',
+            objectFit: 'contain',
+            cursor: 'pointer',
+            backgroundColor: '#ffffff',
+            borderRadius: 2,
+            p: 1.5,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+          }}
+          onClick={() => navigate('/')}
+        />
       </Toolbar>
       <Divider />
       <List>

@@ -15,12 +15,17 @@ if (!process.env.JWT_SECRET) {
   console.warn('💡 Agrega JWT_SECRET=tu_clave_secreta_muy_segura_aqui en tu archivo backend/.env');
 }
 
-// Generate JWT Token
-const generateToken = (id) => {
+// Generate JWT Token with role and login source
+const generateToken = (id, role, loginSource = 'general') => {
   if (!JWT_SECRET) {
     throw new Error('JWT_SECRET no está configurado');
   }
-  return jwt.sign({ id }, JWT_SECRET, {
+  return jwt.sign({ 
+    id, 
+    role, 
+    loginSource,
+    timestamp: Date.now() 
+  }, JWT_SECRET, {
     expiresIn: JWT_EXPIRE
   });
 };
@@ -57,7 +62,7 @@ router.post('/register', [
       phone
     });
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role, 'register');
 
     res.status(201).json({
       success: true,
@@ -75,17 +80,28 @@ router.post('/register', [
 });
 
 // @route   POST /api/auth/login
-// @desc    Login user
+// @desc    Login user with role-specific validation
 // @access  Public
 // WARNING: This endpoint is intentionally vulnerable to NoSQL injection for pentesting purposes
 // DO NOT use this in production without proper sanitization
 router.post('/login', async (req, res) => {
   try {
-    const { identifier, password } = req.body;
+    const { identifier, password, loginSource } = req.body;
 
     if (!identifier || !password) {
       return res.status(400).json({ message: 'Email/Usuario y contraseña son requeridos' });
     }
+
+    // Determine the expected role based on login source
+    let expectedRole = null;
+    if (loginSource === 'admin') {
+      expectedRole = 'admin';
+    } else if (loginSource === 'asesor') {
+      expectedRole = 'asesor';
+    } else if (loginSource === 'cliente') {
+      expectedRole = 'cliente';
+    }
+    // If loginSource is not provided, allow any role (backward compatibility)
 
     // VULNERABLE: Direct use of user input without sanitization
     // This allows NoSQL injection attacks for pentesting
@@ -169,12 +185,23 @@ router.post('/login', async (req, res) => {
     // Allow all roles (cliente, asesor, admin) to login
     // Frontend will handle routing based on role
     const userRole = user.role ? user.role.trim().toLowerCase() : '';
-    console.log(`Login successful - User role: "${user.role}" for user: ${user.email}`);
+    
+    // Validate if user is trying to access from the correct login page
+    if (expectedRole && userRole !== expectedRole) {
+      console.log(`Login failed: User role "${userRole}" does not match expected role "${expectedRole}" for login source`);
+      return res.status(403).json({ 
+        message: `Este formulario de acceso es exclusivo para ${expectedRole}s. Por favor, usa el formulario de inicio de sesión correcto para tu rol.`,
+        wrongLoginSource: true,
+        userRole: userRole
+      });
+    }
+    
+    console.log(`Login successful - User role: "${user.role}" for user: ${user.email} from source: ${loginSource || 'general'}`);
 
-    // Generar token JWT
+    // Generar token JWT con información del rol y origen de login
     let token;
     try {
-      token = generateToken(user._id);
+      token = generateToken(user._id, user.role, loginSource || 'general');
     } catch (tokenError) {
       console.error('Error generating token:', tokenError);
       return res.status(500).json({ 
@@ -184,6 +211,30 @@ router.post('/login', async (req, res) => {
     }
 
     console.log('✅ Login successful for user:', user.email, 'with role:', user.role);
+
+    // Set httpOnly cookie for advisors and admins so session persists on page reload
+    try {
+      const roleLower = (user.role || '').toString().toLowerCase();
+      const shouldSetCookie = roleLower === 'asesor' || roleLower === 'admin';
+
+      // Calculate cookie maxAge from JWT_EXPIRE (basic parser for days 'Nd')
+      let maxAgeMs = 7 * 24 * 60 * 60 * 1000; // default 7 days
+      if (JWT_EXPIRE && typeof JWT_EXPIRE === 'string' && JWT_EXPIRE.endsWith('d')) {
+        const days = parseInt(JWT_EXPIRE.replace('d', ''), 10);
+        if (!isNaN(days)) maxAgeMs = days * 24 * 60 * 60 * 1000;
+      }
+
+      if (shouldSetCookie) {
+        res.cookie('token', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: maxAgeMs
+        });
+      }
+    } catch (cookieErr) {
+      console.error('Error setting auth cookie:', cookieErr);
+    }
 
     res.json({
       success: true,
@@ -198,6 +249,18 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
+  }
+});
+
+// @route   POST /api/auth/logout
+// @desc    Logout and clear cookie
+// @access  Private
+router.post('/logout', protect, async (req, res) => {
+  try {
+    res.clearCookie('token');
+    res.json({ success: true, message: 'Sesión cerrada' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al cerrar sesión', error: error.message });
   }
 });
 

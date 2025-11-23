@@ -11,6 +11,8 @@ import Home from './pages/Home';
 import ConsultaOnline from './pages/ConsultaOnline';
 import Contacto from './pages/Contacto';
 import Login from './pages/Login';
+import AdminLogin from './pages/AdminLogin';
+import AsesorLogin from './pages/AsesorLogin';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Cases from './pages/Cases';
@@ -21,7 +23,7 @@ import Payments from './pages/Payments';
 import Profile from './pages/Profile';
 import AdvisorManagement from './pages/AdvisorManagement';
 import ServiceManagement from './pages/ServiceManagement';
-import CaseReview from './pages/CaseReview';
+import AdminWallets from './pages/AdminWallets';
 import ClientDashboard from './pages/cliente/ClientDashboard';
 import ClientCases from './pages/cliente/ClientCases';
 import ClientCaseDetail from './pages/cliente/CaseDetail';
@@ -45,10 +47,11 @@ function App() {
             <Route path="contacto" element={<Contacto />} />
           </Route>
 
-          {/* Rutas de autenticación */}
+          {/* Rutas de autenticación - cada rol tiene su propio login */}
           <Route path="/login" element={<Login />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/asesor/login" element={<AsesorLogin />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin/login" element={<Login />} />
           
           {/* Rutas privadas del portal de clientes */}
           <Route
@@ -153,14 +156,6 @@ function App() {
               }
             />
             <Route
-              path="cases/review"
-              element={
-                <PrivateRoute allowedRoles={['admin', 'asesor']}>
-                  <CaseReview />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="cases/:id"
               element={
                 <PrivateRoute allowedRoles={['admin', 'asesor']}>
@@ -205,6 +200,14 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={['admin']}>
                   <Payments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="wallets"
+              element={
+                <PrivateRoute allowedRoles={['admin']}>
+                  <AdminWallets />
                 </PrivateRoute>
               }
             />

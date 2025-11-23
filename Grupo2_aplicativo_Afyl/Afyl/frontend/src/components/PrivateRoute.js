@@ -19,7 +19,23 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" />;
+    // Redirect to appropriate login page based on required role
+    if (allowedRoles && allowedRoles.length > 0) {
+      // If only admin is allowed, redirect to admin login
+      if (allowedRoles.includes('admin') && !allowedRoles.includes('cliente')) {
+        return <Navigate to="/admin/login" />;
+      }
+      // If only asesor or both admin and asesor are allowed
+      if (allowedRoles.includes('asesor') && !allowedRoles.includes('cliente')) {
+        return <Navigate to="/asesor/login" />;
+      }
+      // If cliente is in allowed roles, redirect to cliente login
+      if (allowedRoles.includes('cliente')) {
+        return <Navigate to="/login" />;
+      }
+    }
+    // Default to cliente login
+    return <Navigate to="/login" />;
   }
 
   if (allowedRoles && user?.role && !allowedRoles.includes(user.role)) {
@@ -85,8 +101,46 @@ const PrivateRoute = ({ children, allowedRoles }) => {
         </Box>
       );
     }
-    // Para otros casos, redirigir
-    return <Navigate to="/" replace />;
+      // Para otros casos, mostrar mensaje de acceso restringido en lugar de redirigir silenciosamente
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '60vh',
+            p: 3,
+          }}
+        >
+          <Paper
+            elevation={3}
+            sx={{
+              p: 4,
+              maxWidth: 600,
+              textAlign: 'center',
+              borderRadius: 3,
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}> 
+              <LockIcon sx={{ fontSize: 64, color: 'error.main' }} />
+            </Box>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, mb: 2 }}>
+              Acceso Restringido
+            </Typography>
+            <Alert severity="warning" sx={{ mb: 3, textAlign: 'left' }}>
+              <Typography variant="body1" sx={{ mb: 1 }}>
+                <strong>No tienes permisos para acceder a esta sección.</strong>
+              </Typography>
+              <Typography variant="body2">
+                Si crees que esto es un error, contacta con un administrador o revisa tu rol.
+              </Typography>
+            </Alert>
+            <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={() => window.history.back()}>
+              Volver
+            </Button>
+          </Paper>
+        </Box>
+      );
   }
 
   return children;

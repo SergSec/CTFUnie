@@ -27,10 +27,13 @@ import {
   FormControl,
   InputLabel,
   Stack,
+  DialogContentText,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 
@@ -56,6 +59,7 @@ export default function Cases() {
   const queryClient = useQueryClient();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const handleCloseCreateDialog = () => {
     setCreateDialogOpen(false);
     setCaseFormError('');
@@ -68,10 +72,26 @@ export default function Cases() {
     setAssignFormError('');
   };
 
+  const handleCloseReviewDialog = () => {
+    setReviewDialogOpen(false);
+    setCaseToReview(null);
+    setReviewAction('accept');
+    setReviewPrice('');
+    setReviewReason('');
+    setReviewError('');
+    setReviewLoading(false);
+  };
+
   const [caseFormError, setCaseFormError] = useState('');
   const [assignFormError, setAssignFormError] = useState('');
+  const [reviewError, setReviewError] = useState('');
   const [selectedCase, setSelectedCase] = useState(null);
+  const [caseToReview, setCaseToReview] = useState(null);
   const [assignAdvisorId, setAssignAdvisorId] = useState('');
+  const [reviewAction, setReviewAction] = useState('accept');
+  const [reviewPrice, setReviewPrice] = useState('');
+  const [reviewReason, setReviewReason] = useState('');
+  const [reviewLoading, setReviewLoading] = useState(false);
   const [caseForm, setCaseForm] = useState({
     title: '',
     description: '',
@@ -182,6 +202,43 @@ export default function Cases() {
       caseId: selectedCase._id,
       advisorId: assignAdvisorId || null,
     });
+  };
+
+  const handleOpenReviewDialog = (caseItem, action) => {
+    setCaseToReview(caseItem);
+    setReviewAction(action);
+    setReviewPrice(action === 'accept' ? caseItem.estimatedCost || '' : '');
+    setReviewReason('');
+    setReviewError('');
+    setReviewDialogOpen(true);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!caseToReview) return;
+
+    if (reviewAction === 'accept' && (!reviewPrice || parseFloat(reviewPrice) <= 0)) {
+      setReviewError('Debes indicar un precio estimado válido.');
+      return;
+    }
+
+    if (reviewAction === 'reject' && !reviewReason.trim()) {
+      setReviewError('Debes indicar el motivo del rechazo.');
+      return;
+    }
+
+    try {
+      setReviewLoading(true);
+      await api.put(`/cases/${caseToReview._id}/review`, {
+        action: reviewAction,
+        price: reviewAction === 'accept' ? parseFloat(reviewPrice) : null,
+        rejectionReason: reviewAction === 'reject' ? reviewReason : null,
+      });
+      queryClient.invalidateQueries({ queryKey: ['cases'] });
+      handleCloseReviewDialog();
+    } catch (err) {
+      setReviewLoading(false);
+      setReviewError(err.response?.data?.message || 'Error al procesar la revisión');
+    }
   };
 
   // Returns condicionales después de todos los hooks
@@ -303,6 +360,34 @@ export default function Cases() {
                         <AssignmentTurnedInIcon />
                       </IconButton>
                     </Tooltip>
+                  )}
+                  {(isAdmin || isAdvisor) && caseItem.status === 'pendiente_revision' && (
+                    <>
+                      <Tooltip title="Aceptar caso">
+                        <IconButton
+                          size="small"
+                          color="success"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenReviewDialog(caseItem, 'accept');
+                          }}
+                        >
+                          <CheckCircleIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Rechazar caso">
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenReviewDialog(caseItem, 'reject');
+                          }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </>
                   )}
                 </TableCell>
               </TableRow>
@@ -469,6 +554,57 @@ export default function Cases() {
             disabled={assignAdvisor.isLoading}
           >
             {assignAdvisor.isLoading ? 'Actualizando...' : 'Guardar cambios'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Revisar caso */}
+      <Dialog open={reviewDialogOpen} onClose={handleCloseReviewDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>{reviewAction === 'accept' ? 'Aceptar caso' : 'Rechazar caso'}</DialogTitle>
+        <DialogContent dividers>
+          {caseToReview && (
+            <>
+              <DialogContentText sx={{ mb: 2 }}>
+                {caseToReview.title} — {caseToReview.clientId?.name || 'Cliente sin nombre'}
+              </DialogContentText>
+              {reviewError && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {reviewError}
+                </Alert>
+              )}
+              {reviewAction === 'accept' ? (
+                <TextField
+                  fullWidth
+                  label="Precio estimado (€)"
+                  type="number"
+                  value={reviewPrice}
+                  onChange={(e) => setReviewPrice(e.target.value)}
+                  required
+                />
+              ) : (
+                <TextField
+                  fullWidth
+                  label="Motivo del rechazo"
+                  multiline
+                  rows={4}
+                  value={reviewReason}
+                  onChange={(e) => setReviewReason(e.target.value)}
+                  required
+                />
+              )}
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseReviewDialog} disabled={reviewLoading}>
+            Cancelar
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleSubmitReview}
+            disabled={reviewLoading}
+          >
+            {reviewLoading ? 'Guardando...' : 'Confirmar'}
           </Button>
         </DialogActions>
       </Dialog>

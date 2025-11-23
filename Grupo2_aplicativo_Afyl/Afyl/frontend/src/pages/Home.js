@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -10,39 +10,15 @@ import {
   CardContent,
   Paper,
   Chip,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
 import {
   Security as SecurityIcon,
   Speed as SpeedIcon,
   AttachMoney as AttachMoneyIcon,
 } from '@mui/icons-material';
-
-const services = [
-  {
-    title: 'Laboral',
-    description: 'Despidos, contratos, indemnizaciones, incapacidades…',
-  },
-  {
-    title: 'Mercantil / Empresarial',
-    description: 'Contratos, constitución de empresas, cambios societarios…',
-  },
-  {
-    title: 'Familia',
-    description: 'Separaciones, herencias, custodias, pensiones de alimentos…',
-  },
-  {
-    title: 'Protección de datos',
-    description: 'Páginas web, servicios profesionales, venta electrónica.',
-  },
-  {
-    title: 'Seguros / Contratos / Inmobiliario',
-    description: 'Redacción y revisión de contratos. Reclamaciones de consumo y contra seguros.',
-  },
-  {
-    title: 'Extranjería',
-    description: 'Certificado UE, Visa nómada digital, permisos de residencia, residencia no lucrativa…',
-  },
-];
+import api from '../services/api';
 
 const features = [
   {
@@ -89,9 +65,41 @@ const steps = [
 
 export default function Home() {
   const navigate = useNavigate();
+  const [services, setServices] = useState([]);
+  const [loadingServices, setLoadingServices] = useState(true);
+  const [servicesError, setServicesError] = useState('');
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const response = await api.get('/services?format=tree');
+        setServices(response.data.data || []);
+        setServicesError('');
+      } catch (error) {
+        console.error('Error al cargar servicios públicos:', error);
+        setServicesError('No pudimos cargar las áreas de práctica. Inténtalo de nuevo más tarde.');
+      } finally {
+        setLoadingServices(false);
+      }
+    };
+
+    loadServices();
+  }, []);
 
   return (
     <Box sx={{ bgcolor: 'white' }}>
+      <Box
+        sx={{
+          height: 12,
+          background: 'linear-gradient(90deg, #1a237e 0%, #3949ab 40%, #64b5f6 100%)',
+        }}
+      />
+      <Box
+        sx={{
+          height: 6,
+          background: 'linear-gradient(90deg, #64b5f6 0%, #e1f5fe 100%)',
+        }}
+      />
       {/* Hero Section */}
       <Box
         sx={{
@@ -235,6 +243,10 @@ export default function Home() {
                     borderColor: 'divider',
                     borderRadius: 3,
                     position: 'relative',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
                   <Box
@@ -286,37 +298,57 @@ export default function Home() {
           color="text.secondary"
           sx={{ mb: 6 }}
         >
-          Somos especialistas en diferentes áreas del derecho
+          Nuestro equipo se adapta a las necesidades que configuras en el panel de administración
         </Typography>
-        <Grid container spacing={3}>
-          {services.map((service, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'all 0.3s ease',
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  '&:hover': {
-                    transform: 'translateY(-8px)',
-                    boxShadow: '0px 12px 40px rgba(26, 35, 126, 0.15)',
-                  },
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                    {service.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {service.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+
+        {loadingServices ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <CircularProgress />
+          </Box>
+        ) : servicesError ? (
+          <Alert severity="warning">{servicesError}</Alert>
+        ) : services.length === 0 ? (
+          <Alert severity="info">Aún no hay áreas de práctica configuradas.</Alert>
+        ) : (
+          <Grid container spacing={3}>
+            {services.map((service) => (
+              <Grid item xs={12} sm={6} md={4} key={service.id}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    textAlign: 'center',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: '0px 12px 40px rgba(26, 35, 126, 0.15)',
+                    },
+                  }}
+                >
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                      {service.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {service.description}
+                    </Typography>
+                    {service.children?.length > 0 && (
+                      <Chip
+                        label={`${service.children.length} tipos de conflicto`}
+                        size="small"
+                        color="primary"
+                        sx={{ mt: 2 }}
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Container>
 
       {/* CTA Section */}

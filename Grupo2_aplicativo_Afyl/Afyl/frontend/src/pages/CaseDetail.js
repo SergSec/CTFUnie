@@ -15,6 +15,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -31,6 +34,15 @@ export default function CaseDetail() {
   
   const { data, isLoading, error } = useQuery(['case', id], () =>
     api.get(`/cases/${id}`).then((res) => res.data)
+  );
+
+  const {
+    data: logsData,
+    isLoading: logsLoading,
+    error: logsError,
+  } = useQuery(['caseLogs', id], () =>
+    api.get(`/cases/${id}/logs`).then((res) => res.data.logs),
+    { enabled: Boolean(id) }
   );
 
   const handleDeleteComplete = async () => {
@@ -56,6 +68,18 @@ export default function CaseDetail() {
       setDeleting(false);
       setOpenDeleteDialog(false);
     }
+  };
+
+  const renderLogDetails = (details) => {
+    if (!details || typeof details !== 'object') {
+      return null;
+    }
+    return Object.entries(details).map(([key, value]) => (
+      <Typography key={key} variant="caption" color="text.secondary" display="block">
+        <strong>{key}:</strong>{' '}
+        {typeof value === 'object' ? JSON.stringify(value) : value?.toString?.() || value}
+      </Typography>
+    ));
   };
 
   if (isLoading) {
@@ -142,6 +166,48 @@ export default function CaseDetail() {
             <strong>Prioridad:</strong> {caseData?.priority}
           </Typography>
         </Box>
+      </Paper>
+
+      <Paper sx={{ p: 4, mt: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Historial del caso
+        </Typography>
+        {logsLoading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+            <CircularProgress size={28} />
+          </Box>
+        ) : logsError ? (
+          <Alert severity="warning">No se pudieron cargar los registros.</Alert>
+        ) : logsData && logsData.length > 0 ? (
+          <List>
+            {logsData.map((log) => (
+              <ListItem key={log._id} alignItems="flex-start" divider>
+                <ListItemText
+                  primary={
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                        {log.action.replace(/_/g, ' ')}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {new Date(log.createdAt).toLocaleString('es-ES')}
+                      </Typography>
+                    </Box>
+                  }
+                  secondary={
+                    <Box sx={{ mt: 1 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {log.userId ? `${log.userId.name} (${log.userId.role})` : 'Sistema'}
+                      </Typography>
+                      {renderLogDetails(log.details)}
+                    </Box>
+                  }
+                />
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Alert severity="info">Aún no hay registros para este caso.</Alert>
+        )}
       </Paper>
 
       {/* Dialog de confirmación para eliminación completa */}

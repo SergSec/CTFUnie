@@ -25,13 +25,13 @@ import FolderIcon from '@mui/icons-material/Folder';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PaymentIcon from '@mui/icons-material/Payment';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import GavelIcon from '@mui/icons-material/Gavel';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
-import RateReviewIcon from '@mui/icons-material/RateReview';
 import { useAuth } from '../contexts/AuthContext';
 import Chatbot from './Chatbot';
 
@@ -60,7 +60,14 @@ export default function Layout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/admin/login');
+    // Redirect to appropriate login based on user role
+    if (user?.role === 'admin') {
+      navigate('/admin/login');
+    } else if (user?.role === 'asesor') {
+      navigate('/asesor/login');
+    } else {
+      navigate('/login');
+    }
     handleMenuClose();
   };
 
@@ -72,7 +79,6 @@ export default function Layout() {
     if (isAdmin || isAdvisor) {
       items.push(
         { text: 'Casos', icon: <FolderIcon />, path: '/admin/cases' },
-        { text: 'Revisar Casos', icon: <RateReviewIcon />, path: '/admin/cases/review' },
         { text: 'Solicitudes de Citas', icon: <EventAvailableIcon />, path: '/admin/appointments/requests' }
       );
     }
@@ -82,7 +88,8 @@ export default function Layout() {
         { text: 'Asesores', icon: <SupportAgentIcon />, path: '/admin/advisors' },
         { text: 'Servicios', icon: <MiscellaneousServicesIcon />, path: '/admin/services' },
         { text: 'Citas', icon: <CalendarTodayIcon />, path: '/admin/appointments' },
-        { text: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' }
+        { text: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' },
+        { text: 'Recargas', icon: <AccountBalanceWalletIcon />, path: '/admin/wallets' }
       );
     }
 
@@ -102,15 +109,7 @@ export default function Layout() {
           gap: 2,
         }}
       >
-        <img 
-          src="/logo-afyl.png" 
-          alt="Afyl Logo" 
-          style={{ 
-            height: '60px',
-            width: 'auto',
-            objectFit: 'contain'
-          }} 
-        />
+        {/* Logo removed from admin layout per request */}
       </Box>
       <Divider />
       <List sx={{ flexGrow: 1, pt: 2 }}>
@@ -121,7 +120,23 @@ export default function Layout() {
             <ListItem key={item.text} disablePadding sx={{ mb: 0.5, px: 2 }}>
               <ListItemButton
                 selected={isSelected}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  // Ensure we navigate using an absolute path to avoid nested route resolution issues
+                  const target = item.path && item.path.startsWith('/') ? item.path : `/${item.path}`;
+                  // Debugging: log navigation target and current user role to help diagnose routing issues
+                  try {
+                    // eslint-disable-next-line no-console
+                    console.log('Admin menu navigate ->', { target, role: user?.role });
+                  } catch (e) {}
+                  // Special-case: if this is the Recargas item, force the admin path
+                  if (item.path === '/admin/wallets' || item.text === 'Recargas') {
+                    // Force a full page navigation to avoid client-side redirect issues
+                    // This ensures the router renders the admin wallets page reliably
+                    window.location.assign('/admin/wallets');
+                    return;
+                  }
+                  navigate(target);
+                }}
                 sx={{
                   borderRadius: 2,
                   py: 1.5,

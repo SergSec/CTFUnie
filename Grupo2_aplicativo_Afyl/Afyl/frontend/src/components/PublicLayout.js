@@ -61,12 +61,12 @@ export default function PublicLayout() {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              navigate('/admin/login');
+              navigate('/login');
               setMobileOpen(false);
             }}
             sx={{ mt: 2 }}
           >
-            <ListItemText primary="Acceso Admin" />
+            <ListItemText primary="Iniciar Sesión" />
           </ListItemButton>
         </ListItem>
       </List>
@@ -85,62 +85,57 @@ export default function PublicLayout() {
       >
         <Container maxWidth="lg">
           <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
-            <Box
-              component="img"
-              src="/logo-afyl.png"
-              alt="Afyl"
-              sx={{
-                height: 50,
-                width: 'auto',
-                objectFit: 'contain',
-                cursor: 'pointer',
-              }}
-              onClick={() => navigate('/')}
-            />
-
-            {isMobile ? (
-              <IconButton
-                color="inherit"
-                edge="start"
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-            ) : (
-              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                {menuItems.map((item) => (
-                  <Button
-                    key={item.text}
-                    onClick={() => navigate(item.path)}
-                    sx={{
-                      color: 'white',
-                      fontWeight: location.pathname === item.path ? 600 : 400,
-                      textTransform: 'none',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      },
-                    }}
-                  >
-                    {item.text}
-                  </Button>
-                ))}
-                <Button
-                  variant="outlined"
-                  onClick={() => navigate('/admin/login')}
-                  sx={{
-                    textTransform: 'none',
-                    borderColor: 'white',
-                    color: 'white',
-                    '&:hover': {
-                      borderColor: 'white',
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    },
-                  }}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {/* Logo removed per request */}
+              {isMobile ? (
+                <IconButton
+                  color="inherit"
+                  edge="start"
+                  onClick={handleDrawerToggle}
                 >
-                  Acceso Admin
-                </Button>
-              </Box>
-            )}
+                  <MenuIcon />
+                </IconButton>
+              ) : (
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                  {menuItems.map((item) => (
+                    <Button
+                      key={item.text}
+                      onClick={() => navigate(item.path)}
+                      sx={{
+                        color: 'white',
+                        fontWeight: location.pathname === item.path ? 600 : 400,
+                        textTransform: 'none',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        },
+                      }}
+                    >
+                      {item.text}
+                    </Button>
+                  ))}
+                  {/* Admin access moved to the right side */}
+                </Box>
+              )}
+            </Box>
+
+            {/* Right side: Admin access button (moved here) */}
+            <Box>
+              <Button
+                variant="outlined"
+                onClick={() => navigate('/login')}
+                sx={{
+                  textTransform: 'none',
+                  borderColor: 'white',
+                  color: 'white',
+                  '&:hover': {
+                    borderColor: 'white',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                }}
+              >
+                Iniciar Sesión
+              </Button>
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>

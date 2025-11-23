@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -10,66 +10,48 @@ import {
   Typography,
   Alert,
   CircularProgress,
-  MenuItem,
   Avatar,
   Divider,
 } from '@mui/material';
-import GavelIcon from '@mui/icons-material/Gavel';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function Register() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phone: '',
-    role: 'cliente',
-  });
+export default function AdminLogin() {
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { login, user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  // Si ya está autenticado y es admin, redirigir al dashboard
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'admin') {
+      navigate('/admin/dashboard');
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
-
     setLoading(true);
 
-    const result = await register({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      phone: formData.phone,
-      role: formData.role,
-    });
+    const result = await login(identifier, password, 'admin');
 
     if (result.success) {
-      // Redirigir según el rol del usuario
-      const userRole = result.user?.role || 'cliente';
-      if (userRole === 'admin' || userRole === 'asesor') {
+      // Verificar que el usuario sea realmente admin
+      if (result.user?.role === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        navigate('/cliente/dashboard');
+        setError('Este formulario es exclusivo para administradores. Por favor, usa el formulario de inicio de sesión correcto.');
+        // Cerrar sesión automáticamente si no es admin
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 3000);
       }
     } else {
-      setError(result.message);
+      setError(result.message || 'Error al iniciar sesión');
     }
 
     setLoading(false);
@@ -81,7 +63,7 @@ export default function Register() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%)',
+        background: 'linear-gradient(135deg, #b71c1c 0%, #c62828 50%, #d32f2f 100%)',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -94,7 +76,7 @@ export default function Register() {
         },
       }}
     >
-      <Container component="main" maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container component="main" maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }}>
         <Box
           sx={{
             display: 'flex',
@@ -112,7 +94,7 @@ export default function Register() {
           >
             <Box
               sx={{
-                background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
+                background: 'linear-gradient(135deg, #b71c1c 0%, #c62828 100%)',
                 p: 3,
                 textAlign: 'center',
                 color: 'white',
@@ -128,29 +110,35 @@ export default function Register() {
                   backdropFilter: 'blur(10px)',
                 }}
               >
-                <GavelIcon sx={{ fontSize: 32 }} />
+                <AdminPanelSettingsIcon sx={{ fontSize: 32 }} />
               </Avatar>
               <Typography component="h1" variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-                Crear Cuenta
+                Afyl Legal
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                Únete a nuestra plataforma de asesoría legal
+                Panel de Administración
               </Typography>
             </Box>
             <CardContent sx={{ p: 4 }}>
               <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
-                <Avatar sx={{ bgcolor: 'primary.main', mr: 1 }}>
-                  <PersonAddIcon />
+                <Avatar sx={{ bgcolor: 'error.main', mr: 1 }}>
+                  <LockOutlinedIcon />
                 </Avatar>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                  Registro
+                  Iniciar Sesión
                 </Typography>
               </Box>
+              
+              <Alert severity="warning" sx={{ mb: 3, borderRadius: 2 }}>
+                <Typography variant="body2">
+                  <strong>Acceso Restringido:</strong> Este portal es exclusivo para administradores del sistema.
+                </Typography>
+              </Alert>
 
               {error && (
-                <Alert
-                  severity="error"
-                  sx={{
+                <Alert 
+                  severity="error" 
+                  sx={{ 
                     mb: 3,
                     borderRadius: 2,
                   }}
@@ -158,52 +146,21 @@ export default function Register() {
                   {error}
                 </Alert>
               )}
-
+              
               <Box component="form" onSubmit={handleSubmit}>
                 <TextField
                   margin="normal"
                   required
                   fullWidth
-                  name="name"
-                  label="Nombre completo"
+                  id="identifier"
+                  label="Correo Electrónico o Nombre de Usuario"
+                  name="identifier"
+                  autoComplete="username"
                   autoFocus
-                  value={formData.name}
-                  onChange={handleChange}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
                   sx={{ mb: 2 }}
                 />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="email"
-                  label="Correo Electrónico"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  margin="normal"
-                  fullWidth
-                  name="phone"
-                  label="Teléfono"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  margin="normal"
-                  select
-                  fullWidth
-                  name="role"
-                  label="Tipo de usuario"
-                  value={formData.role}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                >
-                  <MenuItem value="cliente">Cliente</MenuItem>
-                  <MenuItem value="asesor">Asesor Legal</MenuItem>
-                </TextField>
                 <TextField
                   margin="normal"
                   required
@@ -211,20 +168,10 @@ export default function Register() {
                   name="password"
                   label="Contraseña"
                   type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  sx={{ mb: 2 }}
-                  helperText="Mínimo 6 caracteres"
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirmar contraseña"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  id="password"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   sx={{ mb: 3 }}
                 />
                 <Button
@@ -232,36 +179,45 @@ export default function Register() {
                   fullWidth
                   variant="contained"
                   size="large"
+                  disabled={loading}
                   sx={{
                     py: 1.5,
                     mb: 2,
                     fontSize: '1rem',
                     fontWeight: 600,
+                    bgcolor: 'error.main',
+                    '&:hover': {
+                      bgcolor: 'error.dark',
+                    },
                   }}
-                  disabled={loading}
                 >
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    'Crear Cuenta'
+                    'Acceder al Panel'
                   )}
                 </Button>
-                <Divider sx={{ my: 3 }}>o</Divider>
+                <Divider sx={{ my: 3 }} />
                 <Box sx={{ textAlign: 'center' }}>
-                  <Link to="/login" style={{ textDecoration: 'none' }}>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: 'primary.main',
-                        fontWeight: 600,
-                        '&:hover': {
-                          textDecoration: 'underline',
-                        },
-                      }}
-                    >
-                      ¿Ya tienes cuenta? Inicia sesión aquí
-                    </Typography>
-                  </Link>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    ¿No eres administrador?
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => navigate('/login')}
+                    sx={{ fontWeight: 600, mb: 1 }}
+                  >
+                    Portal de Clientes
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => navigate('/asesor/login')}
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Portal de Asesores
+                  </Button>
                 </Box>
               </Box>
             </CardContent>
@@ -281,4 +237,3 @@ export default function Register() {
     </Box>
   );
 }
-

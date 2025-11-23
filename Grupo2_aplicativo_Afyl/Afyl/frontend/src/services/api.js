@@ -7,6 +7,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // Allow sending cookies for cookie-based auth (backend sets httpOnly cookie for admin/asesor)
+  withCredentials: true,
 });
 
 // Interceptor para agregar el token a las peticiones
@@ -29,7 +31,18 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
-      window.location.href = '/admin/login';
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('loginSource');
+      
+      // Redirect to appropriate login page based on stored role or default to cliente login
+      const storedRole = localStorage.getItem('userRole');
+      if (storedRole === 'admin') {
+        window.location.href = '/admin/login';
+      } else if (storedRole === 'asesor') {
+        window.location.href = '/asesor/login';
+      } else {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }

@@ -2,6 +2,7 @@ const express = require('express');
 const Payment = require('../models/Payment');
 const Case = require('../models/Case');
 const { protect, authorize } = require('../middleware/auth');
+const { getOrCreateWallet, addTransaction } = require('../utils/wallet');
 
 const router = express.Router();
 
@@ -30,16 +31,39 @@ router.post('/', protect, async (req, res) => {
     // Generate invoice number
     const invoiceNumber = `INV-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
-    // Create payment
+    const isVirtualCurrency =
+      (currency && currency.toUpperCase() === 'AFYL') ||
+      (paymentMethod && paymentMethod.toLowerCase() === 'afylcoin');
+
+    if (isVirtualCurrency) {
+      const wallet = await getOrCreateWallet(caseData.clientId);
+      if (wallet.balance < amount) {
+        return res.status(400).json({ message: 'Saldo insuficiente en la moneda virtual AFYL' });
+      }
+    }
+
     const payment = await Payment.create({
       caseId,
       clientId: caseData.clientId,
       amount,
-      currency: currency || 'EUR',
-      paymentMethod: paymentMethod || 'tarjeta',
+      currency: isVirtualCurrency ? 'AFYL' : currency || 'EUR',
+      paymentMethod: isVirtualCurrency ? 'afylcoin' : paymentMethod || 'tarjeta',
       description,
-      invoiceNumber
+      invoiceNumber,
+      status: isVirtualCurrency ? 'completado' : 'pendiente',
+      paidAt: isVirtualCurrency ? new Date() : null,
     });
+
+    if (isVirtualCurrency) {
+      const wallet = await getOrCreateWallet(caseData.clientId);
+      wallet.balance -= amount;
+      await addTransaction(wallet, {
+        type: 'spend',
+        amount,
+        description: description || `Pago virtual ${invoiceNumber}`,
+        paymentId: payment._id,
+      });
+    }
 
     // Update case payment status
     const totalPaid = await Payment.aggregate([

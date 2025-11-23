@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -22,26 +22,41 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [lastLog, setLastLog] = useState(null);
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // fetch last audit log to show on login (info for admins)
+    let mounted = true;
+    const fetchLastLog = async () => {
+      try {
+        const res = await fetch('/api/auditlogs?limit=1');
+        if (!mounted) return;
+        const json = await res.json();
+        if (json && json.data && json.data.length) {
+          setLastLog(json.data[0]);
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+    fetchLastLog();
+    return () => { mounted = false; };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    const result = await login(identifier, password);
+    const result = await login(identifier, password, 'cliente');
 
     if (result.success) {
-      // Redirigir según el rol del usuario
-      const userRole = result.user?.role || 'cliente';
-      if (userRole === 'admin' || userRole === 'asesor') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/cliente/dashboard');
-      }
+      // Redirigir al dashboard de cliente
+      navigate('/cliente/dashboard');
     } else {
-      setError(result.message);
+      setError(result.message || 'Error al iniciar sesión');
     }
 
     setLoading(false);
@@ -106,7 +121,7 @@ export default function Login() {
                 Afyl Legal
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                Plataforma de Asesoría Legal-Financiera
+                Portal de Clientes
               </Typography>
             </Box>
             <CardContent sx={{ p: 4 }}>
@@ -128,6 +143,12 @@ export default function Login() {
                   }}
                 >
                   {error}
+                </Alert>
+              )}
+              
+              {lastLog && (
+                <Alert severity="info" sx={{ mb: 2 }}>
+                  Última actividad: {lastLog.action} - {new Date(lastLog.createdAt).toLocaleString()}
                 </Alert>
               )}
               
@@ -181,15 +202,15 @@ export default function Login() {
                 <Divider sx={{ my: 3 }} />
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    ¿No tienes cuenta? Regístrate para acceder a nuestros servicios legales.
+                    ¿Aún no eres cliente? Inicia tu consulta online y genera tus credenciales temporales.
                   </Typography>
                   <Button
                     variant="outlined"
                     fullWidth
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate('/consulta-online')}
                     sx={{ fontWeight: 600 }}
                   >
-                    Crear Cuenta Nueva
+                    Ir a Consulta Online
                   </Button>
                 </Box>
               </Box>

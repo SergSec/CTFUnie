@@ -4,16 +4,110 @@ const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
+const buildServiceTree = (services) => {
+  const nodes = new Map();
+
+  services.forEach((serviceDoc) => {
+    const service = serviceDoc.toObject({ virtuals: true });
+    service.children = [];
+    nodes.set(service._id.toString(), service);
+  });
+
+  const roots = [];
+
+  nodes.forEach((service) => {
+    if (service.parent) {
+      const parentNode = nodes.get(service.parent.toString());
+      if (parentNode) {
+        parentNode.children.push(service);
+      } else {
+        roots.push(service);
+      }
+    } else {
+      roots.push(service);
+    }
+  });
+
+  const sortNodes = (items) =>
+    items
+      .sort((a, b) => (a.order || 0) - (b.order || 0))
+      .map((item) => ({
+        ...item,
+        children: sortNodes(item.children || []),
+      }));
+
+  return sortNodes(roots);
+};
+
+const normalizeProblems = (problems = []) => {
+  if (!Array.isArray(problems)) {
+    return [];
+  }
+
+  const seenIds = new Set();
+  return problems
+    .filter((problem) => problem && (problem.label || problem.id))
+    .map((problem, index) => {
+      const normalizedId = (problem.id || problem.label || `problem-${index}`)
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-');
+
+      const uniqueId = seenIds.has(normalizedId)
+        ? `${normalizedId}-${index}`
+        : normalizedId;
+      seenIds.add(uniqueId);
+
+      return {
+        id: uniqueId,
+        label: problem.label?.trim() || problem.id?.trim() || `Problema ${index + 1}`,
+        description: problem.description?.trim() || '',
+        order:
+          typeof problem.order === 'number'
+            ? problem.order
+            : parseInt(problem.order, 10) || index,
+        isActive: problem.isActive !== undefined ? problem.isActive : true,
+      };
+    });
+};
+
+// Normalize admin-configured form fields
+const normalizeFormFields = (fields = []) => {
+  if (!Array.isArray(fields)) return [];
+  const seen = new Set();
+  return fields
+    .filter(f => f && (f.id || f.label))
+    .map((f, idx) => {
+      const id = (f.id || f.label || `field-${idx}`).toString().trim().toLowerCase().replace(/\s+/g, '-');
+      const uniqueId = seen.has(id) ? `${id}-${idx}` : id;
+      seen.add(uniqueId);
+      return {
+        id: uniqueId,
+        label: (f.label || f.id || `Campo ${idx + 1}`).toString().trim(),
+        type: ['text', 'textarea', 'select', 'checkbox'].includes(f.type) ? f.type : 'text',
+        options: Array.isArray(f.options) ? f.options.map(o => o.toString()) : [],
+        placeholder: f.placeholder ? f.placeholder.toString() : '',
+        required: !!f.required,
+        order: typeof f.order === 'number' ? f.order : parseInt(f.order, 10) || idx,
+        isActive: f.isActive !== undefined ? !!f.isActive : true,
+      };
+    });
+};
+
 // @route   GET /api/services
 // @desc    Get all active services
 // @access  Public
 router.get('/', async (req, res) => {
   try {
     const services = await Service.find({ isActive: true }).sort({ order: 1, createdAt: 1 });
+    const format = req.query.format || 'flat';
+    const data = format === 'tree' ? buildServiceTree(services) : services;
+
     res.json({
       success: true,
       count: services.length,
-      data: services
+      data
     });
   } catch (error) {
     res.status(500).json({
@@ -29,11 +123,17 @@ router.get('/', async (req, res) => {
 // @access  Private/Admin
 router.get('/all', protect, authorize('admin'), async (req, res) => {
   try {
-    const services = await Service.find().sort({ order: 1, createdAt: 1 }).populate('createdBy', 'name email');
+    const services = await Service.find()
+      .sort({ order: 1, createdAt: 1 })
+      .populate('createdBy', 'name email');
+
+    const format = req.query.format || 'flat';
+    const data = format === 'tree' ? buildServiceTree(services) : services;
+
     res.json({
       success: true,
       count: services.length,
-      data: services
+      data
     });
   } catch (error) {
     res.status(500).json({
@@ -76,7 +176,17 @@ router.get('/:id', async (req, res) => {
 // @access  Private/Admin
 router.post('/', protect, authorize('admin'), async (req, res) => {
   try {
-    const { id, title, description, icon, order, isActive } = req.body;
+    const {
+      id,
+      title,
+      description,
+      order,
+      isActive,
+      parentId,
+      problems,
+      tags,
+      formFields,
+    } = req.body;
 
     // Check if service with same id already exists
     const existingService = await Service.findOne({ id });
@@ -87,14 +197,37 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
       });
     }
 
+    let parent = null;
+    let level = 0;
+    if (parentId) {
+      parent = await Service.findOne({
+        $or: [{ _id: parentId }, { id: parentId }],
+      });
+
+      if (!parent) {
+        return res.status(400).json({
+          success: false,
+          message: 'El servicio padre especificado no existe',
+        });
+      }
+
+      level = (parent.level || 0) + 1;
+    }
+
     const service = await Service.create({
       id,
       title,
       description,
-      icon,
       order: order || 0,
       isActive: isActive !== undefined ? isActive : true,
-      createdBy: req.user._id
+      parent: parent ? parent._id : null,
+      level,
+      problems: normalizeProblems(problems),
+      tags: Array.isArray(tags)
+        ? tags.map((tag) => tag.toString().trim()).filter(Boolean)
+        : [],
+      formFields: normalizeFormFields(formFields),
+      createdBy: req.user._id,
     });
 
     res.status(201).json({
@@ -116,7 +249,17 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
 // @access  Private/Admin
 router.put('/:id', protect, authorize('admin'), async (req, res) => {
   try {
-    const { title, description, icon, order, isActive } = req.body;
+    const {
+      title,
+      description,
+      order,
+      isActive,
+      parentId,
+      problems,
+      tags,
+      id: newId,
+      formFields,
+    } = req.body;
 
     const service = await Service.findOne({ id: req.params.id });
 
@@ -128,11 +271,60 @@ router.put('/:id', protect, authorize('admin'), async (req, res) => {
     }
 
     // Update fields
+    if (newId && newId !== service.id) {
+      const idExists = await Service.findOne({ id: newId });
+      if (idExists) {
+        return res.status(400).json({
+          success: false,
+          message: 'Ya existe un servicio con el nuevo ID proporcionado',
+        });
+      }
+      service.id = newId;
+    }
+
     if (title !== undefined) service.title = title;
     if (description !== undefined) service.description = description;
-    if (icon !== undefined) service.icon = icon;
     if (order !== undefined) service.order = order;
     if (isActive !== undefined) service.isActive = isActive;
+    if (Array.isArray(tags)) {
+      service.tags = tags.map((tag) => tag.toString().trim()).filter(Boolean);
+    }
+
+    if (parentId !== undefined) {
+      if (!parentId) {
+        service.parent = null;
+        service.level = 0;
+      } else {
+        const parent = await Service.findOne({
+          $or: [{ _id: parentId }, { id: parentId }],
+        });
+
+        if (!parent) {
+          return res.status(400).json({
+            success: false,
+            message: 'El servicio padre especificado no existe',
+          });
+        }
+
+        if (parent._id.toString() === service._id.toString()) {
+          return res.status(400).json({
+            success: false,
+            message: 'Un servicio no puede ser padre de sí mismo',
+          });
+        }
+
+        service.parent = parent._id;
+        service.level = (parent.level || 0) + 1;
+      }
+    }
+
+    if (problems !== undefined) {
+      service.problems = normalizeProblems(problems);
+    }
+
+    if (formFields !== undefined) {
+      service.formFields = normalizeFormFields(formFields);
+    }
 
     await service.save();
 

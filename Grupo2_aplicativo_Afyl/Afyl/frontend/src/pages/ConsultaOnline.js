@@ -21,6 +21,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  Stack,
 } from '@mui/material';
 import { AttachFile as AttachFileIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../services/api';
@@ -33,23 +34,59 @@ export default function ConsultaOnline() {
     consulta: '',
     servicio: '',
   });
-  const [selectedService, setSelectedService] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
+  const [selectedHelpId, setSelectedHelpId] = useState('');
+  const [selectedConflictId, setSelectedConflictId] = useState('');
+  const [selectedProblemId, setSelectedProblemId] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [credentials, setCredentials] = useState(null);
+
+  const selectedHelp = services.find((service) => service.id === selectedHelpId) || null;
+  const conflictOptions = selectedHelp?.children || [];
+  const selectedConflict =
+    conflictOptions.find((conflict) => conflict.id === selectedConflictId) || null;
+  const problemOptions = selectedConflict?.problems || [];
+  const selectedProblem =
+    problemOptions.find((problem) => problem.id === selectedProblemId) || null;
 
   useEffect(() => {
     // Cargar servicios desde la API
     fetchServices();
   }, []);
 
+  useEffect(() => {
+    if (!loadingServices && services.length > 0 && !selectedHelpId) {
+      setSelectedHelpId(services[0].id);
+    }
+  }, [loadingServices, services, selectedHelpId]);
+
+  useEffect(() => {
+    if (selectedHelp && conflictOptions.length > 0 && !selectedConflictId) {
+      setSelectedConflictId(conflictOptions[0].id);
+    }
+  }, [selectedHelp, conflictOptions, selectedConflictId]);
+
+  useEffect(() => {
+    if (selectedConflict && problemOptions.length > 0 && !selectedProblemId) {
+      setSelectedProblemId(problemOptions[0].id);
+    }
+  }, [selectedConflict, problemOptions, selectedProblemId]);
+
+  useEffect(() => {
+    const selectedSlug = selectedProblem?.id || selectedConflict?.id || selectedHelp?.id || '';
+    setFormData((prev) => ({
+      ...prev,
+      servicio: selectedSlug,
+    }));
+  }, [selectedHelp, selectedConflict, selectedProblem]);
+
   const fetchServices = async () => {
     try {
-      const response = await api.get('/services');
-      setServices(response.data.data);
+      const response = await api.get('/services?format=tree');
+      setServices(response.data.data || []);
     } catch (error) {
       console.error('Error al cargar servicios:', error);
       setSubmitStatus({
@@ -70,11 +107,20 @@ export default function ConsultaOnline() {
   };
 
   const handleServiceSelect = (service) => {
-    setSelectedService(service);
-    setFormData((prev) => ({
-      ...prev,
-      servicio: service.id,
-    }));
+    setSelectedHelpId(service.id);
+    const firstConflict = service.children?.[0];
+    setSelectedConflictId(firstConflict?.id || '');
+    setSelectedProblemId(firstConflict?.problems?.[0]?.id || '');
+  };
+
+  const handleConflictSelect = (conflictId) => {
+    setSelectedConflictId(conflictId);
+    const conflict = conflictOptions.find((item) => item.id === conflictId);
+    setSelectedProblemId(conflict?.problems?.[0]?.id || '');
+  };
+
+  const handleProblemSelect = (problemId) => {
+    setSelectedProblemId(problemId);
   };
 
   const handleFileSelect = (e) => {
@@ -155,7 +201,6 @@ export default function ConsultaOnline() {
         consulta: '',
         servicio: '',
       });
-      setSelectedService(null);
       setSelectedFiles([]);
       setIsLoading(false);
 
@@ -265,7 +310,7 @@ export default function ConsultaOnline() {
             <Button
               variant="contained"
               size="large"
-              href="/admin/login"
+              href="/login"
               sx={{ 
                 bgcolor: 'white', 
                 color: 'success.main',
@@ -293,43 +338,94 @@ export default function ConsultaOnline() {
             ) : services.length === 0 ? (
               <Alert severity="info">No hay servicios disponibles en este momento.</Alert>
             ) : (
-              <Grid container spacing={2}>
-                {services.map((service) => (
-                  <Grid item xs={12} sm={6} key={service.id}>
-                    <Card
-                      onClick={() => handleServiceSelect(service)}
-                      sx={{
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        border: selectedService?.id === service.id ? '2px solid' : '1px solid',
-                        borderColor: selectedService?.id === service.id ? 'primary.main' : 'divider',
-                        bgcolor: selectedService?.id === service.id ? 'rgba(26, 35, 126, 0.05)' : 'white',
-                        '&:hover': {
-                          transform: 'translateY(-4px)',
-                          boxShadow: '0px 8px 24px rgba(26, 35, 126, 0.15)',
-                        },
-                      }}
-                    >
-                      <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                          {service.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {service.description}
-                        </Typography>
-                        {selectedService?.id === service.id && (
+              <Box>
+                <Grid container spacing={2}>
+                  {services.map((service) => (
+                    <Grid item xs={12} sm={6} key={service.id}>
+                      <Card
+                        onClick={() => handleServiceSelect(service)}
+                        sx={{
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          border: selectedHelpId === service.id ? '2px solid' : '1px solid',
+                          borderColor: selectedHelpId === service.id ? 'primary.main' : 'divider',
+                          bgcolor: selectedHelpId === service.id ? 'rgba(26, 35, 126, 0.05)' : 'white',
+                          '&:hover': {
+                            transform: 'translateY(-4px)',
+                            boxShadow: '0px 8px 24px rgba(26, 35, 126, 0.15)',
+                          },
+                        }}
+                      >
+                        <CardContent>
+                          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                            {service.title}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {service.description}
+                          </Typography>
+                          {selectedHelpId === service.id && (
+                            <Chip
+                              label="Seleccionado"
+                              size="small"
+                              color="primary"
+                              sx={{ mt: 1 }}
+                            />
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                {selectedHelp && (
+                  <Box sx={{ mt: 3 }}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                      ¿Qué tipo de conflicto tienes?
+                    </Typography>
+                    {conflictOptions.length === 0 ? (
+                      <Alert severity="info">
+                        Esta ayuda todavía no tiene conflictos configurados. Selecciona otra o envíanos tu consulta igualmente.
+                      </Alert>
+                    ) : (
+                      <Stack direction="row" spacing={1} flexWrap="wrap">
+                        {conflictOptions.map((conflict) => (
                           <Chip
-                            label="Seleccionado"
-                            size="small"
-                            color="primary"
-                            sx={{ mt: 1 }}
+                            key={conflict.id}
+                            label={conflict.title}
+                            variant={selectedConflictId === conflict.id ? 'filled' : 'outlined'}
+                            color={selectedConflictId === conflict.id ? 'primary' : 'default'}
+                            onClick={() => {
+                              setSelectedConflictId(conflict.id);
+                              setSelectedProblemId(conflict.problems?.[0]?.id || '');
+                            }}
+                            sx={{ mb: 1 }}
                           />
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
+                        ))}
+                      </Stack>
+                    )}
+
+                    {problemOptions.length > 0 && (
+                      <Box sx={{ mt: 2 }}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                          Problema específico
+                        </Typography>
+                        <Stack direction="row" spacing={1} flexWrap="wrap">
+                          {problemOptions.map((problem) => (
+                            <Chip
+                              key={problem.id}
+                              label={problem.label}
+                              variant={selectedProblemId === problem.id ? 'filled' : 'outlined'}
+                              color={selectedProblemId === problem.id ? 'secondary' : 'default'}
+                              onClick={() => setSelectedProblemId(problem.id)}
+                              sx={{ mb: 1 }}
+                            />
+                          ))}
+                        </Stack>
+                      </Box>
+                    )}
+                  </Box>
+                )}
+              </Box>
             )}
           </Grid>
 
@@ -369,17 +465,56 @@ export default function ConsultaOnline() {
                   margin="normal"
                 />
                 <FormControl fullWidth margin="normal">
-                  <InputLabel>Servicio</InputLabel>
+                  <InputLabel>¿Con qué necesitas ayuda?</InputLabel>
                   <Select
-                    name="servicio"
-                    value={formData.servicio}
-                    onChange={handleInputChange}
-                    label="Servicio"
+                    value={selectedHelpId}
+                    label="¿Con qué necesitas ayuda?"
+                    onChange={(e) => {
+                      const service = services.find((item) => item.id === e.target.value);
+                      if (service) {
+                        handleServiceSelect(service);
+                      }
+                    }}
                     required
                   >
                     {services.map((service) => (
                       <MenuItem key={service.id} value={service.id}>
                         {service.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl fullWidth margin="normal" disabled={!selectedHelpId || conflictOptions.length === 0}>
+                  <InputLabel>¿Qué tipo de conflicto tienes?</InputLabel>
+                  <Select
+                    value={selectedConflictId || ''}
+                    label="¿Qué tipo de conflicto tienes?"
+                    onChange={(e) => handleConflictSelect(e.target.value)}
+                    required={conflictOptions.length > 0}
+                  >
+                    {conflictOptions.map((conflict) => (
+                      <MenuItem key={conflict.id} value={conflict.id}>
+                        {conflict.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl
+                  fullWidth
+                  margin="normal"
+                  disabled={!selectedConflictId || problemOptions.length === 0}
+                >
+                  <InputLabel>Problema específico (opcional)</InputLabel>
+                  <Select
+                    value={selectedProblemId || ''}
+                    label="Problema específico (opcional)"
+                    onChange={(e) => handleProblemSelect(e.target.value)}
+                  >
+                    {problemOptions.map((problem) => (
+                      <MenuItem key={problem.id} value={problem.id}>
+                        {problem.label}
                       </MenuItem>
                     ))}
                   </Select>

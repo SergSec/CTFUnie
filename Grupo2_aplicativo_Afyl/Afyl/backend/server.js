@@ -1,14 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 
 // Middleware
-app.use(cors());
+// Enable CORS with credentials to allow cookie-based auth from frontend
+app.use(cors({ origin: process.env.FRONTEND_URL || true, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve uploaded files
@@ -23,9 +26,11 @@ app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/chatbot', require('./routes/chatbot'));
-app.use('/api/calendly', require('./routes/calendly'));
+// Calendly se deshabilita temporalmente mientras usamos el calendario interno
+// app.use('/api/calendly', require('./routes/calendly'));
 app.use('/api/services', require('./routes/services'));
 app.use('/api/consultations', require('./routes/consultations'));
+app.use('/api/wallet', require('./routes/wallet'));
 // Development routes (ONLY FOR PENTESTING/DEV)
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/dev', require('./routes/dev'));

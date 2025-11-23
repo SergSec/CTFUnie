@@ -1,8 +1,10 @@
 const express = require('express');
 const Appointment = require('../models/Appointment');
 const Case = require('../models/Case');
+const Payment = require('../models/Payment');
 const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
+const { getOrCreateWallet } = require('../utils/wallet');
 const { sendEmail } = require('../utils/email');
 const axios = require('axios');
 
@@ -40,6 +42,57 @@ router.post('/', protect, authorize('cliente'), async (req, res) => {
       return res.status(400).json({ message: 'El caso debe estar aceptado para solicitar citas' });
     }
 
+    // If the case has a cost, require client to have enough virtual balance (AFYL) to request appointment
+    const estimatedAmount = caseData.finalCost || caseData.estimatedCost || 0;
+    if (estimatedAmount > 0) {
+      try {
+        const wallet = await getOrCreateWallet(req.user._id);
+        if (wallet.balance < estimatedAmount) {
+          return res.status(400).json({ message: 'Saldo insuficiente para solicitar la cita. Contacta al administrador para recargar.' });
+        }
+      } catch (wErr) {
+        console.error('Error verificando wallet:', wErr.message);
+      }
+    }
+
+    // Check advisor availability / conflicts before creating the appointment
+    const advisor = await User.findById(caseData.advisorId._id);
+    const start = new Date(scheduledDate);
+    const dur = duration || 30;
+    const end = new Date(start.getTime() + dur * 60000);
+
+    // If advisor has workingHours configured, ensure requested time fits any range for that weekday
+    if (advisor && Array.isArray(advisor.workingHours) && advisor.workingHours.length > 0) {
+      const day = start.getDay();
+      const hour = start.getHours();
+      const withinAny = advisor.workingHours.some((w) => {
+        return w.day === day && hour >= w.startHour && (hour + Math.ceil(dur / 60)) <= w.endHour;
+      });
+      if (!withinAny) {
+        return res.status(400).json({ message: 'El asesor no trabaja en ese horario. Elige otra hora.' });
+      }
+    }
+
+    // Check overlapping appointments for the advisor (exclude cancelled/rejected)
+    const dayStart = new Date(start);
+    dayStart.setHours(0,0,0,0);
+    const dayEnd = new Date(start);
+    dayEnd.setHours(23,59,59,999);
+
+    const sameDayAppointments = await Appointment.find({
+      advisorId: caseData.advisorId._id,
+      scheduledDate: { $gte: dayStart, $lte: dayEnd },
+      status: { $nin: ['cancelada', 'rechazada'] }
+    });
+
+    for (const ap of sameDayAppointments) {
+      const apStart = new Date(ap.scheduledDate);
+      const apEnd = new Date(apStart.getTime() + (ap.duration || 30) * 60000);
+      if (start < apEnd && end > apStart) {
+        return res.status(400).json({ message: 'La hora seleccionada no está disponible para este asesor.' });
+      }
+    }
+
     // Create appointment with 'solicitada' status
     const appointment = await Appointment.create({
       caseId,
@@ -56,6 +109,31 @@ router.post('/', protect, authorize('cliente'), async (req, res) => {
       .populate('clientId', 'name email')
       .populate('advisorId', 'name email')
       .populate('caseId', 'title');
+
+    // Crear registro de pago pendiente si no existe
+    try {
+      const existingPendingPayment = await Payment.findOne({
+        caseId: caseData._id,
+        status: 'pendiente',
+        description: /Solicitud de cita/i,
+      });
+
+      if (!existingPendingPayment) {
+        const estimatedAmount = caseData.finalCost || caseData.estimatedCost || 0;
+
+        await Payment.create({
+          caseId: caseData._id,
+          clientId: req.user._id,
+          amount: estimatedAmount > 0 ? estimatedAmount : 0,
+          currency: 'EUR',
+          paymentMethod: 'transferencia',
+          status: 'pendiente',
+          description: `Solicitud de cita ${new Date(scheduledDate).toLocaleDateString('es-ES')}`,
+        });
+      }
+    } catch (paymentError) {
+      console.error('Error al generar pago pendiente:', paymentError.message);
+    }
 
     // Enviar email al asesor
     try {
@@ -292,6 +370,31 @@ router.put('/:id/confirm', protect, authorize('asesor', 'admin'), async (req, re
     // Verify appointment is in 'solicitada' status
     if (appointment.status !== 'solicitada') {
       return res.status(400).json({ message: 'Solo se pueden confirmar citas solicitadas' });
+    }
+
+    // Before confirming, ensure no overlapping confirmed appointments for the advisor
+    const start = new Date(appointment.scheduledDate);
+    const dur = appointment.duration || 30;
+    const end = new Date(start.getTime() + dur * 60000);
+
+    const dayStart = new Date(start);
+    dayStart.setHours(0,0,0,0);
+    const dayEnd = new Date(start);
+    dayEnd.setHours(23,59,59,999);
+
+    const sameDayAppointments = await Appointment.find({
+      advisorId: appointment.advisorId._id,
+      _id: { $ne: appointment._id },
+      scheduledDate: { $gte: dayStart, $lte: dayEnd },
+      status: { $nin: ['cancelada', 'rechazada'] }
+    });
+
+    for (const ap of sameDayAppointments) {
+      const apStart = new Date(ap.scheduledDate);
+      const apEnd = new Date(apStart.getTime() + (ap.duration || 30) * 60000);
+      if (start < apEnd && end > apStart) {
+        return res.status(400).json({ message: 'No es posible confirmar: conflicto con otra cita del asesor en ese horario.' });
+      }
     }
 
     appointment.status = 'confirmada';

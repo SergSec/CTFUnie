@@ -2,8 +2,10 @@ const express = require('express');
 const Case = require('../models/Case');
 const Document = require('../models/Document');
 const User = require('../models/User');
+const AuditLog = require('../models/AuditLog');
 const { protect, authorize } = require('../middleware/auth');
 const { sendEmail } = require('../utils/email');
+const { logCaseAction } = require('../utils/caseLogger');
 
 const router = express.Router();
 
@@ -47,6 +49,18 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
       category,
       priority: priority || 'media',
       estimatedCost: estimatedCost || 0
+    });
+
+    await logCaseAction({
+      req,
+      caseId: newCase._id,
+      action: 'case_created',
+      details: {
+        clientId,
+        advisorId: advisor ? advisor._id : null,
+        category,
+        priority: priority || 'media',
+      },
     });
 
     const populatedCase = await Case.findById(newCase._id)
@@ -183,6 +197,9 @@ router.put('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
       return res.status(404).json({ message: 'Caso no encontrado' });
     }
 
+    const previousValues = caseData.toObject();
+    const changes = {};
+
     const {
       title,
       description,
@@ -196,14 +213,29 @@ router.put('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
       paymentStatus
     } = req.body;
 
-    if (title) caseData.title = title;
-    if (description) caseData.description = description;
-    if (category) caseData.category = category;
-    if (priority) caseData.priority = priority;
+    if (title && title !== previousValues.title) {
+      caseData.title = title;
+      changes.title = { from: previousValues.title, to: title };
+    }
+    if (description && description !== previousValues.description) {
+      caseData.description = description;
+      changes.description = true;
+    }
+    if (category && category !== previousValues.category) {
+      caseData.category = category;
+      changes.category = { from: previousValues.category, to: category };
+    }
+    if (priority && priority !== previousValues.priority) {
+      caseData.priority = priority;
+      changes.priority = { from: previousValues.priority, to: priority };
+    }
     if (status) {
       caseData.status = status;
       if (status === 'cerrado') {
         caseData.closedAt = new Date();
+      }
+      if (status !== previousValues.status) {
+        changes.status = { from: previousValues.status, to: status };
       }
     }
     if (advisorId !== undefined) {
@@ -218,18 +250,40 @@ router.put('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
           return res.status(400).json({ message: 'El asesor seleccionado no es válido' });
         }
         caseData.advisorId = advisor._id;
+        if ((previousValues.advisorId?._id?.toString() || previousValues.advisorId?.toString()) !== advisorId) {
+          changes.advisorId = {
+            from: previousValues.advisorId?._id || previousValues.advisorId || null,
+            to: advisor._id,
+          };
+        }
       } else {
         caseData.advisorId = null;
+        if (previousValues.advisorId) {
+          changes.advisorId = {
+            from: previousValues.advisorId?._id || previousValues.advisorId,
+            to: null,
+          };
+        }
       }
     }
-    if (estimatedCost !== undefined) caseData.estimatedCost = estimatedCost;
-    if (finalCost !== undefined) caseData.finalCost = finalCost;
-    if (paymentStatus) caseData.paymentStatus = paymentStatus;
+    if (estimatedCost !== undefined && estimatedCost !== previousValues.estimatedCost) {
+      caseData.estimatedCost = estimatedCost;
+      changes.estimatedCost = { from: previousValues.estimatedCost, to: estimatedCost };
+    }
+    if (finalCost !== undefined && finalCost !== previousValues.finalCost) {
+      caseData.finalCost = finalCost;
+      changes.finalCost = { from: previousValues.finalCost, to: finalCost };
+    }
+    if (paymentStatus && paymentStatus !== previousValues.paymentStatus) {
+      caseData.paymentStatus = paymentStatus;
+      changes.paymentStatus = { from: previousValues.paymentStatus, to: paymentStatus };
+    }
     if (notes) {
       caseData.notes.push({
         content: notes,
         authorId: req.user._id
       });
+      changes.notes = notes;
     }
 
     await caseData.save();
@@ -238,12 +292,57 @@ router.put('/:id', protect, authorize('admin', 'asesor'), async (req, res) => {
       .populate('clientId', 'name email')
       .populate('advisorId', 'name email');
 
+    if (Object.keys(changes).length > 0) {
+      await logCaseAction({
+        req,
+        caseId: caseData._id,
+        action: 'case_updated',
+        details: changes,
+      });
+    }
+
     res.json({
       success: true,
       case: updatedCase
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar caso', error: error.message });
+  }
+});
+
+// @route   GET /api/cases/:id/logs
+// @desc    Obtener bitácora de acciones del caso
+// @access  Private (admin/asesor o cliente dueño del caso)
+router.get('/:id/logs', protect, async (req, res) => {
+  try {
+    const caseData = await Case.findById(req.params.id);
+
+    if (!caseData) {
+      return res.status(404).json({ message: 'Caso no encontrado' });
+    }
+
+    const isOwner = caseData.clientId.toString() === req.user._id.toString();
+    const allowed = isOwner || req.user.role === 'admin' || req.user.role === 'asesor';
+
+    if (!allowed) {
+      return res.status(403).json({ message: 'No autorizado' });
+    }
+
+    const logs = await AuditLog.find({
+      entityType: 'case',
+      entityId: caseData._id,
+    })
+      .populate('userId', 'name role email')
+      .sort({ createdAt: -1 })
+      .limit(100);
+
+    res.json({
+      success: true,
+      count: logs.length,
+      logs,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener logs del caso', error: error.message });
   }
 });
 
@@ -415,6 +514,13 @@ router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res
 
       await caseData.save();
 
+      await logCaseAction({
+        req,
+        caseId: caseData._id,
+        action: 'case_review_accept',
+        details: { price },
+      });
+
       // Enviar email al cliente notificando aceptación
       try {
         const clientEmail = caseData.clientId.email;
@@ -480,6 +586,13 @@ router.put('/:id/review', protect, authorize('admin', 'asesor'), async (req, res
       );
 
       await caseData.save();
+
+      await logCaseAction({
+        req,
+        caseId: caseData._id,
+        action: 'case_review_reject',
+        details: { rejectionReason: caseData.rejectionReason },
+      });
 
       // Enviar email al cliente notificando rechazo
       try {

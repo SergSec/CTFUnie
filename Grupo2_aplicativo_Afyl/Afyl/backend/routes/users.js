@@ -164,11 +164,26 @@ router.put('/:id', protect, async (req, res) => {
       password
     } = req.body;
 
+    // Allow advisors/admin to update working hours (array)
+    const { workingHours } = req.body;
+
     if (name !== undefined) user.name = name;
     if (phone !== undefined) user.phone = phone;
     if (address !== undefined) user.address = address;
     if (specialization !== undefined && (user.role === 'asesor' || isAdmin)) {
       user.specialization = specialization;
+    }
+
+    if (workingHours !== undefined && (user.role === 'asesor' || isAdmin)) {
+      // Basic validation: should be an array of objects with day, startHour, endHour
+      if (!Array.isArray(workingHours)) {
+        return res.status(400).json({ message: 'workingHours debe ser un array' });
+      }
+      user.workingHours = workingHours.map((w) => ({
+        day: Number(w.day),
+        startHour: Number(w.startHour),
+        endHour: Number(w.endHour)
+      }));
     }
 
     if (isAdmin) {
