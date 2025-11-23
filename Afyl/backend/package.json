@@ -1,6 +1,6 @@
 {
   "name": "afyl-backend",
-  "version": "1.0.0",
+  "version": "beta 6.0.0",
   "description": "Backend API para plataforma de asesoría legal-financiera",
   "main": "server.js",
   "scripts": {

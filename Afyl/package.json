@@ -1,6 +1,6 @@
 {
   "name": "afyl-legal-platform",
-  "version": "1.0.0",
+  "version": "beta 6.0.0",
   "description": "Plataforma web para asesoría legal-financiera",
   "main": "index.js",
   "scripts": {
