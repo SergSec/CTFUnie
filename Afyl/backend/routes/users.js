@@ -47,7 +47,7 @@ router.get('/', protect, authorize('admin'), async (req, res) => {
   try {
     const { role } = req.query;
     const filter = role ? { role } : {};
-    
+
     const users = await User.find(filter).select('-password');
     res.json({
       success: true,
@@ -116,7 +116,7 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
 router.get('/:id', protect, async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
-    
+
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
@@ -196,9 +196,15 @@ router.put('/:id', protect, async (req, res) => {
         user.email = email;
       }
       if (isActive !== undefined) user.isActive = isActive;
-      if (password) {
-        user.password = password;
-      }
+    }
+
+    // Allow password update for self or admin
+    if (password) {
+      user.password = password;
+      // If user sets their own password, we might want to consider them "permanent" or at least not strictly temporary in terms of credentials, 
+      // but the requirement says "keep account temporary". So we just update the password.
+      // However, if they change it, we should probably update temporaryPassword field to match or clear it to avoid confusion? 
+      // Let's just update the main password.
     }
 
     await user.save();

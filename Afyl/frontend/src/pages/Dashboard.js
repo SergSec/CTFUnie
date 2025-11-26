@@ -38,7 +38,7 @@ export default function Dashboard() {
   if (casesLoading || appointmentsLoading || paymentsLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
+        <CircularProgress size={60} thickness={4} />
       </Box>
     );
   }
@@ -49,7 +49,7 @@ export default function Dashboard() {
 
   const activeCases = cases.filter(c => !['cerrado'].includes(c.status)).length;
   const totalCases = cases.length;
-  const upcomingAppointments = appointments.filter(a => 
+  const upcomingAppointments = appointments.filter(a =>
     new Date(a.scheduledDate) > new Date() && a.status !== 'cancelada'
   ).length;
   const pendingPayments = payments.filter(p => p.status === 'pendiente').length;
@@ -62,64 +62,66 @@ export default function Dashboard() {
       title: isAdvisor ? 'Casos asignados' : 'Casos activos',
       value: activeCases,
       subtitle: `${totalCases} total`,
-      icon: <FolderIcon sx={{ fontSize: 48 }} />,
+      icon: <FolderIcon sx={{ fontSize: 40 }} />,
       gradient: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
       onClick: () => navigate('/admin/cases'),
     },
     ...(isAdmin
       ? [
-          {
-            title: 'Próximas Citas',
-            value: upcomingAppointments,
-            subtitle: 'Pendientes',
-            icon: <CalendarTodayIcon sx={{ fontSize: 48 }} />,
-            gradient: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
-            onClick: () => navigate('/admin/appointments'),
-          },
-          {
-            title: 'Pagos Pendientes',
-            value: pendingPayments,
-            subtitle: 'Por procesar',
-            icon: <PaymentIcon sx={{ fontSize: 48 }} />,
-            gradient: 'linear-gradient(135deg, #f57c00 0%, #ff9800 100%)',
-            onClick: () => navigate('/admin/payments'),
-          },
-        ]
+        {
+          title: 'Próximas Citas',
+          value: upcomingAppointments,
+          subtitle: 'Pendientes',
+          icon: <CalendarTodayIcon sx={{ fontSize: 40 }} />,
+          gradient: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
+          onClick: () => navigate('/admin/appointments'),
+        },
+        {
+          title: 'Pagos Pendientes',
+          value: pendingPayments,
+          subtitle: 'Por procesar',
+          icon: <PaymentIcon sx={{ fontSize: 40 }} />,
+          gradient: 'linear-gradient(135deg, #f57c00 0%, #ff9800 100%)',
+          onClick: () => navigate('/admin/payments'),
+        },
+      ]
       : []),
     ...(isClient
       ? [
-          {
-            title: 'Total Pagado',
-            value: `€${totalPaid.toFixed(2)}`,
-            subtitle: 'Servicios completados',
-            icon: <TrendingUpIcon sx={{ fontSize: 48 }} />,
-            gradient: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
-            onClick: () => navigate('/admin/payments'),
-          },
-        ]
+        {
+          title: 'Total Pagado',
+          value: `€${totalPaid.toFixed(2)}`,
+          subtitle: 'Servicios completados',
+          icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
+          gradient: 'linear-gradient(135deg, #2e7d32 0%, #4caf50 100%)',
+          onClick: () => navigate('/admin/payments'),
+        },
+      ]
       : []),
   ];
 
   return (
-    <Box className="fade-in">
-      <Box 
-        sx={{ 
-          background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
-          borderRadius: 3,
-          p: 4,
-          mb: 4,
+    <Box className="animate-fade-in">
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)',
+          borderRadius: 4,
+          p: { xs: 3, md: 5 },
+          mb: 5,
           color: 'white',
           position: 'relative',
           overflow: 'hidden',
+          boxShadow: '0 20px 40px rgba(26, 35, 126, 0.2)',
         }}
       >
-        <Box sx={{ position: 'absolute', top: 0, right: 0, opacity: 0.1 }}>
-          <svg width="200" height="200" viewBox="0 0 200 200">
-            <path d="M0,0 L200,200 M200,0 L0,200" stroke="white" strokeWidth="2"/>
+        <Box sx={{ position: 'absolute', top: -50, right: -50, opacity: 0.1 }}>
+          <svg width="300" height="300" viewBox="0 0 200 200">
+            <path d="M0,0 L200,200 M200,0 L0,200" stroke="white" strokeWidth="1" />
+            <circle cx="100" cy="100" r="80" stroke="white" strokeWidth="1" fill="none" />
           </svg>
         </Box>
         <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <Typography variant="h3" gutterBottom sx={{ fontWeight: 700, mb: 1 }}>
+          <Typography variant="h3" gutterBottom sx={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
             Bienvenido, {user?.name}
           </Typography>
           <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 400 }}>
@@ -130,38 +132,65 @@ export default function Dashboard() {
         </Box>
       </Box>
 
+      <Typography variant="h5" sx={{ mb: 3, fontWeight: 700, color: 'text.primary' }}>
+        Resumen General
+      </Typography>
+
       <Grid container spacing={3}>
         {statCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+          <Grid item xs={12} sm={6} md={isAdmin ? 4 : 6} key={index}>
             <Card
+              className="glass-card"
               onClick={card.onClick}
               sx={{
                 cursor: 'pointer',
-                background: card.gradient,
-                color: 'white',
                 height: '100%',
-                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0px 12px 40px rgba(0, 0, 0, 0.2)',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.12)',
+                  '& .card-icon': {
+                    transform: 'scale(1.1) rotate(5deg)',
+                  }
                 },
               }}
             >
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '6px',
+                  background: card.gradient
+                }}
+              />
+              <CardContent sx={{ p: 4 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
                   <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 0.5 }}>
+                    <Typography variant="h3" sx={{ fontWeight: 800, mb: 0.5, color: 'text.primary' }}>
                       {card.value}
                     </Typography>
-                    <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
                       {card.subtitle}
                     </Typography>
                   </Box>
-                  <Box sx={{ opacity: 0.8 }}>
+                  <Box
+                    className="card-icon"
+                    sx={{
+                      p: 1.5,
+                      borderRadius: 3,
+                      background: card.gradient,
+                      color: 'white',
+                      boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
+                      transition: 'transform 0.3s ease'
+                    }}
+                  >
                     {card.icon}
                   </Box>
                 </Box>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
                   {card.title}
                 </Typography>
               </CardContent>

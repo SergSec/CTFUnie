@@ -25,6 +25,15 @@ const consultationSchema = new mongoose.Schema({
     required: [true, 'La consulta es requerida'],
     trim: true
   },
+  conflictId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Conflict',
+    default: null
+  },
+  problemId: {
+    type: String,
+    default: null
+  },
   archivos: [{
     filename: String,
     originalName: String,

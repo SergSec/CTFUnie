@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -27,6 +28,7 @@ import { AttachFile as AttachFileIcon, Delete as DeleteIcon } from '@mui/icons-m
 import api from '../services/api';
 
 export default function ConsultaOnline() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -184,6 +186,8 @@ export default function ConsultaOnline() {
       formDataToSend.append('telefono', formData.telefono || '');
       formDataToSend.append('servicio', formData.servicio);
       formDataToSend.append('consulta', formData.consulta);
+      if (selectedConflictId) formDataToSend.append('conflictId', selectedConflictId);
+      if (selectedProblemId) formDataToSend.append('problemId', selectedProblemId);
 
       // Agregar archivos
       selectedFiles.forEach((file) => {
@@ -206,7 +210,7 @@ export default function ConsultaOnline() {
 
       setSubmitStatus({
         type: 'success',
-        message: '¡Consulta enviada exitosamente! Se ha creado tu cuenta temporal.'
+        message: response.data.message || '¡Consulta enviada exitosamente!'
       });
 
       // Limpiar formulario
@@ -234,31 +238,65 @@ export default function ConsultaOnline() {
     }
   };
 
-
-
   return (
-    <Box sx={{ py: 8, minHeight: '100vh', bgcolor: 'white' }}>
-      <Container maxWidth="lg">
-        <Typography
-          variant="h3"
-          component="h1"
-          align="center"
-          gutterBottom
-          sx={{ fontWeight: 700, mb: 2 }}
-        >
-          Consulta Online
-        </Typography>
-        <Typography
-          variant="h6"
-          align="center"
-          color="text.secondary"
-          sx={{ mb: 6 }}
-        >
-          Completa el formulario y nuestro equipo revisará tu caso. No incluyas fecha de cita aquí.
-        </Typography>
+    <Box sx={{
+      py: 8,
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+      position: 'relative',
+      overflow: 'hidden'
+    }} className="animate-fade-in">
+      {/* Decorative background elements */}
+      <Box sx={{
+        position: 'absolute',
+        top: -100,
+        right: -100,
+        width: 600,
+        height: 600,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(26, 35, 126, 0.05) 0%, rgba(26, 35, 126, 0) 70%)',
+        zIndex: 0
+      }} />
+      <Box sx={{
+        position: 'absolute',
+        bottom: -100,
+        left: -100,
+        width: 500,
+        height: 500,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(25, 118, 210, 0.05) 0%, rgba(25, 118, 210, 0) 70%)',
+        zIndex: 0
+      }} />
+
+
+
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            gutterBottom
+            className="gradient-text"
+            sx={{ fontWeight: 800, mb: 2, letterSpacing: '-0.02em' }}
+          >
+            Consulta Online
+          </Typography>
+          <Typography
+            variant="h6"
+            color="text.secondary"
+            sx={{ maxWidth: 700, mx: 'auto', lineHeight: 1.6, fontWeight: 400 }}
+          >
+            Completa el formulario y nuestro equipo experto revisará tu caso con la máxima confidencialidad.
+          </Typography>
+        </Box>
 
         {submitStatus.message && (
-          <Alert severity={submitStatus.type} sx={{ mb: 3 }} onClose={() => setSubmitStatus({ type: '', message: '' })}>
+          <Alert
+            severity={submitStatus.type}
+            variant="filled"
+            sx={{ mb: 4, borderRadius: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+            onClose={() => setSubmitStatus({ type: '', message: '' })}
+          >
             {submitStatus.message}
           </Alert>
         )}
@@ -266,90 +304,113 @@ export default function ConsultaOnline() {
         {/* Mostrar credenciales temporales */}
         {credentials && (
           <Paper
-            elevation={3}
+            elevation={0}
+            className="glass-card"
             sx={{
-              p: 4,
-              mb: 4,
-              bgcolor: 'success.light',
-              color: 'success.contrastText',
+              p: 5,
+              mb: 6,
               border: '2px solid',
-              borderColor: 'success.main'
+              borderColor: 'success.main',
+              background: 'rgba(255, 255, 255, 0.9)',
             }}
           >
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
-              ✅ ¡Consulta Enviada Exitosamente!
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              Se ha creado una cuenta temporal para que puedas seguir el estado de tu caso.
-            </Typography>
-
-            <Box sx={{ bgcolor: 'white', p: 3, borderRadius: 2, mb: 3 }}>
-              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 600 }}>
-                📧 Tus Credenciales de Acceso:
-              </Typography>
-              <Box sx={{ my: 2 }}>
-                <Typography variant="body1" sx={{ color: 'text.primary', mb: 1 }}>
-                  <strong>Email:</strong> {credentials.email}
-                </Typography>
-                <Typography variant="body1" sx={{ color: 'text.primary', mb: 1 }}>
-                  <strong>Contraseña Temporal:</strong> <code style={{
-                    background: '#f5f5f5',
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    fontSize: '1.1em',
-                    fontWeight: 'bold'
-                  }}>{credentials.password}</code>
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 2 }}>
-                  Esta cuenta es válida hasta: {new Date(credentials.expiresAt).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Typography>
+            <Box sx={{ textAlign: 'center', mb: 4 }}>
+              <Box sx={{
+                display: 'inline-flex',
+                p: 2,
+                borderRadius: '50%',
+                bgcolor: 'success.light',
+                color: 'success.contrastText',
+                mb: 2
+              }}>
+                <Typography variant="h4">✅</Typography>
               </Box>
+              <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, color: 'success.dark' }}>
+                ¡Consulta Enviada Exitosamente!
+              </Typography>
+              <Typography variant="body1" sx={{ fontSize: '1.1rem', color: 'text.secondary' }}>
+                Se ha creado una cuenta temporal para que puedas seguir el estado de tu caso.
+              </Typography>
             </Box>
 
-            <Alert severity="warning" sx={{ mb: 2 }}>
-              <strong>⚠️ Importante:</strong> Guarda estas credenciales en un lugar seguro.
+            <Box sx={{
+              bgcolor: 'rgba(46, 125, 50, 0.05)',
+              p: 4,
+              borderRadius: 3,
+              mb: 4,
+              border: '1px dashed',
+              borderColor: 'success.main'
+            }}>
+              <Typography variant="h6" gutterBottom sx={{ color: 'success.dark', fontWeight: 700, mb: 3 }}>
+                📧 Tus Credenciales de Acceso:
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ p: 2, bgcolor: 'white', borderRadius: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                    <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+                      Email
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                      {credentials.email}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ p: 2, bgcolor: 'white', borderRadius: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                    <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+                      Contraseña Temporal
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 600, fontFamily: 'monospace', letterSpacing: '1px' }}>
+                      {credentials.password}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mt: 3, textAlign: 'center' }}>
+                Esta cuenta es válida hasta: <strong>{new Date(credentials.expiresAt).toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}</strong>
+              </Typography>
+            </Box>
+
+            <Alert severity="warning" sx={{ mb: 4, borderRadius: 2 }}>
+              <strong>Importante:</strong> Guarda estas credenciales en un lugar seguro. No podrás recuperarlas si cierras esta ventana.
             </Alert>
 
-            <Typography variant="body2" sx={{ mb: 2 }}>
-              <strong>¿Qué pasa ahora?</strong>
-            </Typography>
-            <Typography variant="body2" component="div" sx={{ ml: 2, mb: 2 }}>
-              • Nuestro equipo revisará tu caso<br />
-              • Si es aceptado, podrás agendar una cita y tu cuenta se hará permanente<br />
-              • Si es rechazado, recibirás una notificación y tu cuenta se eliminará en 48 horas
-            </Typography>
-
-            <Button
-              variant="contained"
-              size="large"
-              href="/login"
-              sx={{
-                bgcolor: 'white',
-                color: 'success.main',
-                '&:hover': {
-                  bgcolor: 'grey.100'
-                }
-              }}
-            >
-              Ir al Panel de Cliente
-            </Button>
+            <Box sx={{ textAlign: 'center' }}>
+              <Button
+                variant="contained"
+                size="large"
+                href="/login"
+                sx={{
+                  px: 6,
+                  py: 1.5,
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
+                  borderRadius: 2,
+                  boxShadow: '0 8px 16px rgba(46, 125, 50, 0.2)',
+                  color: 'white', // Force white text
+                }}
+                color="success"
+              >
+                Ir al Panel de Cliente
+              </Button>
+            </Box>
           </Paper>
         )}
 
         <Grid container spacing={4}>
           {/* Servicios Disponibles */}
           <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-              Servicios Disponibles
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, mb: 3, color: 'text.primary' }}>
+              1. Selecciona tu caso
             </Typography>
 
             {loadingServices ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-                <CircularProgress />
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                <CircularProgress size={60} thickness={4} />
               </Box>
             ) : services.length === 0 ? (
               <Alert severity="info">No hay servicios disponibles en este momento.</Alert>
@@ -360,23 +421,27 @@ export default function ConsultaOnline() {
                     <Grid item xs={12} sm={6} key={service.id}>
                       <Card
                         onClick={() => handleServiceSelect(service)}
+                        className={selectedHelpId === service.id ? 'active-service-card' : ''}
                         sx={{
                           cursor: 'pointer',
-                          transition: 'all 0.3s ease',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                           border: selectedHelpId === service.id ? '2px solid' : '1px solid',
                           borderColor: selectedHelpId === service.id ? 'primary.main' : 'divider',
-                          bgcolor: selectedHelpId === service.id ? 'rgba(26, 35, 126, 0.05)' : 'white',
+                          bgcolor: selectedHelpId === service.id ? 'rgba(26, 35, 126, 0.04)' : 'white',
+                          borderRadius: 3,
+                          height: '100%',
                           '&:hover': {
                             transform: 'translateY(-4px)',
-                            boxShadow: '0px 8px 24px rgba(26, 35, 126, 0.15)',
+                            boxShadow: '0 12px 24px rgba(0,0,0,0.1)',
+                            borderColor: 'primary.light',
                           },
                         }}
                       >
-                        <CardContent>
-                          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                        <CardContent sx={{ p: 3 }}>
+                          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1, fontSize: '1.1rem' }}>
                             {service.title}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
                             {service.description}
                           </Typography>
                           {selectedHelpId === service.id && (
@@ -384,7 +449,7 @@ export default function ConsultaOnline() {
                               label="Seleccionado"
                               size="small"
                               color="primary"
-                              sx={{ mt: 1 }}
+                              sx={{ mt: 2, fontWeight: 600 }}
                             />
                           )}
                         </CardContent>
@@ -393,169 +458,159 @@ export default function ConsultaOnline() {
                   ))}
                 </Grid>
 
-                {selectedHelp && (
-                  <Box sx={{ mt: 3 }}>
-                    <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-                      ¿Qué tipo de conflicto tienes?
-                    </Typography>
-                    {conflictOptions.length === 0 ? (
-                      <Alert severity="info">
-                        Esta ayuda todavía no tiene conflictos configurados. Selecciona otra o envíanos tu consulta igualmente.
-                      </Alert>
-                    ) : (
-                      <Stack direction="row" spacing={1} flexWrap="wrap">
-                        {conflictOptions.map((conflict) => (
-                          <Chip
-                            key={conflict._id}
-                            label={conflict.title}
-                            variant={selectedConflictId === conflict._id ? 'filled' : 'outlined'}
-                            color={selectedConflictId === conflict._id ? 'primary' : 'default'}
-                            onClick={() => {
-                              setSelectedConflictId(conflict._id);
-                              setSelectedProblemId(conflict.problems?.[0]?.id || '');
-                            }}
-                            sx={{ mb: 1 }}
-                          />
-                        ))}
-                      </Stack>
-                    )}
 
-                    {problemOptions.length > 0 && (
-                      <Box sx={{ mt: 2 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                          Problema específico
-                        </Typography>
-                        <Stack direction="row" spacing={1} flexWrap="wrap">
-                          {problemOptions.map((problem) => (
-                            <Chip
-                              key={problem.id}
-                              label={problem.label}
-                              variant={selectedProblemId === problem.id ? 'filled' : 'outlined'}
-                              color={selectedProblemId === problem.id ? 'secondary' : 'default'}
-                              onClick={() => setSelectedProblemId(problem.id)}
-                              sx={{ mb: 1 }}
-                            />
-                          ))}
-                        </Stack>
-                      </Box>
-                    )}
-                  </Box>
-                )}
               </Box>
             )}
           </Grid>
 
           {/* Formulario */}
           <Grid item xs={12} md={6}>
-            <Paper elevation={0} sx={{ p: 4, border: '1px solid', borderColor: 'divider' }}>
-              <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-                Información de Contacto
+            <Paper
+              elevation={0}
+              className="glass-card"
+              sx={{
+                p: 4,
+                borderRadius: 4,
+                border: '1px solid',
+                borderColor: 'rgba(255,255,255,0.5)'
+              }}
+            >
+              <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, mb: 3, color: 'text.primary' }}>
+                2. Información de Contacto
               </Typography>
               <form onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  label="Nombre"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleInputChange}
-                  required
-                  margin="normal"
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  margin="normal"
-                />
-                <TextField
-                  fullWidth
-                  label="Teléfono (opcional)"
-                  name="telefono"
-                  type="tel"
-                  value={formData.telefono}
-                  onChange={handleInputChange}
-                  margin="normal"
-                />
-                <FormControl fullWidth margin="normal">
-                  <InputLabel>¿Con qué necesitas ayuda?</InputLabel>
-                  <Select
-                    value={selectedHelpId}
-                    label="¿Con qué necesitas ayuda?"
-                    onChange={(e) => {
-                      const service = services.find((item) => item.id === e.target.value);
-                      if (service) {
-                        handleServiceSelect(service);
-                      }
-                    }}
-                    required
-                  >
-                    {services.map((service) => (
-                      <MenuItem key={service.id} value={service.id}>
-                        {service.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Nombre Completo"
+                      name="nombre"
+                      value={formData.nombre}
+                      onChange={handleInputChange}
+                      required
+                      variant="outlined"
+                      InputProps={{ sx: { borderRadius: 2 } }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      variant="outlined"
+                      InputProps={{ sx: { borderRadius: 2 } }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      fullWidth
+                      label="Teléfono (opcional)"
+                      name="telefono"
+                      type="tel"
+                      value={formData.telefono}
+                      onChange={handleInputChange}
+                      InputProps={{ sx: { borderRadius: 2 } }}
+                    />
+                  </Grid>
+                </Grid>
 
-                <FormControl fullWidth margin="normal" disabled={!selectedHelpId || conflictOptions.length === 0}>
-                  <InputLabel>¿Qué tipo de conflicto tienes?</InputLabel>
-                  <Select
-                    value={selectedConflictId || ''}
-                    label="¿Qué tipo de conflicto tienes?"
-                    onChange={(e) => handleConflictSelect(e.target.value)}
-                    required={conflictOptions.length > 0}
-                  >
-                    {conflictOptions.map((conflict) => (
-                      <MenuItem key={conflict._id} value={conflict._id}>
-                        {conflict.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Box sx={{ my: 3 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel id="service-select-label">¿Con qué necesitas ayuda?</InputLabel>
+                        <Select
+                          labelId="service-select-label"
+                          id="service-select"
+                          value={selectedHelpId}
+                          label="¿Con qué necesitas ayuda?"
+                          onChange={(e) => {
+                            const service = services.find(s => s.id === e.target.value);
+                            if (service) handleServiceSelect(service);
+                          }}
+                          sx={{ borderRadius: 2, bgcolor: 'white' }}
+                        >
+                          {services.map((service) => (
+                            <MenuItem key={service.id} value={service.id}>
+                              {service.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
 
-                <FormControl
-                  fullWidth
-                  margin="normal"
-                  disabled={!selectedConflictId || problemOptions.length === 0}
-                >
-                  <InputLabel>Problema específico (opcional)</InputLabel>
-                  <Select
-                    value={selectedProblemId || ''}
-                    label="Problema específico (opcional)"
-                    onChange={(e) => handleProblemSelect(e.target.value)}
-                  >
-                    {problemOptions.map((problem) => (
-                      <MenuItem key={problem.id} value={problem.id}>
-                        {problem.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth disabled={!selectedHelp || conflictOptions.length === 0}>
+                        <InputLabel id="conflict-select-label">¿Qué tipo de conflicto tienes?</InputLabel>
+                        <Select
+                          labelId="conflict-select-label"
+                          id="conflict-select"
+                          value={selectedConflictId}
+                          label="¿Qué tipo de conflicto tienes?"
+                          onChange={(e) => {
+                            setSelectedConflictId(e.target.value);
+                            const conflict = conflictOptions.find((item) => item._id === e.target.value);
+                            setSelectedProblemId(conflict?.problems?.[0]?.id || '');
+                          }}
+                          sx={{ borderRadius: 2, bgcolor: 'white' }}
+                        >
+                          {conflictOptions.map((conflict) => (
+                            <MenuItem key={conflict._id} value={conflict._id}>
+                              {conflict.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FormControl fullWidth disabled={!selectedConflict || problemOptions.length === 0}>
+                        <InputLabel id="problem-select-label">Problema específico (opcional)</InputLabel>
+                        <Select
+                          labelId="problem-select-label"
+                          id="problem-select"
+                          value={selectedProblemId}
+                          label="Problema específico (opcional)"
+                          onChange={(e) => setSelectedProblemId(e.target.value)}
+                          sx={{ borderRadius: 2, bgcolor: 'white' }}
+                        >
+                          {problemOptions.map((problem) => (
+                            <MenuItem key={problem.id} value={problem.id}>
+                              {problem.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Box>
+
                 <TextField
                   fullWidth
-                  label="Consulta"
+                  label="Detalla tu consulta"
                   name="consulta"
                   value={formData.consulta}
                   onChange={handleInputChange}
                   multiline
                   rows={6}
                   required
-                  margin="normal"
-                  placeholder="Describe tu situación o necesidad..."
+                  placeholder="Describe tu situación o necesidad con el mayor detalle posible..."
+                  variant="outlined"
+                  InputProps={{ sx: { borderRadius: 2 } }}
+                  sx={{ mb: 3 }}
                 />
 
                 {/* Sección de archivos */}
-                <Box sx={{ mt: 3 }}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Adjuntar archivos (opcional)
+                <Box sx={{ mb: 4, p: 3, border: '2px dashed', borderColor: 'divider', borderRadius: 3, bgcolor: 'rgba(255,255,255,0.5)' }}>
+                  <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
+                    Adjuntar documentación (opcional)
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 2 }}>
-                    Máximo 5 archivos. Tamaño máximo: 10MB por archivo.
-                    Formatos: PDF, DOC, DOCX, JPG, PNG, XLS, XLSX
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    Máximo 5 archivos (PDF, DOC, JPG, PNG). Máx 10MB c/u.
                   </Typography>
 
                   <Button
@@ -563,6 +618,12 @@ export default function ConsultaOnline() {
                     component="label"
                     startIcon={<AttachFileIcon />}
                     fullWidth
+                    sx={{
+                      py: 1.5,
+                      borderStyle: 'dashed',
+                      borderWidth: 2,
+                      '&:hover': { borderStyle: 'dashed', borderWidth: 2 }
+                    }}
                   >
                     Seleccionar archivos
                     <input
@@ -577,13 +638,14 @@ export default function ConsultaOnline() {
                   {selectedFiles.length > 0 && (
                     <List sx={{ mt: 2 }}>
                       {selectedFiles.map((file, index) => (
-                        <ListItem key={index} sx={{ bgcolor: 'grey.50', mb: 1, borderRadius: 1 }}>
+                        <ListItem key={index} sx={{ bgcolor: 'white', mb: 1, borderRadius: 2, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
                           <ListItemText
                             primary={file.name}
                             secondary={`${(file.size / 1024).toFixed(2)} KB`}
+                            primaryTypographyProps={{ fontWeight: 500 }}
                           />
                           <ListItemSecondaryAction>
-                            <IconButton edge="end" onClick={() => handleRemoveFile(index)}>
+                            <IconButton edge="end" onClick={() => handleRemoveFile(index)} color="error" size="small">
                               <DeleteIcon />
                             </IconButton>
                           </ListItemSecondaryAction>
@@ -599,21 +661,32 @@ export default function ConsultaOnline() {
                   fullWidth
                   size="large"
                   disabled={isLoading}
-                  sx={{ mt: 3, py: 1.5 }}
+                  sx={{
+                    py: 2,
+                    fontSize: '1.1rem',
+                    fontWeight: 700,
+                    borderRadius: 2,
+                    boxShadow: '0 8px 20px rgba(26, 35, 126, 0.2)',
+                    textTransform: 'none',
+                    color: 'white', // Force white text
+                  }}
                 >
-                  {isLoading ? 'Enviando...' : 'Enviar Consulta'}
+                  {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Enviar Consulta'}
                 </Button>
+                <Typography variant="caption" display="block" align="center" sx={{ mt: 2, color: 'text.secondary' }}>
+                  Al enviar este formulario aceptas nuestra política de privacidad y términos de servicio.
+                </Typography>
               </form>
             </Paper>
           </Grid>
         </Grid>
 
         {/* Información adicional */}
-        <Box sx={{ mt: 6, textAlign: 'center' }}>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            ¿Necesitas ayuda? Contáctanos directamente
+        <Box sx={{ mt: 8, textAlign: 'center', pb: 4 }}>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 1, fontWeight: 500 }}>
+            ¿Necesitas ayuda inmediata?
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="h6" color="primary.main" sx={{ fontWeight: 700 }}>
             Tel: +34 636 43 35 93 | Email: hola@afyl.legal
           </Typography>
         </Box>

@@ -796,7 +796,6 @@ export default function ServiceManagement() {
                                       color={problem.isActive ? 'success' : 'default'}
                                       size="small"
                                       sx={{ mr: 1 }}
-                                      sx={{ mr: 1 }}
                                     />
                                     <IconButton
                                       edge="end"

@@ -86,7 +86,23 @@ export default function PublicLayout() {
         <Container maxWidth="lg">
           <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {/* Logo removed per request */}
+              <Box
+                component="img"
+                src="/logo-afyl.png"
+                alt="Afyl"
+                sx={{
+                  height: 40,
+                  width: 'auto',
+                  mr: 2,
+                  cursor: 'pointer',
+                  backgroundColor: 'rgba(255,255,255,0.9)',
+                  borderRadius: 2,
+                  p: 0.5,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': { transform: 'scale(1.05)' },
+                }}
+                onClick={() => navigate('/')}
+              />
               {isMobile ? (
                 <IconButton
                   color="inherit"

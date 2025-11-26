@@ -25,6 +25,15 @@ const caseSchema = new mongoose.Schema({
     enum: ['legal', 'financiero', 'fiscal', 'laboral', 'empresarial', 'otro'],
     required: [true, 'La categoría es requerida']
   },
+  conflictId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Conflict',
+    default: null
+  },
+  problemId: {
+    type: String,
+    default: null
+  },
   status: {
     type: String,
     enum: ['pendiente_revision', 'aceptado', 'rechazado', 'pendiente_cita', 'en_proceso', 'cerrado'],

@@ -45,14 +45,14 @@ function App() {
             <Route index element={<Home />} />
             <Route path="consulta-online" element={<ConsultaOnline />} />
             <Route path="contacto" element={<Contacto />} />
+            <Route path="login" element={<Login />} />
           </Route>
 
           {/* Rutas de autenticación - cada rol tiene su propio login */}
-          <Route path="/login" element={<Login />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/asesor/login" element={<AsesorLogin />} />
           <Route path="/register" element={<Register />} />
-          
+
           {/* Rutas privadas del portal de clientes */}
           <Route
             path="/cliente"
