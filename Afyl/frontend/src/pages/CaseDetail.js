@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import api from '../services/api';
+import api, { API_URL } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function CaseDetail() {
@@ -31,7 +31,7 @@ export default function CaseDetail() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteAlert, setDeleteAlert] = useState({ type: '', message: '' });
-  
+
   const { data, isLoading, error } = useQuery(['case', id], () =>
     api.get(`/cases/${id}`).then((res) => res.data)
   );
@@ -53,7 +53,7 @@ export default function CaseDetail() {
         type: 'success',
         message: response.data.message
       });
-      
+
       // Esperar un momento para que el usuario vea el mensaje
       setTimeout(() => {
         navigate('/admin/cases');
@@ -107,8 +107,8 @@ export default function CaseDetail() {
       </Button>
 
       {deleteAlert.message && (
-        <Alert 
-          severity={deleteAlert.type} 
+        <Alert
+          severity={deleteAlert.type}
           sx={{ mb: 3 }}
           onClose={() => setDeleteAlert({ type: '', message: '' })}
         >
@@ -132,7 +132,7 @@ export default function CaseDetail() {
               <Chip label={caseData?.category} variant="outlined" />
             </Box>
           </Box>
-          
+
           {(isAdmin || isAdvisor) && (
             <Button
               variant="outlined"
@@ -165,6 +165,54 @@ export default function CaseDetail() {
           <Typography variant="body2" color="text.secondary">
             <strong>Prioridad:</strong> {caseData?.priority}
           </Typography>
+        </Box>
+
+        {/* Archivos Adjuntos */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Archivos Adjuntos
+          </Typography>
+          {caseData?.documents && caseData.documents.length > 0 ? (
+            <List dense>
+              {caseData.documents.map((doc, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={doc.originalName || `Documento ${index + 1}`} />
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    href={`${API_URL}/consultations/download/${doc.filename}`}
+                    target="_blank"
+                  >
+                    Descargar
+                  </Button>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            <Typography variant="body2" color="text.secondary">No hay documentos adjuntos.</Typography>
+          )}
+
+          {/* Also check for consultation files if not in documents array yet (legacy structure) */}
+          {/* This part depends on how backend returns data. The 'pending-review' endpoint returns 'consultation' object attached. */}
+          {caseData?.consultation?.archivos && caseData.consultation.archivos.length > 0 && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="subtitle2">Archivos de la Consulta Inicial:</Typography>
+              <List dense>
+                {caseData.consultation.archivos.map((file, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={file.originalName} secondary={`${(file.size / 1024).toFixed(2)} KB`} />
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={() => window.open(`${API_URL}/consultations/${caseData.consultation._id}/files/${file._id}`, '_blank')}
+                    >
+                      Descargar
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
         </Box>
       </Paper>
 
@@ -236,8 +284,8 @@ export default function CaseDetail() {
           </Alert>
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={() => setOpenDeleteDialog(false)} 
+          <Button
+            onClick={() => setOpenDeleteDialog(false)}
             disabled={deleting}
           >
             Cancelar

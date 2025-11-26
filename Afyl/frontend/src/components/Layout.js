@@ -33,6 +33,7 @@ import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import { useAuth } from '../contexts/AuthContext';
+import { API_URL } from '../services/api';
 import Chatbot from './Chatbot';
 
 const drawerWidth = 280;
@@ -60,7 +61,6 @@ export default function Layout() {
 
   const handleLogout = () => {
     logout();
-    // Redirect to appropriate login based on user role
     if (user?.role === 'admin') {
       navigate('/admin/login');
     } else if (user?.role === 'asesor') {
@@ -97,61 +97,75 @@ export default function Layout() {
   }, [isAdmin, isAdvisor]);
 
   const drawer = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(20px)' }}>
       <Box
         sx={{
-          p: 3,
-          background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
+          p: 4,
+          background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)',
           color: 'white',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 2,
+          gap: 1,
+          boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
         }}
       >
-        {/* Logo removed from admin layout per request */}
+        <Box
+          component="img"
+          src="/logo-afyl.png"
+          alt="Afyl"
+          sx={{
+            height: 50,
+            width: 'auto',
+            objectFit: 'contain',
+            backgroundColor: 'rgba(255,255,255,0.95)',
+            borderRadius: 3,
+            p: 1,
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+            transition: 'transform 0.3s ease',
+            '&:hover': { transform: 'scale(1.05)' },
+            cursor: 'pointer',
+          }}
+          onClick={() => navigate('/')}
+        />
+        <Typography variant="caption" sx={{ opacity: 0.8, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          Panel de Administración
+        </Typography>
       </Box>
-      <Divider />
-      <List sx={{ flexGrow: 1, pt: 2 }}>
+      <List sx={{ flexGrow: 1, pt: 3, px: 2 }}>
         {menuItems.map((item) => {
-          const isSelected = location.pathname === item.path || 
+          const isSelected = location.pathname === item.path ||
             (item.path === '/admin/cases' && location.pathname.startsWith('/admin/cases'));
           return (
-            <ListItem key={item.text} disablePadding sx={{ mb: 0.5, px: 2 }}>
+            <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
               <ListItemButton
                 selected={isSelected}
                 onClick={() => {
-                  // Ensure we navigate using an absolute path to avoid nested route resolution issues
                   const target = item.path && item.path.startsWith('/') ? item.path : `/${item.path}`;
-                  // Debugging: log navigation target and current user role to help diagnose routing issues
-                  try {
-                    // eslint-disable-next-line no-console
-                    console.log('Admin menu navigate ->', { target, role: user?.role });
-                  } catch (e) {}
-                  // Special-case: if this is the Recargas item, force the admin path
                   if (item.path === '/admin/wallets' || item.text === 'Recargas') {
-                    // Force a full page navigation to avoid client-side redirect issues
-                    // This ensures the router renders the admin wallets page reliably
                     window.location.assign('/admin/wallets');
                     return;
                   }
                   navigate(target);
                 }}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: '12px',
                   py: 1.5,
+                  transition: 'all 0.3s ease',
                   '&.Mui-selected': {
-                    background: 'linear-gradient(135deg, rgba(26, 35, 126, 0.1) 0%, rgba(40, 53, 147, 0.1) 100%)',
-                    borderLeft: '4px solid',
-                    borderColor: 'primary.main',
+                    background: 'linear-gradient(90deg, rgba(26, 35, 126, 0.15) 0%, rgba(26, 35, 126, 0.05) 100%)',
+                    color: 'primary.main',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(26, 35, 126, 0.15) 0%, rgba(40, 53, 147, 0.15) 100%)',
+                      background: 'linear-gradient(90deg, rgba(26, 35, 126, 0.2) 0%, rgba(26, 35, 126, 0.1) 100%)',
+                    },
+                    '& .MuiListItemIcon-root': {
+                      color: 'primary.main',
                     },
                   },
                   '&:hover': {
-                    background: 'rgba(26, 35, 126, 0.05)',
+                    background: 'rgba(0,0,0,0.03)',
                     transform: 'translateX(4px)',
-                    transition: 'all 0.2s ease',
                   },
                 }}
               >
@@ -159,6 +173,7 @@ export default function Layout() {
                   sx={{
                     color: isSelected ? 'primary.main' : 'text.secondary',
                     minWidth: 40,
+                    transition: 'color 0.3s ease',
                   }}
                 >
                   {item.icon}
@@ -166,7 +181,7 @@ export default function Layout() {
                 <ListItemText
                   primary={item.text}
                   primaryTypographyProps={{
-                    fontWeight: isSelected ? 600 : 500,
+                    fontWeight: isSelected ? 700 : 500,
                     fontSize: '0.95rem',
                   }}
                 />
@@ -177,28 +192,29 @@ export default function Layout() {
       </List>
       <Box
         sx={{
-          p: 2,
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          background: 'rgba(26, 35, 126, 0.02)',
+          p: 3,
+          borderTop: '1px solid rgba(0,0,0,0.05)',
+          background: 'rgba(255,255,255,0.5)',
         }}
       >
         <Box display="flex" alignItems="center" gap={2}>
           <Avatar
-            src={user?.profilePicture ? `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${user.profilePicture}` : null}
+            src={user?.profilePicture ? `${API_URL.replace('/api', '')}${user.profilePicture}` : null}
             sx={{
               bgcolor: 'primary.main',
-              width: 40,
-              height: 40,
+              width: 44,
+              height: 44,
+              boxShadow: '0 4px 12px rgba(26, 35, 126, 0.2)',
+              border: '2px solid white',
             }}
           >
             {user?.name?.charAt(0).toUpperCase()}
           </Avatar>
           <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-            <Typography variant="body2" sx={{ fontWeight: 600 }} noWrap>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: 'text.primary' }} noWrap>
               {user?.name}
             </Typography>
-            <Typography variant="caption" color="text.secondary" noWrap>
+            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 500 }} noWrap>
               {user?.role === 'cliente' && 'Cliente'}
               {user?.role === 'asesor' && 'Asesor Legal'}
               {user?.role === 'admin' && 'Administrador'}
@@ -210,20 +226,20 @@ export default function Layout() {
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', background: '#f4f6f8' }}>
       <AppBar
         position="fixed"
         elevation={0}
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          background: 'white',
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(20px)',
           color: 'text.primary',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
+          borderBottom: '1px solid rgba(0,0,0,0.05)',
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between', px: 3 }}>
+        <Toolbar sx={{ justifyContent: 'space-between', px: 4, height: 70 }}>
           <IconButton
             color="inherit"
             edge="start"
@@ -232,19 +248,17 @@ export default function Layout() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            Plataforma de Asesoría Legal-Financiera
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontWeight: 700, background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Plataforma de Asesoría
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, position: 'relative' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Tooltip title="Asistente Virtual">
               <IconButton
                 onClick={() => setChatbotOpen(!chatbotOpen)}
-                size="small"
                 sx={{
                   color: chatbotOpen ? 'primary.main' : 'text.secondary',
-                  '&:hover': {
-                    background: 'rgba(26, 35, 126, 0.08)',
-                  },
+                  background: chatbotOpen ? 'rgba(26, 35, 126, 0.1)' : 'transparent',
+                  '&:hover': { background: 'rgba(26, 35, 126, 0.05)' },
                 }}
               >
                 <SmartToyIcon />
@@ -252,21 +266,19 @@ export default function Layout() {
             </Tooltip>
             <IconButton
               onClick={handleMenuOpen}
-              size="small"
               sx={{
-                '&:hover': {
-                  background: 'rgba(26, 35, 126, 0.08)',
-                },
+                p: 0.5,
+                border: '2px solid transparent',
+                '&:hover': { borderColor: 'rgba(26, 35, 126, 0.1)' },
+                transition: 'all 0.2s',
               }}
             >
               <Avatar
-                src={user?.profilePicture ? `${process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000'}${user.profilePicture}` : null}
+                src={user?.profilePicture ? `${API_URL.replace('/api', '')}${user.profilePicture}` : null}
                 sx={{
                   width: 40,
                   height: 40,
                   bgcolor: 'primary.main',
-                  border: '2px solid',
-                  borderColor: 'background.paper',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
                 }}
               >
@@ -281,11 +293,25 @@ export default function Layout() {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             PaperProps={{
+              elevation: 0,
               sx: {
                 mt: 1.5,
-                minWidth: 200,
-                boxShadow: '0px 4px 20px rgba(26, 35, 126, 0.15)',
-                borderRadius: 2,
+                minWidth: 220,
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 10px 40px rgba(0,0,0,0.1))',
+                borderRadius: 3,
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
               },
             }}
           >
@@ -294,18 +320,19 @@ export default function Layout() {
                 navigate('/admin/profile');
                 handleMenuClose();
               }}
-              sx={{ py: 1.5 }}
+              sx={{ py: 1.5, borderRadius: 1, mx: 1 }}
             >
               <ListItemIcon>
-                <PersonIcon fontSize="small" />
+                <PersonIcon fontSize="small" sx={{ color: 'primary.main' }} />
               </ListItemIcon>
-              <ListItemText primary="Mi Perfil" />
+              <ListItemText primary="Mi Perfil" primaryTypographyProps={{ fontWeight: 500 }} />
             </MenuItem>
-            <MenuItem onClick={handleLogout} sx={{ py: 1.5 }}>
+            <Divider sx={{ my: 1 }} />
+            <MenuItem onClick={handleLogout} sx={{ py: 1.5, borderRadius: 1, mx: 1, color: 'error.main' }}>
               <ListItemIcon>
-                <LogoutIcon fontSize="small" />
+                <LogoutIcon fontSize="small" color="error" />
               </ListItemIcon>
-              <ListItemText primary="Cerrar Sesión" />
+              <ListItemText primary="Cerrar Sesión" primaryTypographyProps={{ fontWeight: 500 }} />
             </MenuItem>
           </Menu>
         </Toolbar>
@@ -326,8 +353,8 @@ export default function Layout() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              borderRight: 'none',
-              boxShadow: '2px 0 8px rgba(0,0,0,0.1)',
+              border: 'none',
+              background: 'transparent',
             },
           }}
         >
@@ -340,9 +367,8 @@ export default function Layout() {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              borderRight: '1px solid',
-              borderColor: 'divider',
-              boxShadow: '2px 0 8px rgba(0,0,0,0.05)',
+              borderRight: '1px solid rgba(0,0,0,0.05)',
+              background: 'transparent',
             },
           }}
           open
@@ -354,11 +380,10 @@ export default function Layout() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: { xs: 2, sm: 3, md: 4 },
+          p: { xs: 2, sm: 4 },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: { xs: 7, sm: 8 },
-          background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%)',
-          minHeight: 'calc(100vh - 64px)',
+          mt: { xs: 8, sm: 9 },
+          minHeight: 'calc(100vh - 72px)',
         }}
       >
         <Outlet />
@@ -366,9 +391,9 @@ export default function Layout() {
       <Box
         sx={{
           position: 'fixed',
-          top: chatbotOpen ? 64 : 'auto',
-          right: chatbotOpen ? 16 : 'auto',
-          bottom: chatbotOpen ? 'auto' : 24,
+          top: chatbotOpen ? 80 : 'auto',
+          right: chatbotOpen ? 24 : 'auto',
+          bottom: chatbotOpen ? 'auto' : 32,
           zIndex: 1300,
           display: chatbotOpen ? 'block' : 'none',
         }}

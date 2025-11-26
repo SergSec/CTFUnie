@@ -87,48 +87,52 @@ export default function Home() {
   }, []);
 
   return (
-    <Box sx={{ bgcolor: 'white' }}>
-      <Box
-        sx={{
-          height: 12,
-          background: 'linear-gradient(90deg, #1a237e 0%, #3949ab 40%, #64b5f6 100%)',
-        }}
-      />
-      <Box
-        sx={{
-          height: 6,
-          background: 'linear-gradient(90deg, #64b5f6 0%, #e1f5fe 100%)',
-        }}
-      />
+    <Box sx={{ bgcolor: '#f8fafc' }} className="animate-fade-in">
       {/* Hero Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
+          background: 'linear-gradient(135deg, #0a1929 0%, #1a237e 100%)',
           color: 'white',
-          py: { xs: 8, md: 12 },
+          py: { xs: 10, md: 16 },
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        <Container maxWidth="lg">
+        <Box sx={{ position: 'absolute', top: -100, right: -100, opacity: 0.1 }}>
+          <svg width="600" height="600" viewBox="0 0 200 200">
+            <path d="M0,0 L200,200 M200,0 L0,200" stroke="white" strokeWidth="0.5" />
+            <circle cx="100" cy="100" r="80" stroke="white" strokeWidth="0.5" fill="none" />
+          </svg>
+        </Box>
+
+
+
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Box sx={{ maxWidth: '800px' }}>
             <Typography
-              variant="h2"
+              variant="h1"
               component="h1"
               gutterBottom
               sx={{
-                fontWeight: 700,
-                mb: 2,
-                fontSize: { xs: '2.5rem', md: '3.5rem', lg: '4rem' },
-                color: 'white',
+                fontWeight: 800,
+                mb: 3,
+                fontSize: { xs: '2.5rem', md: '4rem', lg: '4.5rem' },
+                letterSpacing: '-0.03em',
+                background: 'linear-gradient(90deg, #ffffff 0%, #bbdefb 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
               Asistencia legal online
             </Typography>
             <Typography
-              variant="h5"
+              variant="h4"
               sx={{
-                mb: 2,
+                mb: 3,
                 color: 'rgba(255, 255, 255, 0.9)',
-                fontSize: { xs: '1.1rem', md: '1.5rem' },
+                fontWeight: 400,
+                fontSize: { xs: '1.2rem', md: '1.75rem' },
+                lineHeight: 1.4,
               }}
             >
               Tecnología para asesorarte rápido, con cercanía y transparencia.
@@ -136,30 +140,35 @@ export default function Home() {
             <Typography
               variant="h6"
               sx={{
-                mb: 4,
-                fontWeight: 600,
+                mb: 6,
+                fontWeight: 500,
                 fontSize: { xs: '1rem', md: '1.25rem' },
-                color: 'rgba(255,255,255,0.95)', // asegurar contraste con el fondo
+                color: 'rgba(255,255,255,0.7)',
+                maxWidth: '600px',
               }}
             >
               ¡Estés donde estés, eligiendo tú el día y la hora que te conviene a ti!
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
+            <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
               <Button
-                variant="outlined"
+                variant="contained"
                 size="large"
                 onClick={() => navigate('/consulta-online')}
                 sx={{
-                  borderColor: 'white',
+                  bgcolor: 'primary.main',
                   color: 'white',
-                  fontWeight: 600,
-                  px: 4,
-                  py: 1.5,
-                  textTransform: 'none',
+                  fontWeight: 700,
+                  px: 5,
+                  py: 2,
+                  fontSize: '1.1rem',
+                  borderRadius: 2,
+                  boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
                   '&:hover': {
-                    borderColor: 'white',
-                    bgcolor: 'rgba(255, 255, 255, 0.06)',
+                    bgcolor: 'primary.dark',
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 15px 30px rgba(0,0,0,0.3)',
                   },
+                  transition: 'all 0.3s ease',
                 }}
               >
                 Consulta Online
@@ -169,14 +178,18 @@ export default function Home() {
                 size="large"
                 onClick={() => navigate('/contacto')}
                 sx={{
-                  borderColor: 'white',
+                  borderColor: 'rgba(255,255,255,0.5)',
                   color: 'white',
                   fontWeight: 600,
-                  px: 4,
-                  py: 1.5,
+                  px: 5,
+                  py: 2,
+                  fontSize: '1.1rem',
+                  borderRadius: 2,
+                  borderWidth: 2,
                   '&:hover': {
                     borderColor: 'white',
                     bgcolor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 2,
                   },
                 }}
               >
@@ -188,21 +201,36 @@ export default function Home() {
       </Box>
 
       {/* Features Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: 10, mt: -8, position: 'relative', zIndex: 2 }}>
         <Grid container spacing={4}>
           {features.map((feature, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Card
+                className="glass-card"
                 sx={{
                   textAlign: 'center',
-                  p: 3,
+                  p: 4,
                   height: '100%',
-                  border: 'none',
-                  boxShadow: '0px 4px 20px rgba(26, 35, 126, 0.1)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-10px)',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                  },
                 }}
               >
-                <Box sx={{ color: 'primary.main', mb: 2 }}>{feature.icon}</Box>
-                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                <Box
+                  sx={{
+                    color: 'primary.main',
+                    mb: 3,
+                    display: 'inline-flex',
+                    p: 2,
+                    borderRadius: '50%',
+                    bgcolor: 'rgba(26, 35, 126, 0.05)',
+                  }}
+                >
+                  {feature.icon}
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
                   {feature.title}
                 </Typography>
               </Card>
@@ -212,66 +240,77 @@ export default function Home() {
       </Container>
 
       {/* How it works Section */}
-      <Box sx={{ backgroundColor: '#f5f7fa', py: 8 }}>
+      <Box sx={{ py: 12, bgcolor: 'white' }}>
         <Container maxWidth="lg">
-          <Typography
-            variant="h3"
-            component="h2"
-            align="center"
-            gutterBottom
-            sx={{ fontWeight: 700, mb: 2 }}
-          >
-            Cómo funciona AFYL
-          </Typography>
-          <Typography
-            variant="h6"
-            align="center"
-            color="text.secondary"
-            sx={{ mb: 6 }}
-          >
-            Un proceso sencillo para resolver tus necesidades legales
-          </Typography>
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Typography
+              variant="overline"
+              sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: '0.1em' }}
+            >
+              PROCESO SIMPLIFICADO
+            </Typography>
+            <Typography
+              variant="h3"
+              component="h2"
+              gutterBottom
+              sx={{ fontWeight: 800, mt: 1, mb: 2, color: 'text.primary' }}
+            >
+              Cómo funciona AFYL
+            </Typography>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{ maxWidth: '600px', mx: 'auto', fontWeight: 400 }}
+            >
+              Un proceso diseñado para resolver tus necesidades legales sin complicaciones
+            </Typography>
+          </Box>
+
           <Grid container spacing={4}>
             {steps.map((step, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Paper
                   elevation={0}
                   sx={{
-                    p: 3,
+                    p: 4,
                     height: '100%',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    borderRadius: 3,
+                    borderRadius: 4,
                     position: 'relative',
                     textAlign: 'center',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    bgcolor: '#f8fafc',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      bgcolor: 'white',
+                      boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
+                      transform: 'translateY(-5px)',
+                    }
                   }}
                 >
                   <Box
                     sx={{
-                      position: 'absolute',
-                      top: -20,
-                      left: 20,
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
+                      width: 50,
+                      height: 50,
+                      borderRadius: '16px',
                       background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
                       color: 'white',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontWeight: 700,
-                      fontSize: '1.25rem',
+                      fontWeight: 800,
+                      fontSize: '1.5rem',
+                      mb: 3,
+                      boxShadow: '0 10px 20px rgba(26, 35, 126, 0.2)',
                     }}
                   >
                     {step.number}
                   </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mt: 2, mb: 1 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
                     {step.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
                     {step.description}
                   </Typography>
                 </Paper>
@@ -282,109 +321,136 @@ export default function Home() {
       </Box>
 
       {/* Services Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Typography
-          variant="h3"
-          component="h2"
-          align="center"
-          gutterBottom
-          sx={{ fontWeight: 700, mb: 2 }}
-        >
-          Áreas de práctica
-        </Typography>
-        <Typography
-          variant="h6"
-          align="center"
-          color="text.secondary"
-          sx={{ mb: 6 }}
-        >
-          Nuestro equipo se adapta a las necesidades que configuras en el panel de administración
-        </Typography>
-
-        {loadingServices ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-            <CircularProgress />
+      <Box sx={{ py: 12, bgcolor: '#f1f5f9' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 8 }}>
+            <Typography
+              variant="overline"
+              sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: '0.1em' }}
+            >
+              NUESTROS SERVICIOS
+            </Typography>
+            <Typography
+              variant="h3"
+              component="h2"
+              gutterBottom
+              sx={{ fontWeight: 800, mt: 1, mb: 2 }}
+            >
+              Áreas de práctica
+            </Typography>
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{ maxWidth: '700px', mx: 'auto', fontWeight: 400 }}
+            >
+              Nuestro equipo se adapta a las necesidades que configuras en el panel de administración
+            </Typography>
           </Box>
-        ) : servicesError ? (
-          <Alert severity="warning">{servicesError}</Alert>
-        ) : services.length === 0 ? (
-          <Alert severity="info">Aún no hay áreas de práctica configuradas.</Alert>
-        ) : (
-          <Grid container spacing={3}>
-            {services.map((service) => (
-              <Grid item xs={12} sm={6} md={4} key={service.id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'all 0.3s ease',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    textAlign: 'center',
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0px 12px 40px rgba(26, 35, 126, 0.15)',
-                    },
-                  }}
-                >
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                      {service.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {service.description}
-                    </Typography>
-                    {service.children?.length > 0 && (
-                      <Chip
-                        label={`${service.children.length} tipos de conflicto`}
-                        size="small"
-                        color="primary"
-                        sx={{ mt: 2 }}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Container>
+
+          {loadingServices ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+              <CircularProgress size={60} thickness={4} />
+            </Box>
+          ) : servicesError ? (
+            <Alert severity="warning" variant="outlined" sx={{ borderRadius: 2 }}>{servicesError}</Alert>
+          ) : services.length === 0 ? (
+            <Alert severity="info" variant="outlined" sx={{ borderRadius: 2 }}>Aún no hay áreas de práctica configuradas.</Alert>
+          ) : (
+            <Grid container spacing={4}>
+              {services.map((service) => (
+                <Grid item xs={12} sm={6} md={4} key={service.id}>
+                  <Card
+                    className="glass-card"
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                      textAlign: 'center',
+                      border: 'none',
+                      '&:hover': {
+                        transform: 'translateY(-12px)',
+                        boxShadow: '0 25px 50px rgba(0,0,0,0.1)',
+                      },
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1, p: 4 }}>
+                      <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, mb: 2 }}>
+                        {service.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3, lineHeight: 1.6 }}>
+                        {service.description}
+                      </Typography>
+                      {service.children?.length > 0 && (
+                        <Chip
+                          label={`${service.children.length} tipos de conflicto`}
+                          size="small"
+                          color="primary"
+                          variant="outlined"
+                          sx={{ fontWeight: 600, borderRadius: '8px' }}
+                        />
+                      )}
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </Container>
+      </Box>
 
       {/* CTA Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
+          background: 'linear-gradient(135deg, #1a237e 0%, #0d47a1 100%)',
           color: 'white',
-          py: 8,
+          py: 12,
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        <Container maxWidth="lg">
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: 700, mb: 2, color: 'rgba(255,255,255,0.98)' }}>
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.1,
+          backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }} />
+
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box sx={{ textAlign: 'center', maxWidth: '800px', mx: 'auto' }}>
+            <Typography variant="h3" gutterBottom sx={{ fontWeight: 800, mb: 3, letterSpacing: '-0.02em' }}>
               ¿Listo para resolver tus necesidades legales?
             </Typography>
-            <Typography variant="h6" sx={{ mb: 4, color: 'rgba(255,255,255,0.9)' }}>
+            <Typography variant="h6" sx={{ mb: 6, opacity: 0.9, fontWeight: 400, lineHeight: 1.6 }}>
               Sabemos que cuando tienes un problema legal o financiero, lo que necesitas es una solución rápida, clara y sin rodeos.
             </Typography>
             <Button
-              variant="outlined"
+              variant="contained"
               size="large"
               onClick={() => navigate('/consulta-online')}
               sx={{
-                borderColor: 'white',
+                bgcolor: 'primary.main',
                 color: 'white',
-                fontWeight: 600,
+                fontWeight: 700,
                 px: 6,
-                py: 1.5,
+                py: 2.5,
+                fontSize: '1.2rem',
+                borderRadius: 2,
                 textTransform: 'none',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
                 '&:hover': {
-                  borderColor: 'white',
-                  bgcolor: 'rgba(255, 255, 255, 0.06)',
+                  bgcolor: 'primary.dark',
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
                 },
+                transition: 'all 0.3s ease',
               }}
             >
-              Consulta Online
+              Iniciar Consulta Online
             </Button>
           </Box>
         </Container>

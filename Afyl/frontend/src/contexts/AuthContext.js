@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.get(`${API_URL}/auth/me`);
       const userData = response.data.user;
-      
+
       // Validate that stored role matches fetched user role
       const storedRole = localStorage.getItem('userRole');
       if (storedRole && storedRole !== userData.role) {
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
         return;
       }
-      
+
       setUser(userData);
       setIsAuthenticated(true);
     } catch (error) {
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }) => {
 
       // Backend returns { success: true, token, user: { id, name, email, role } }
       const { token, user } = response.data;
-      
+
       if (!token || !user) {
         return {
           success: false,
@@ -123,7 +124,7 @@ export const AuthProvider = ({ children }) => {
       return { success: true, user };
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
-      
+
       // Check if backend returned a wrongLoginSource error
       if (error.response?.data?.wrongLoginSource) {
         return {
@@ -133,7 +134,7 @@ export const AuthProvider = ({ children }) => {
           userRole: error.response.data.userRole,
         };
       }
-      
+
       return {
         success: false,
         message: error.response?.data?.message || 'Error al iniciar sesión',
@@ -162,8 +163,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     // Try to clear server cookie as well
     try {
-      axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true }).catch(() => {});
-    } catch (e) {}
+      axios.post(`${API_URL}/auth/logout`, {}, { withCredentials: true }).catch(() => { });
+    } catch (e) { }
 
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');

@@ -68,20 +68,36 @@ export default function Login() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        background: 'linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%)',
+        background: 'linear-gradient(135deg, #0a1929 0%, #1a237e 50%, #0d47a1 100%)',
         position: 'relative',
         overflow: 'hidden',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          opacity: 0.3,
-        },
       }}
     >
-      <Container component="main" maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }}>
+      {/* Decorative elements */}
+      <Box sx={{
+        position: 'absolute',
+        top: -100,
+        left: -100,
+        width: 400,
+        height: 400,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(25, 118, 210, 0.15) 0%, rgba(25, 118, 210, 0) 70%)',
+        animation: 'pulse 15s infinite ease-in-out',
+      }} />
+      <Box sx={{
+        position: 'absolute',
+        bottom: -50,
+        right: -50,
+        width: 300,
+        height: 300,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, rgba(255, 215, 0, 0) 70%)',
+        animation: 'pulse 10s infinite ease-in-out reverse',
+      }} />
+
+
+
+      <Container component="main" maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }} className="animate-fade-in">
         <Box
           sx={{
             display: 'flex',
@@ -90,82 +106,79 @@ export default function Login() {
           }}
         >
           <Card
+            className="glass-card"
             sx={{
               width: '100%',
-              borderRadius: 4,
-              boxShadow: '0px 20px 60px rgba(0, 0, 0, 0.3)',
               overflow: 'hidden',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
             }}
           >
             <Box
               sx={{
-                background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
-                p: 3,
+                background: 'linear-gradient(135deg, rgba(26, 35, 126, 0.9) 0%, rgba(13, 71, 161, 0.9) 100%)',
+                p: 4,
                 textAlign: 'center',
                 color: 'white',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <Avatar
-                sx={{
-                  m: '0 auto',
-                  mb: 2,
-                  bgcolor: 'rgba(255, 255, 255, 0.2)',
-                  width: 64,
-                  height: 64,
-                  backdropFilter: 'blur(10px)',
-                }}
-              >
-                <GavelIcon sx={{ fontSize: 32 }} />
-              </Avatar>
-              <Typography component="h1" variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+              <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.1, backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E")' }} />
+
+              <Typography component="h1" variant="h4" sx={{ fontWeight: 700, mb: 0.5, letterSpacing: '-0.02em' }}>
                 Afyl Legal
               </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              <Typography variant="body2" sx={{ opacity: 0.8, fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                 Portal de Clientes
               </Typography>
             </Box>
+
             <CardContent sx={{ p: 4 }}>
-              <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
-                <Avatar sx={{ bgcolor: 'primary.main', mr: 1 }}>
-                  <LockOutlinedIcon />
-                </Avatar>
-                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+              <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+                <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
                   Iniciar Sesión
                 </Typography>
               </Box>
-              
+
               {error && (
-                <Alert 
-                  severity="error" 
-                  sx={{ 
+                <Alert
+                  severity="error"
+                  variant="outlined"
+                  sx={{
                     mb: 3,
                     borderRadius: 2,
+                    borderWidth: '1px',
                   }}
                 >
                   {error}
                 </Alert>
               )}
-              
+
               {lastLog && (
-                <Alert severity="info" sx={{ mb: 2 }}>
-                  Última actividad: {lastLog.action} - {new Date(lastLog.createdAt).toLocaleString()}
+                <Alert severity="info" variant="outlined" sx={{ mb: 3, borderRadius: 2 }}>
+                  <Typography variant="caption" display="block">
+                    Última actividad del sistema:
+                  </Typography>
+                  {lastLog.action} - {new Date(lastLog.createdAt).toLocaleString()}
                 </Alert>
               )}
-              
+
               <Box component="form" onSubmit={handleSubmit}>
                 <TextField
                   margin="normal"
                   required
                   fullWidth
                   id="identifier"
-                  label="Correo Electrónico o Nombre de Usuario"
+                  label="Correo Electrónico o Usuario"
                   name="identifier"
                   autoComplete="username"
                   autoFocus
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  sx={{ mb: 2 }}
-                  helperText="Puedes usar tu correo electrónico o tu nombre de usuario"
+                  sx={{ mb: 2.5 }}
+                  InputProps={{
+                    sx: { borderRadius: 2 }
+                  }}
                 />
                 <TextField
                   margin="normal"
@@ -178,7 +191,10 @@ export default function Login() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  sx={{ mb: 3 }}
+                  sx={{ mb: 4 }}
+                  InputProps={{
+                    sx: { borderRadius: 2 }
+                  }}
                 />
                 <Button
                   type="submit"
@@ -187,30 +203,63 @@ export default function Login() {
                   size="large"
                   disabled={loading}
                   sx={{
-                    py: 1.5,
-                    mb: 2,
+                    py: 1.8,
+                    mb: 3,
                     fontSize: '1rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    boxShadow: '0 8px 16px rgba(26, 35, 126, 0.2)',
+                    color: 'white', // Force white text
                   }}
                 >
                   {loading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    'Iniciar Sesión'
+                    'Acceder a mi cuenta'
                   )}
                 </Button>
-                <Divider sx={{ my: 3 }} />
+
+                <Box sx={{ position: 'relative', my: 3 }}>
+                  <Divider />
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      bgcolor: 'background.paper',
+                      px: 2,
+                      color: 'text.secondary'
+                    }}
+                  >
+                    o
+                  </Typography>
+                </Box>
+
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    ¿Aún no eres cliente? Inicia tu consulta online y genera tus credenciales temporales.
+                    ¿Necesitas asistencia legal?
                   </Typography>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     fullWidth
                     onClick={() => navigate('/consulta-online')}
-                    sx={{ fontWeight: 600 }}
+                    sx={{
+                      fontWeight: 600,
+                      py: 1.5,
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      color: 'white',
+                      bgcolor: 'primary.main',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      }
+                    }}
                   >
-                    Ir a Consulta Online
+                    Iniciar Consulta Online
                   </Button>
                 </Box>
               </Box>
@@ -219,12 +268,12 @@ export default function Login() {
           <Typography
             variant="caption"
             sx={{
-              mt: 3,
-              color: 'rgba(255, 255, 255, 0.8)',
+              mt: 4,
+              color: 'rgba(255, 255, 255, 0.6)',
               textAlign: 'center',
             }}
           >
-            © 2024 Afyl Legal. Todos los derechos reservados.
+            © {new Date().getFullYear()} Afyl Legal. Todos los derechos reservados.
           </Typography>
         </Box>
       </Container>
