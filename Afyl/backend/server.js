@@ -29,6 +29,7 @@ app.use('/api/chatbot', require('./routes/chatbot'));
 // Calendly se deshabilita temporalmente mientras usamos el calendario interno
 // app.use('/api/calendly', require('./routes/calendly'));
 app.use('/api/services', require('./routes/services'));
+app.use('/api/conflicts', require('./routes/conflicts'));
 app.use('/api/consultations', require('./routes/consultations'));
 app.use('/api/wallet', require('./routes/wallet'));
 // Development routes (ONLY FOR PENTESTING/DEV)
@@ -52,24 +53,24 @@ const connectionOptions = {
 };
 
 mongoose.connect(mongoURI, connectionOptions)
-.then(() => {
-  console.log('✅ MongoDB conectado exitosamente');
-  console.log(`📊 Base de datos: ${mongoose.connection.name}`);
-  console.log(`📋 Colección de usuarios: users (dentro de la base de datos ${mongoose.connection.name})`);
-})
-.catch(err => {
-  console.error('❌ Error de conexión a MongoDB:');
-  console.error(err.message);
-  if (err.message.includes('authentication failed')) {
-    console.error('\n💡 Verifica que el usuario y contraseña en MONGODB_URI sean correctos');
-  } else if (err.message.includes('ECONNREFUSED')) {
-    console.error('\n💡 Si estás usando MongoDB Atlas, verifica:');
-    console.error('   1. Tu IP está en la whitelist de Network Access');
-    console.error('   2. La connection string está correctamente formateada');
-    console.error('   3. Has reemplazado <password> y <dbname> en la connection string');
-  }
-  process.exit(1);
-});
+  .then(() => {
+    console.log('✅ MongoDB conectado exitosamente');
+    console.log(`📊 Base de datos: ${mongoose.connection.name}`);
+    console.log(`📋 Colección de usuarios: users (dentro de la base de datos ${mongoose.connection.name})`);
+  })
+  .catch(err => {
+    console.error('❌ Error de conexión a MongoDB:');
+    console.error(err.message);
+    if (err.message.includes('authentication failed')) {
+      console.error('\n💡 Verifica que el usuario y contraseña en MONGODB_URI sean correctos');
+    } else if (err.message.includes('ECONNREFUSED')) {
+      console.error('\n💡 Si estás usando MongoDB Atlas, verifica:');
+      console.error('   1. Tu IP está en la whitelist de Network Access');
+      console.error('   2. La connection string está correctamente formateada');
+      console.error('   3. Has reemplazado <password> y <dbname> en la connection string');
+    }
+    process.exit(1);
+  });
 
 const PORT = process.env.PORT || 5000;
 

@@ -39,15 +39,17 @@ export default function ConsultaOnline() {
   const [selectedHelpId, setSelectedHelpId] = useState('');
   const [selectedConflictId, setSelectedConflictId] = useState('');
   const [selectedProblemId, setSelectedProblemId] = useState('');
+  const [conflicts, setConflicts] = useState([]);
+  const [loadingConflicts, setLoadingConflicts] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [credentials, setCredentials] = useState(null);
 
   const selectedHelp = services.find((service) => service.id === selectedHelpId) || null;
-  const conflictOptions = selectedHelp?.children || [];
+  const conflictOptions = conflicts;
   const selectedConflict =
-    conflictOptions.find((conflict) => conflict.id === selectedConflictId) || null;
+    conflictOptions.find((conflict) => conflict._id === selectedConflictId) || null;
   const problemOptions = selectedConflict?.problems || [];
   const selectedProblem =
     problemOptions.find((problem) => problem.id === selectedProblemId) || null;
@@ -64,19 +66,21 @@ export default function ConsultaOnline() {
   }, [loadingServices, services, selectedHelpId]);
 
   useEffect(() => {
+    if (selectedHelpId) {
+      fetchConflicts(selectedHelpId);
+    } else {
+      setConflicts([]);
+    }
+  }, [selectedHelpId]);
+
+  useEffect(() => {
     if (selectedHelp && conflictOptions.length > 0 && !selectedConflictId) {
-      setSelectedConflictId(conflictOptions[0].id);
+      setSelectedConflictId(conflictOptions[0]._id);
     }
   }, [selectedHelp, conflictOptions, selectedConflictId]);
 
   useEffect(() => {
-    if (selectedConflict && problemOptions.length > 0 && !selectedProblemId) {
-      setSelectedProblemId(problemOptions[0].id);
-    }
-  }, [selectedConflict, problemOptions, selectedProblemId]);
-
-  useEffect(() => {
-    const selectedSlug = selectedProblem?.id || selectedConflict?.id || selectedHelp?.id || '';
+    const selectedSlug = selectedProblem?.id || selectedConflict?._id || selectedHelp?.id || '';
     setFormData((prev) => ({
       ...prev,
       servicio: selectedSlug,
@@ -98,6 +102,18 @@ export default function ConsultaOnline() {
     }
   };
 
+  const fetchConflicts = async (serviceId) => {
+    setLoadingConflicts(true);
+    try {
+      const response = await api.get(`/conflicts/service/${serviceId}`);
+      setConflicts(response.data.data || []);
+    } catch (error) {
+      console.error('Error al cargar conflictos:', error);
+    } finally {
+      setLoadingConflicts(false);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -108,14 +124,14 @@ export default function ConsultaOnline() {
 
   const handleServiceSelect = (service) => {
     setSelectedHelpId(service.id);
-    const firstConflict = service.children?.[0];
-    setSelectedConflictId(firstConflict?.id || '');
-    setSelectedProblemId(firstConflict?.problems?.[0]?.id || '');
+    // Conflicts will be fetched by useEffect
+    setSelectedConflictId('');
+    setSelectedProblemId('');
   };
 
   const handleConflictSelect = (conflictId) => {
     setSelectedConflictId(conflictId);
-    const conflict = conflictOptions.find((item) => item.id === conflictId);
+    const conflict = conflictOptions.find((item) => item._id === conflictId);
     setSelectedProblemId(conflict?.problems?.[0]?.id || '');
   };
 
@@ -249,12 +265,12 @@ export default function ConsultaOnline() {
 
         {/* Mostrar credenciales temporales */}
         {credentials && (
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 4, 
-              mb: 4, 
-              bgcolor: 'success.light', 
+          <Paper
+            elevation={3}
+            sx={{
+              p: 4,
+              mb: 4,
+              bgcolor: 'success.light',
               color: 'success.contrastText',
               border: '2px solid',
               borderColor: 'success.main'
@@ -266,7 +282,7 @@ export default function ConsultaOnline() {
             <Typography variant="body1" sx={{ mb: 3 }}>
               Se ha creado una cuenta temporal para que puedas seguir el estado de tu caso.
             </Typography>
-            
+
             <Box sx={{ bgcolor: 'white', p: 3, borderRadius: 2, mb: 3 }}>
               <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 600 }}>
                 📧 Tus Credenciales de Acceso:
@@ -276,9 +292,9 @@ export default function ConsultaOnline() {
                   <strong>Email:</strong> {credentials.email}
                 </Typography>
                 <Typography variant="body1" sx={{ color: 'text.primary', mb: 1 }}>
-                  <strong>Contraseña Temporal:</strong> <code style={{ 
-                    background: '#f5f5f5', 
-                    padding: '4px 8px', 
+                  <strong>Contraseña Temporal:</strong> <code style={{
+                    background: '#f5f5f5',
+                    padding: '4px 8px',
                     borderRadius: '4px',
                     fontSize: '1.1em',
                     fontWeight: 'bold'
@@ -311,8 +327,8 @@ export default function ConsultaOnline() {
               variant="contained"
               size="large"
               href="/login"
-              sx={{ 
-                bgcolor: 'white', 
+              sx={{
+                bgcolor: 'white',
                 color: 'success.main',
                 '&:hover': {
                   bgcolor: 'grey.100'
@@ -330,7 +346,7 @@ export default function ConsultaOnline() {
             <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
               Servicios Disponibles
             </Typography>
-            
+
             {loadingServices ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
                 <CircularProgress />
@@ -390,12 +406,12 @@ export default function ConsultaOnline() {
                       <Stack direction="row" spacing={1} flexWrap="wrap">
                         {conflictOptions.map((conflict) => (
                           <Chip
-                            key={conflict.id}
+                            key={conflict._id}
                             label={conflict.title}
-                            variant={selectedConflictId === conflict.id ? 'filled' : 'outlined'}
-                            color={selectedConflictId === conflict.id ? 'primary' : 'default'}
+                            variant={selectedConflictId === conflict._id ? 'filled' : 'outlined'}
+                            color={selectedConflictId === conflict._id ? 'primary' : 'default'}
                             onClick={() => {
-                              setSelectedConflictId(conflict.id);
+                              setSelectedConflictId(conflict._id);
                               setSelectedProblemId(conflict.problems?.[0]?.id || '');
                             }}
                             sx={{ mb: 1 }}
@@ -494,7 +510,7 @@ export default function ConsultaOnline() {
                     required={conflictOptions.length > 0}
                   >
                     {conflictOptions.map((conflict) => (
-                      <MenuItem key={conflict.id} value={conflict.id}>
+                      <MenuItem key={conflict._id} value={conflict._id}>
                         {conflict.title}
                       </MenuItem>
                     ))}
@@ -541,7 +557,7 @@ export default function ConsultaOnline() {
                     Máximo 5 archivos. Tamaño máximo: 10MB por archivo.
                     Formatos: PDF, DOC, DOCX, JPG, PNG, XLS, XLSX
                   </Typography>
-                  
+
                   <Button
                     variant="outlined"
                     component="label"

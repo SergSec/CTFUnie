@@ -114,6 +114,9 @@ export default function ServiceManagement() {
   const [editingProblemIndex, setEditingProblemIndex] = useState(null);
   const [problemForm, setProblemForm] = useState(initialProblem);
 
+  const [conflicts, setConflicts] = useState([]);
+  const [loadingConflicts, setLoadingConflicts] = useState(false);
+
   // New states for configurable form fields per service
   const [formFieldDialogOpen, setFormFieldDialogOpen] = useState(false);
   const [editingFormFieldIndex, setEditingFormFieldIndex] = useState(null);
@@ -135,8 +138,8 @@ export default function ServiceManagement() {
   );
 
   const selectedConflict = useMemo(
-    () => (selectedConflictId ? findServiceByCustomId(servicesTree, selectedConflictId) : null),
-    [servicesTree, selectedConflictId]
+    () => (selectedConflictId ? conflicts.find(c => c._id === selectedConflictId) : null),
+    [conflicts, selectedConflictId]
   );
 
   useEffect(() => {
@@ -152,10 +155,12 @@ export default function ServiceManagement() {
   }, [topLevelServices, selectedHelpId]);
 
   useEffect(() => {
-    if (selectedHelp && selectedHelp.children?.length && !selectedConflictId) {
-      setSelectedConflictId(selectedHelp.children[0].id);
+    if (selectedHelpId) {
+      fetchConflicts(selectedHelpId);
+    } else {
+      setConflicts([]);
     }
-  }, [selectedHelp, selectedConflictId]);
+  }, [selectedHelpId]);
 
   const fetchServices = async () => {
     setLoading(true);
@@ -173,28 +178,70 @@ export default function ServiceManagement() {
     }
   };
 
-  const handleOpenDialog = (service = null, options = {}) => {
-    setDialogContext(options.context || 'service');
-    if (service) {
-      setEditingService(service);
-      setFormData({
-        id: service.id,
-        title: service.title,
-        description: service.description,
-        order: service.order,
-        isActive: service.isActive,
-        parentId: service.parent ? service.parent.toString() : '',
-        tags: service.tags || [],
-        formFields: service.formFields || [],
+  const fetchConflicts = async (serviceId) => {
+    setLoadingConflicts(true);
+    try {
+      const response = await api.get(`/conflicts/all/service/${serviceId}`);
+      setConflicts(response.data.data || []);
+    } catch (error) {
+      console.error('Error al cargar conflictos:', error);
+      setAlert({
+        type: 'error',
+        message: 'Error al cargar los conflictos',
       });
+    } finally {
+      setLoadingConflicts(false);
+    }
+  };
+
+  const handleOpenDialog = (item = null, options = {}) => {
+    const context = options.context || 'service';
+    setDialogContext(context);
+
+    if (context === 'conflict') {
+      if (item) {
+        setEditingService(item); // Reusing editingService state for conflict
+        setFormData({
+          id: item._id, // Conflict uses _id
+          title: item.title,
+          description: item.description,
+          order: item.order,
+          isActive: item.isActive,
+          parentId: options.parentId || '', // Service ID
+        });
+      } else {
+        setEditingService(null);
+        setFormData({
+          title: '',
+          description: '',
+          order: 0,
+          isActive: true,
+          parentId: options.parentId || '', // Service ID
+        });
+      }
     } else {
-      setEditingService(null);
-      setFormData({
-        ...initialForm,
-        parentId: options.parentId || '',
-        order: 0,
-        formFields: [],
-      });
+      // Service logic
+      if (item) {
+        setEditingService(item);
+        setFormData({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          order: item.order,
+          isActive: item.isActive,
+          parentId: item.parent ? item.parent.toString() : '',
+          tags: item.tags || [],
+          formFields: item.formFields || [],
+        });
+      } else {
+        setEditingService(null);
+        setFormData({
+          ...initialForm,
+          parentId: options.parentId || '',
+          order: 0,
+          formFields: [],
+        });
+      }
     }
     setOpenDialog(true);
   };
@@ -218,28 +265,49 @@ export default function ServiceManagement() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const payload = {
-      ...formData,
-      order: Number(formData.order),
-      parentId: formData.parentId || null,
-      formFields: formData.formFields || [],
-    };
 
     try {
-      if (editingService) {
-        await api.put(`/services/${editingService.id}`, payload);
-        setAlert({ type: 'success', message: 'Servicio actualizado correctamente' });
+      if (dialogContext === 'conflict') {
+        const payload = {
+          title: formData.title,
+          description: formData.description,
+          order: Number(formData.order),
+          isActive: formData.isActive,
+          serviceId: formData.parentId, // We stored serviceId in parentId
+        };
+
+        if (editingService) {
+          await api.put(`/conflicts/${editingService._id}`, payload);
+          setAlert({ type: 'success', message: 'Conflicto actualizado correctamente' });
+        } else {
+          await api.post('/conflicts', payload);
+          setAlert({ type: 'success', message: 'Conflicto creado correctamente' });
+        }
+        fetchConflicts(formData.parentId);
       } else {
-        await api.post('/services', payload);
-        setAlert({ type: 'success', message: 'Servicio creado correctamente' });
+        // Service logic
+        const payload = {
+          ...formData,
+          order: Number(formData.order),
+          parentId: formData.parentId || null,
+          formFields: formData.formFields || [],
+        };
+
+        if (editingService) {
+          await api.put(`/services/${editingService.id}`, payload);
+          setAlert({ type: 'success', message: 'Servicio actualizado correctamente' });
+        } else {
+          await api.post('/services', payload);
+          setAlert({ type: 'success', message: 'Servicio creado correctamente' });
+        }
+        fetchServices();
       }
-      fetchServices();
       handleCloseDialog();
     } catch (error) {
-      console.error('Error al guardar servicio:', error);
+      console.error('Error al guardar:', error);
       setAlert({
         type: 'error',
-        message: error.response?.data?.message || 'Error al guardar el servicio',
+        message: error.response?.data?.message || 'Error al guardar',
       });
     }
   };
@@ -260,15 +328,21 @@ export default function ServiceManagement() {
     }
   };
 
-  const handleDelete = async (service) => {
-    if (!window.confirm(`¿Eliminar "${service.title}"?`)) return;
+  const handleDelete = async (item) => {
+    if (!window.confirm(`¿Eliminar "${item.title}"?`)) return;
     try {
-      await api.delete(`/services/${service.id}`);
-      setAlert({ type: 'success', message: 'Servicio eliminado correctamente' });
-      fetchServices();
+      if (activeTab === 'conflicts') {
+        await api.delete(`/conflicts/${item._id}`);
+        setAlert({ type: 'success', message: 'Conflicto eliminado correctamente' });
+        fetchConflicts(selectedHelpId);
+      } else {
+        await api.delete(`/services/${item.id}`);
+        setAlert({ type: 'success', message: 'Servicio eliminado correctamente' });
+        fetchServices();
+      }
     } catch (error) {
-      console.error('Error al eliminar servicio:', error);
-      setAlert({ type: 'error', message: 'Error al eliminar el servicio' });
+      console.error('Error al eliminar:', error);
+      setAlert({ type: 'error', message: 'Error al eliminar' });
     }
   };
 
@@ -292,7 +366,7 @@ export default function ServiceManagement() {
       });
       setEditingProblemIndex(null);
     }
-    setSelectedConflictId(targetConflict.id);
+    setSelectedConflictId(targetConflict._id); // Use _id
     setProblemDialogOpen(true);
   };
 
@@ -310,19 +384,19 @@ export default function ServiceManagement() {
     const updatedProblems =
       editingProblemIndex !== null
         ? existingProblems.map((problem, index) =>
-            index === editingProblemIndex ? normalizedProblem : problem
-          )
+          index === editingProblemIndex ? normalizedProblem : problem
+        )
         : [...existingProblems, normalizedProblem];
 
     try {
-      await api.put(`/services/${selectedConflict.id}`, {
+      await api.put(`/conflicts/${selectedConflict._id}`, {
         problems: updatedProblems,
       });
       setAlert({ type: 'success', message: 'Problemas actualizados correctamente' });
       setProblemDialogOpen(false);
       setProblemForm(initialProblem);
       setEditingProblemIndex(null);
-      fetchServices();
+      fetchConflicts(selectedHelpId);
     } catch (error) {
       console.error('Error al guardar problema:', error);
       setAlert({
@@ -338,11 +412,11 @@ export default function ServiceManagement() {
       (problem) => problem.id !== problemId
     );
     try {
-      await api.put(`/services/${selectedConflict.id}`, {
+      await api.put(`/conflicts/${selectedConflict._id}`, {
         problems: updatedProblems,
       });
       setAlert({ type: 'success', message: 'Problema eliminado' });
-      fetchServices();
+      fetchConflicts(selectedHelpId);
     } catch (error) {
       console.error('Error al eliminar problema:', error);
       setAlert({ type: 'error', message: 'Error al eliminar el problema' });
@@ -408,7 +482,7 @@ export default function ServiceManagement() {
     setFormFieldForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
-    const handleProblemChange = (e) => {
+  const handleProblemChange = (e) => {
     const { name, value, type, checked } = e.target;
     setProblemForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
@@ -655,20 +729,22 @@ export default function ServiceManagement() {
 
           {!selectedHelp ? (
             <Alert severity="info">Selecciona una ayuda para ver sus conflictos.</Alert>
-          ) : selectedHelp.children?.length === 0 ? (
+          ) : loadingConflicts ? (
+            <Paper sx={{ p: 4, textAlign: 'center' }}>Cargando conflictos...</Paper>
+          ) : conflicts.length === 0 ? (
             <Paper sx={{ p: 4, textAlign: 'center' }}>
               Aún no hay conflictos configurados para esta ayuda.
             </Paper>
           ) : (
             <Grid container spacing={2}>
-              {selectedHelp.children.map((conflict) => (
-                <Grid item xs={12} md={6} key={conflict.id}>
+              {conflicts.map((conflict) => (
+                <Grid item xs={12} md={6} key={conflict._id}>
                   <Card
                     variant="outlined"
                     sx={{
-                      borderColor: selectedConflictId === conflict.id ? 'primary.main' : 'divider',
+                      borderColor: selectedConflictId === conflict._id ? 'primary.main' : 'divider',
                     }}
-                    onClick={() => setSelectedConflictId(conflict.id)}
+                    onClick={() => setSelectedConflictId(conflict._id)}
                   >
                     <CardContent>
                       <Typography variant="h6">{conflict.title}</Typography>
@@ -685,7 +761,7 @@ export default function ServiceManagement() {
                         />
                       </Stack>
                       <Stack direction="row" spacing={1} sx={{ mt: 2, flexWrap: 'wrap' }}>
-                        <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenDialog(conflict, { context: 'conflict' })}>
+                        <Button size="small" startIcon={<EditIcon />} onClick={() => handleOpenDialog(conflict, { context: 'conflict', parentId: selectedHelpId })}>
                           Editar
                         </Button>
                         <Button
@@ -700,7 +776,7 @@ export default function ServiceManagement() {
                         </Button>
                       </Stack>
 
-                      {selectedConflictId === conflict.id && (
+                      {selectedConflictId === conflict._id && (
                         <Box sx={{ mt: 2 }}>
                           <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                             Problemas
@@ -719,6 +795,7 @@ export default function ServiceManagement() {
                                       label={problem.isActive ? 'Activo' : 'Inactivo'}
                                       color={problem.isActive ? 'success' : 'default'}
                                       size="small"
+                                      sx={{ mr: 1 }}
                                       sx={{ mr: 1 }}
                                     />
                                     <IconButton
@@ -761,14 +838,16 @@ export default function ServiceManagement() {
           <DialogTitle>{dialogTitles[dialogContext]}</DialogTitle>
           <DialogContent dividers>
             <Stack spacing={2} sx={{ mt: 1 }}>
-              <TextField
-                label="ID"
-                name="id"
-                value={formData.id}
-                onChange={handleInputChange}
-                required
-                helperText="Minúsculas, sin espacios. Ej: laboral"
-              />
+              {dialogContext !== 'conflict' && (
+                <TextField
+                  label="ID"
+                  name="id"
+                  value={formData.id}
+                  onChange={handleInputChange}
+                  required
+                  helperText="Minúsculas, sin espacios. Ej: laboral"
+                />
+              )}
               <TextField
                 label="Título"
                 name="title"
@@ -793,22 +872,24 @@ export default function ServiceManagement() {
                 onChange={handleInputChange}
                 helperText="Permite números negativos para forzar prioridad"
               />
-              <FormControl fullWidth>
-                <InputLabel>Servicio padre (opcional)</InputLabel>
-                <Select
-                  label="Servicio padre (opcional)"
-                  name="parentId"
-                  value={formData.parentId}
-                  onChange={handleInputChange}
-                >
-                  <MenuItem value="">Sin padre (nivel raíz)</MenuItem>
-                  {flatServices.map((service) => (
-                    <MenuItem key={service.id} value={service.id}>
-                      {'—'.repeat(service.level)} {service.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {dialogContext !== 'conflict' && (
+                <FormControl fullWidth>
+                  <InputLabel>Servicio padre (opcional)</InputLabel>
+                  <Select
+                    label="Servicio padre (opcional)"
+                    name="parentId"
+                    value={formData.parentId}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="">Sin padre (nivel raíz)</MenuItem>
+                    {flatServices.map((service) => (
+                      <MenuItem key={service.id} value={service.id}>
+                        {'—'.repeat(service.level)} {service.title}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
               <FormControlLabel
                 control={
                   <Switch
