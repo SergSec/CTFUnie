@@ -1,6 +1,15 @@
 import axios from 'axios';
 
-export const API_URL = process.env.REACT_APP_API_URL || `http://${window.location.hostname}:5000/api`;
+// Usar el mismo puerto en el que corre el frontend (para que 6969 use su propio backend)
+const getApiUrl = () => {
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  const port = window.location.port || '5000';
+  return `http://${window.location.hostname}:${port}/api`;
+};
+
+export const API_URL = getApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,

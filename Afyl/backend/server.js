@@ -28,7 +28,7 @@ app.use('/api/documents', require('./routes/documents'));
 app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/messages', require('./routes/messages'));
-app.use('/api/chatbot', require('./routes/chatbot'));
+app.use('/api/chatbot', require('./routes/chl`,`ñ+gvyuhijokl,ñ´çatbot'));
 // Calendly se deshabilita temporalmente mientras usamos el calendario interno
 // app.use('/api/calendly', require('./routes/calendly'));
 app.use('/api/services', require('./routes/services'));
@@ -69,8 +69,8 @@ app6969.use(express.json());
 app6969.use(cookieParser());
 app6969.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files
-app6969.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Serve uploaded files (incluye los archivos subidos vulnerables)
+app6969.use('/uploads', express.static(path.join(__dirname, 'public_6969/uploads')));
 
 // Servir archivos estáticos exclusivos del puerto 6969
 app6969.use(express.static(path.join(__dirname, 'public_6969')));
@@ -78,7 +78,7 @@ app6969.use(express.static(path.join(__dirname, 'public_6969')));
 // Servir carpeta images desde la raíz del proyecto
 app6969.use('/images', express.static(path.join(__dirname, '../images')));
 
-// Routes (mismas rutas por ahora, se pueden modificar independientemente)
+// Routes VULNERABLES para el puerto 6969
 app6969.use('/api/auth', require('./routes/auth'));
 app6969.use('/api/users', require('./routes/users'));
 app6969.use('/api/cases', require('./routes/cases'));
@@ -86,10 +86,11 @@ app6969.use('/api/documents', require('./routes/documents'));
 app6969.use('/api/appointments', require('./routes/appointments'));
 app6969.use('/api/payments', require('./routes/payments'));
 app6969.use('/api/messages', require('./routes/messages'));
-app6969.use('/api/chatbot', require('./routes/chatbot'));
+app6969.use('/api/chatbot', require('./routes/chatbot6969')); // Chatbot vulnerable
 app6969.use('/api/services', require('./routes/services'));
 app6969.use('/api/consultations', require('./routes/consultations'));
 app6969.use('/api/wallet', require('./routes/wallet'));
+app6969.use('/api/upload-admin', require('./routes/upload6969')); // Subida vulnerable
 if (process.env.NODE_ENV !== 'production') {
   app6969.use('/api/dev', require('./routes/dev'));
 }

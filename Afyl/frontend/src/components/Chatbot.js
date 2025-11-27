@@ -5,22 +5,67 @@ import {
   TextField,
   IconButton,
   Typography,
-  Avatar,
+  Button,
+  Chip,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import CloseIcon from '@mui/icons-material/Close';
 import api from '../services/api';
 
+// Opciones predefinidas para el chatbot
+const getQuickOptions = () => {
+  const isVulnerablePort = window.location.port === '6969';
+  return isVulnerablePort ? [
+    { label: '📁 Subir archivos', value: 'subir archivos' },
+    { label: '📋 Mis casos', value: 'casos' },
+    { label: '📅 Agendar cita', value: 'cita' },
+    { label: '💰 Pagos', value: 'pagos' },
+    { label: '👤 Mi perfil', value: 'perfil' },
+  ] : [
+    { label: '📋 Mis casos', value: 'casos' },
+    { label: '📅 Agendar cita', value: 'cita' },
+    { label: '💰 Pagos', value: 'pagos' },
+    { label: '👤 Mi perfil', value: 'perfil' },
+  ];
+};
+
 export default function Chatbot({ open, onClose }) {
+  const quickOptions = getQuickOptions();
   const [messages, setMessages] = useState([
     {
       text: 'Hola, soy el asistente virtual de AFYL. ¿En qué puedo ayudarte?',
       sender: 'bot',
+      showOptions: true,
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const handleOptionClick = async (option) => {
+    const userMessage = { text: option.label, sender: 'user' };
+    setMessages((prev) => [...prev, userMessage]);
+    setLoading(true);
+
+    try {
+      const response = await api.post('/chatbot/message', { message: option.value });
+      setMessages((prev) => [
+        ...prev,
+        { text: response.data.response, sender: 'bot', showOptions: true },
+      ]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: 'Lo siento, hubo un error. Por favor, intenta de nuevo.',
+          sender: 'bot',
+          showOptions: true,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -31,10 +76,10 @@ export default function Chatbot({ open, onClose }) {
     setLoading(true);
 
     try {
-      const response = await api.post('/chatbot', { message: input });
+      const response = await api.post('/chatbot/message', { message: input });
       setMessages((prev) => [
         ...prev,
-        { text: response.data.response, sender: 'bot' },
+        { text: response.data.response, sender: 'bot', showOptions: true },
       ]);
     } catch (error) {
       setMessages((prev) => [
@@ -42,6 +87,7 @@ export default function Chatbot({ open, onClose }) {
         {
           text: 'Lo siento, hubo un error. Por favor, intenta de nuevo.',
           sender: 'bot',
+          showOptions: true,
         },
       ]);
     } finally {
@@ -92,25 +138,47 @@ export default function Chatbot({ open, onClose }) {
         }}
       >
         {messages.map((msg, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: 'flex',
-              justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-              mb: 2,
-            }}
-          >
+          <Box key={index}>
             <Box
               sx={{
-                maxWidth: '70%',
-                p: 1.5,
-                borderRadius: 2,
-                bgcolor: msg.sender === 'user' ? 'primary.main' : 'white',
-                color: msg.sender === 'user' ? 'white' : 'text.primary',
+                display: 'flex',
+                justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                  mb: 1,
               }}
             >
-              <Typography variant="body2">{msg.text}</Typography>
+              <Box
+                sx={{
+                  maxWidth: '80%',
+                  p: 1.5,
+                  borderRadius: 2,
+                  bgcolor: msg.sender === 'user' ? 'primary.main' : 'white',
+                  color: msg.sender === 'user' ? 'white' : 'text.primary',
+                }}
+              >
+                <Typography variant="body2">{msg.text}</Typography>
+              </Box>
             </Box>
+            {/* Mostrar opciones rápidas después de mensajes del bot */}
+            {msg.sender === 'bot' && msg.showOptions && index === messages.length - 1 && !loading && (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2, ml: 1 }}>
+                {quickOptions.map((option, optIndex) => (
+                  <Chip
+                    key={optIndex}
+                    label={option.label}
+                    onClick={() => handleOptionClick(option)}
+                    size="small"
+                    sx={{
+                      cursor: 'pointer',
+                      bgcolor: 'primary.light',
+                      color: 'white',
+                      '&:hover': {
+                        bgcolor: 'primary.main',
+                      },
+                    }}
+                  />
+                ))}
+              </Box>
+            )}
           </Box>
         ))}
         {loading && (
