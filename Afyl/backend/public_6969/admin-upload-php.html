@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Documentos - AFYL</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4fc3f7;
+        }
+        .upload-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .upload-area {
+            border: 2px dashed rgba(79, 195, 247, 0.5);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .upload-area:hover {
+            border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.1);
+        }
+        .upload-area.dragover {
+            border-color: #4fc3f7;
+            background: rgba(79, 195, 247, 0.2);
+        }
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .file-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        .file-info.show {
+            display: block;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        .message.success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            display: block;
+        }
+        .message.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            display: block;
+        }
+        .uploaded-files {
+            margin-top: 30px;
+        }
+        .uploaded-files h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+        }
+        .file-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-item a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+        .file-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📄 Subir Documentos</h1>
+        
+        <div class="upload-card">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="upload-area" id="dropZone">
+                    <div class="upload-icon">📁</div>
+                    <p>Arrastra archivos aquí o haz clic para seleccionar</p>
+                    <p style="color: #888; font-size: 12px; margin-top: 10px;">
+                        Formatos permitidos: Todos los archivos
+                    </p>
+                    <input type="file" id="fileInput" name="file">
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <strong>Archivo seleccionado:</strong>
+                    <p id="fileName"></p>
+                    <p id="fileSize"></p>
+                </div>
+                
+                <button type="submit" class="btn" id="uploadBtn" disabled>
+                    Subir Archivo
+                </button>
+            </form>
+            
+            <div class="message" id="message"></div>
+        </div>
+        
+        <div class="uploaded-files">
+            <h3>📋 Archivos Subidos</h3>
+            <div class="file-list" id="fileList">
+                <p style="color: #888; text-align: center;">No hay archivos subidos aún</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const message = document.getElementById('message');
+        const fileList = document.getElementById('fileList');
+        
+        let uploadedFiles = [];
+
+        // Click en zona de upload
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        });
+
+        // Selección de archivo
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+                fileSize.textContent = formatBytes(file.size);
+                fileInfo.classList.add('show');
+                uploadBtn.disabled = false;
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Envío del formulario - USANDO PHP
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = 'Subiendo...';
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Usar upload.php en lugar de la API de Node.js
+                const response = await fetch('/vulnerable/upload.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                console.log('Response:', result);
+
+                if (result.success) {
+                    showMessage('success', `✓ Archivo "${result.file.filename}" subido correctamente`);
+                    addFileToList(result.file);
+                    resetForm();
+                } else {
+                    showMessage('error', '✗ Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('error', '✗ Error al subir el archivo: ' + error.message);
+            }
+
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = 'Subir Archivo';
+        });
+
+        function showMessage(type, text) {
+            message.className = 'message ' + type;
+            message.textContent = text;
+        }
+
+        function addFileToList(file) {
+            uploadedFiles.push(file);
+            updateFileList();
+        }
+
+        function updateFileList() {
+            if (uploadedFiles.length === 0) {
+                fileList.innerHTML = '<p style="color: #888; text-align: center;">No hay archivos subidos aún</p>';
+                return;
+            }
+
+            fileList.innerHTML = uploadedFiles.map(file => `
+                <div class="file-item">
+                    <span>📄 ${file.filename}</span>
+                    <a href="${file.path}" target="_blank">Ver/Ejecutar</a>
+                </div>
+            `).join('');
+        }
+
+        function resetForm() {
+            fileInput.value = '';
+            fileInfo.classList.remove('show');
+            uploadBtn.disabled = true;
+        }
+    </script>
+</body>
+</html>
