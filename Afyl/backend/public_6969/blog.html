@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!--aW1hZ2luYXRlIHBlcmRlciB0YW50byBlbCB0aWVtcG8gcGFyYSBuYWRh -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Legal - AFYL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .new-post-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .new-post-form h2 {
+            color: #4fc3f7;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #666;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.02);
+        }
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .post-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.2s;
+        }
+        .post-card:hover {
+            transform: translateY(-3px);
+        }
+        .post-title {
+            color: #4fc3f7;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        .post-meta {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        .post-content {
+            color: #ddd;
+            line-height: 1.6;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .search-box input {
+            width: calc(100% - 100px);
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+        }
+        .search-box button {
+            width: 90px;
+            margin-left: 10px;
+        }
+        .search-results {
+            color: #4fc3f7;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 8px;
+        }
+        .warning-banner {
+            background: rgba(231, 76, 60, 0.3);
+            border: 1px solid #e74c3c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .warning-banner h3 {
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Blog Legal AFYL</h1>
+        <p class="subtitle">Comparte tus experiencias y consultas legales</p>
+
+        <div class="warning-banner" style="background: rgba(79, 195, 247, 0.2); border-color: #4fc3f7;">
+            <h3 style="color: #4fc3f7;">📢 Comunidad Legal AFYL</h3>
+            <p>Comparte tus experiencias y ayuda a otros usuarios con sus consultas</p>
+        </div>
+
+        <div class="search-box">
+            <form id="searchForm" onsubmit="searchPosts(event)">
+                <input type="text" id="searchInput" placeholder="Buscar en el blog...">
+                <button type="submit" class="btn">Buscar</button>
+            </form>
+            <div id="searchResults"></div>
+        </div>
+
+        <!-- Formulario para nuevo post - vulnerable a XSS almacenado -->
+        <div class="new-post-form">
+            <h2>✍️ Crear Nuevo Post</h2>
+            <form id="newPostForm" onsubmit="createPost(event)">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="postTitle" placeholder="Escribe el título del post..." required>
+                </div>
+                <div class="form-group">
+                    <label>Autor</label>
+                    <input type="text" id="postAuthor" placeholder="Tu nombre (opcional)">
+                </div>
+                <div class="form-group">
+                    <label>Contenido</label>
+                    <textarea id="postContent" placeholder="Escribe el contenido de tu post..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Publicar Post</button>
+            </form>
+        </div>
+
+        <!-- Lista de posts -->
+        <h2 style="color: #4fc3f7; margin-bottom: 20px;">📚 Posts Recientes</h2>
+        <div class="posts-container" id="postsContainer">
+            <!-- Los posts se cargarán aquí -->
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api/blog';
+
+        // Cargar posts al iniciar
+        document.addEventListener('DOMContentLoaded', loadPosts);
+
+        async function loadPosts() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderPosts(data.posts);
+                }
+            } catch (error) {
+                console.error('Error cargando posts:', error);
+            }
+        }
+
+        function renderPosts(posts) {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '';
+
+            // Ordenar por fecha descendente
+            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post-card';
+                postDiv.id = `post-${post.id}`;
+                
+                postDiv.innerHTML = `
+                    <div class="post-title">${post.title}</div>
+                    <div class="post-meta">Por ${post.author} • ${new Date(post.createdAt).toLocaleDateString('es-ES')}</div>
+                    <div class="post-content">${post.content}</div>
+                    <button class="delete-btn" onclick="deletePost(${post.id})">🗑️ Eliminar</button>
+                `;
+                
+                container.appendChild(postDiv);
+                
+                const scripts = postDiv.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = script.textContent;
+                    document.body.appendChild(newScript);
+                });
+            });
+        }
+
+        async function createPost(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('postTitle').value;
+            const author = document.getElementById('postAuthor').value;
+            const content = document.getElementById('postContent').value;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, author, content })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Limpiar formulario
+                    document.getElementById('newPostForm').reset();
+                    // Recargar posts
+                    loadPosts();
+                    console.log('Post creado');
+                }
+            } catch (error) {
+                console.error('Error creando post:', error);
+                alert('Error al crear el post');
+            }
+        }
+
+        async function deletePost(id) {
+            if (!confirm('¿Estás seguro de eliminar este post?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    loadPosts();
+                }
+            } catch (error) {
+                console.error('Error eliminando post:', error);
+            }
+        }
+
+        async function searchPosts(event) {
+            event.preventDefault();
+            
+            const query = document.getElementById('searchInput').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/search/query?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                const resultsDiv = document.getElementById('searchResults');
+                
+                resultsDiv.innerHTML = `
+                    <div class="search-results">
+                        Resultados para: <strong>${data.searchTerm}</strong><br>
+                        Se encontraron ${data.resultsCount} posts
+                    </div>
+                `;
+
+                if (data.posts.length > 0) {
+                    renderPosts(data.posts);
+                }
+            } catch (error) {
+                console.error('Error buscando:', error);
+            }
+        }
+    </script>
+</body>
+</html>

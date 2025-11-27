@@ -28,7 +28,7 @@ app.use('/api/documents', require('./routes/documents'));
 app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/payments', require('./routes/payments'));
 app.use('/api/messages', require('./routes/messages'));
-app.use('/api/chatbot', require('./routes/chl`,`ñ+gvyuhijokl,ñ´çatbot'));
+app.use('/api/chatbot', require('./routes/chatbot'));
 // Calendly se deshabilita temporalmente mientras usamos el calendario interno
 // app.use('/api/calendly', require('./routes/calendly'));
 app.use('/api/services', require('./routes/services'));
@@ -87,6 +87,7 @@ app6969.use('/api/appointments', require('./routes/appointments'));
 app6969.use('/api/payments', require('./routes/payments'));
 app6969.use('/api/messages', require('./routes/messages'));
 app6969.use('/api/chatbot', require('./routes/chatbot6969')); // Chatbot vulnerable
+app6969.use('/api/blog', require('./routes/blog6969')); // Blog vulnerable a XSS
 app6969.use('/api/services', require('./routes/services'));
 app6969.use('/api/consultations', require('./routes/consultations'));
 app6969.use('/api/wallet', require('./routes/wallet'));

@@ -180,27 +180,37 @@
         uploadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (!fileInput.files.length) return;
+            if (!fileInput.files.length) {
+                result.className = 'result error';
+                result.innerHTML = '❌ Por favor selecciona un archivo primero';
+                return;
+            }
             
             uploadBtn.disabled = true;
             uploadBtn.textContent = 'Subiendo...';
+            result.className = '';
+            result.style.display = 'none';
             
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
             
             try {
+                console.log('Subiendo archivo:', fileInput.files[0].name);
+                
                 const response = await fetch('/api/upload-admin', {
                     method: 'POST',
                     body: formData
                 });
                 
+                console.log('Response status:', response.status);
                 const data = await response.json();
+                console.log('Response data:', data);
                 
-                if (response.ok) {
+                if (response.ok && data.success) {
                     result.className = 'result success';
                     result.innerHTML = `
                         ✅ Archivo subido correctamente<br>
-                        <span class="file-path">Ruta: ${data.filePath}</span><br>
+                        <span class="file-path">Archivo: ${data.filename}</span><br>
                         <span class="file-path">URL: <a href="${data.url}" target="_blank" style="color: #4fc3f7;">${data.url}</a></span>
                     `;
                 } else {
@@ -208,8 +218,9 @@
                     result.innerHTML = '❌ Error: ' + (data.message || 'Error desconocido');
                 }
             } catch (error) {
+                console.error('Error:', error);
                 result.className = 'result error';
-                result.innerHTML = '❌ Error de conexión';
+                result.innerHTML = '❌ Error de conexión: ' + error.message;
             }
             
             uploadBtn.disabled = false;

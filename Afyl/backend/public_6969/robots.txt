@@ -1,0 +1,14 @@
+# Robots.txt - AFYL Legal Platform
+# Configuracion de indexacion para motores de busqueda
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /uploads/private/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /s3cr3t-4dm1n/
+Disallow: /backup/
+Disallow: /old/
+
+HINT: UNA 100% FUNCIONA

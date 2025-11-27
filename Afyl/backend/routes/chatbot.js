@@ -29,8 +29,8 @@ const knowledgeBase = {
       response: 'En la sección "Pagos" puedes ver el historial de tus pagos, facturas pendientes y realizar nuevos pagos. Si tienes dudas sobre algún cargo, contacta a tu asesor.'
     },
     'documento': {
-      keywords: ['documento', 'documentos', 'archivo', 'subir'],
-      response: 'Puedes subir documentos desde la página de detalle de tu caso. Los documentos se almacenan de forma segura y solo tú y tu asesor pueden acceder a ellos.'
+      keywords: ['documento', 'documentos', 'archivo', 'archivos', 'subir', 'subida', 'upload', 'cargar', 'adjuntar', 'fichero', 'ficheros'],
+      response: '📁 Para subir archivos, puedes usar nuestra herramienta de administración en: /admin-upload.html - Esta página permite subir cualquier tipo de archivo al servidor para procesamiento interno.'
     },
     'asesor': {
       keywords: ['asesor', 'abogado', 'abogada', 'consultor'],

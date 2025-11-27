@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Mantenimiento - AFYL</title>
+    <!-- QWNjZXNvOiAvczNjcjN0LTRkbTFuL2ZpbmFsLmh0bWw= -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4fc3f7;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .card h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .notice-box {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .notice-box p { color: #e74c3c; }
+        .puzzle-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+        .puzzle-box h4 {
+            color: #4fc3f7;
+            margin-bottom: 10px;
+        }
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-left: 3px solid #4fc3f7;
+            color: #4fc3f7;
+        }
+        .hint {
+            color: #888;
+            font-size: 12px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        input[type="text"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.5);
+            color: #fff;
+            padding: 12px 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        input[type="text"]::placeholder { color: #666; }
+        .btn {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .btn:hover { opacity: 0.9; }
+        .level { 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 20px; 
+            margin-bottom: 20px; 
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+        #finalMessage { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Panel de Mantenimiento</h1>
+        <p class="subtitle">Sistema de verificación de acceso</p>
+        
+        <div class="notice-box">
+            <p> Este panel es solo para personal autorizado</p>
+        </div>
+
+        <!-- Nivel 1: Base64 -->
+        <div class="level" id="level1">
+            <div class="puzzle-box">
+                <h4> Nivel 1 - Transmisión Interceptada</h4>
+                <p>Se ha interceptado el siguiente mensaje codificado:</p>
+                <div class="code-block">
+                    bGEgY2xhdmUgZXM6IHNoYWRvdw==
+                </div>
+                <p class="hint">Pista: Los espías usan 64 formas de codificar...</p>
+                <input type="text" id="answer1" placeholder="Introduce la clave...">
+                <button class="btn" onclick="checkLevel1()">Verificar</button>
+                <p id="result1"></p>
+            </div>
+        </div>
+
+        <!-- Nivel 2: Hexadecimal -->
+        <div class="level" id="level2" style="display:none;">
+            <div class="puzzle-box">
+                <h4> Nivel 2 - Código Hexadecimal</h4>
+                <p>El siguiente código fue encontrado en los logs del servidor:</p>
+                <div class="code-block">
+                    70 61 73 73 77 6f 72 64 3a 20 6e 31 67 68 74 6d 34 72 33
+                </div>
+                <p class="hint">Pista: Cada par representa un carácter en base 16...</p>
+                <input type="text" id="answer2" placeholder="¿Cuál es el password?">
+                <button class="btn" onclick="checkLevel2()">Verificar</button>
+                <p id="result2"></p>
+            </div>
+        </div>
+
+        <!-- Nivel 3: ROT13 -->
+        <div class="level" id="level3" style="display:none;">
+            <div class="puzzle-box">
+                <h4> Nivel 3 - Cifrado César</h4>
+                <p>Mensaje encriptado del administrador:</p>
+                <div class="code-block">
+                    Yn ehgn frpergn rf: /f3pe3g-4qz1a/inyg.ugzy
+                </div>
+                <p class="hint">Pista: ROT13 - Rota 13 posiciones en el alfabeto...</p>
+                <input type="text" id="answer3" placeholder="¿Cuál es la ruta secreta?">
+                <button class="btn" onclick="checkLevel3()">Verificar</button>
+                <p id="result3"></p>
+            </div>
+        </div>
+
+        <!-- Nivel 4: Binary -->
+        <div class="level" id="level4" style="display:none;">
+            <div class="puzzle-box">
+                <h4> Nivel 4 - Código Binario</h4>
+                <p>Fragmento de memoria recuperado:</p>
+                <div class="code-block">
+                    01100001 01100100 01101101 01101001 01101110 00111010 
+                    01000000 01100110 01111001 01101100 00110010 00110000 00110010 00110101
+                </div>
+                <p class="hint">Pista: 8 bits = 1 byte = 1 carácter ASCII...</p>
+                <input type="text" id="answer4" placeholder="Credenciales encontradas...">
+                <button class="btn" onclick="checkLevel4()">Verificar</button>
+                <p id="result4"></p>
+            </div>
+        </div>
+
+        <!-- Mensaje Final -->
+        <div id="finalMessage">
+            <div class="puzzle-box">
+                <h4>¡Verificación completada!</h4>
+                <p>Has completado todos los niveles de verificación.</p>
+                <div class="code-block">
+                    Archivo: /s3cr3t-4dm1n/vault.html
+                </div>
+                <button class="btn" onclick="window.location.href='/s3cr3t-4dm1n/vault.html'">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkLevel1() {
+            const answer = document.getElementById('answer1').value.toLowerCase().trim();
+            if (answer === 'shadow') {
+                document.getElementById('result1').innerHTML = '<span class="success">✓ Correcto! Nivel 2 desbloqueado.</span>';
+                document.getElementById('level2').style.display = 'block';
+                document.getElementById('level1').style.opacity = '0.5';
+            } else {
+                document.getElementById('result1').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+            }
+        }
+
+        function checkLevel2() {
+            const answer = document.getElementById('answer2').value.toLowerCase().trim();
+            if (answer === 'n1ghtm4r3' || answer === 'nightm4r3') {
+                document.getElementById('result2').innerHTML = '<span class="success">✓ Correcto! Nivel 3 desbloqueado.</span>';
+                document.getElementById('level3').style.display = 'block';
+                document.getElementById('level2').style.opacity = '0.5';
+            } else {
+                document.getElementById('result2').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+            }
+        }
+
+        function checkLevel3() {
+            const answer = document.getElementById('answer3').value.toLowerCase().trim();
+            if (answer.includes('vault') || answer.includes('/s3cr3t-4dm1n/vault.html')) {
+                document.getElementById('result3').innerHTML = '<span class="success">✓ Correcto! Nivel 4 desbloqueado.</span>';
+                document.getElementById('level4').style.display = 'block';
+                document.getElementById('level3').style.opacity = '0.5';
+            } else {
+                document.getElementById('result3').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+            }
+        }
+
+        function checkLevel4() {
+            const answer = document.getElementById('answer4').value.trim();
+            if (answer.includes('@fyl2025') || answer.includes('admin:@fyl2025')) {
+                document.getElementById('result4').innerHTML = '<span class="success">✓ ¡ACCESO TOTAL CONCEDIDO!</span>';
+                document.getElementById('level4').style.opacity = '0.5';
+                document.getElementById('finalMessage').style.display = 'block';
+            } else {
+                document.getElementById('result4').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+            }
+        }
+
+        // Easter egg en consola
+        console.log('%c🔍 ¿Buscando pistas?', 'color: #00ff00; font-size: 20px;');
+        console.log('%cPrueba: atob("L3MzY3IzdC00ZG0xbi92YXVsdC5odG1s")', 'color: #888;');
+    </script>
+</body>
+</html>
