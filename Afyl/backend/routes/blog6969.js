@@ -1,6 +1,26 @@
 const express = require('express');
-// VULNERABLE: Sin sanitización para pruebas de XSS
+const vm = require('vm');
+// VULNERABLE: Sin sanitización para pruebas de XSS y SSTI
 const router = express.Router();
+
+// ============================================
+// VULNERABILIDADES: XSS + SSTI
+// Solo para pruebas de pentesting en puerto 6969
+// ============================================
+
+// Función de template simple VULNERABLE A SSTI
+function renderTemplate(template, data) {
+  // VULNERABLE: Evalúa expresiones dentro de {{ }}
+  return template.replace(/\{\{(.+?)\}\}/g, (match, code) => {
+    try {
+      // VULNERABLE: Ejecución directa de código
+      const context = vm.createContext({ ...data, require, process, global });
+      return vm.runInContext(code.trim(), context);
+    } catch (e) {
+      return match;
+    }
+  });
+}
 
 // Almacenamiento en memoria de posts del blog (vulnerable)
 let blogPosts = [
@@ -24,25 +44,42 @@ let nextId = 3;
 
 // @route   GET /api/blog
 // @desc    Obtener todos los posts del blog
-// @access  Public (VULNERABLE)
+// @access  Public (VULNERABLE A SSTI)
 router.get('/', (req, res) => {
+  // VULNERABLE: Renderiza el contenido de cada post con el motor de plantillas
+  const renderedPosts = blogPosts.map(post => ({
+    ...post,
+    title: renderTemplate(post.title, {}),
+    content: renderTemplate(post.content, {}),
+    author: renderTemplate(post.author, {})
+  }));
+
   res.json({
     success: true,
-    posts: blogPosts
+    posts: renderedPosts
   });
 });
 
 // @route   GET /api/blog/:id
 // @desc    Obtener un post específico
-// @access  Public (VULNERABLE)
+// @access  Public (VULNERABLE A SSTI)
 router.get('/:id', (req, res) => {
   const post = blogPosts.find(p => p.id === parseInt(req.params.id));
   if (!post) {
     return res.status(404).json({ message: 'Post no encontrado' });
   }
+  
+  // VULNERABLE: Renderiza el contenido con el motor de plantillas
+  const renderedPost = {
+    ...post,
+    title: renderTemplate(post.title, {}),
+    content: renderTemplate(post.content, {}),
+    author: renderTemplate(post.author, {})
+  };
+
   res.json({
     success: true,
-    post
+    post: renderedPost
   });
 });
 
@@ -120,6 +157,105 @@ router.delete('/', (req, res) => {
     success: true,
     message: 'Todos los posts eliminados'
   });
+});
+
+// ============================================
+// SSTI - SERVER SIDE TEMPLATE INJECTION
+// ============================================
+
+// @route   GET /api/blog/preview
+// @desc    Preview de post con plantilla - VULNERABLE A SSTI
+// @access  Public (VULNERABLE)
+router.get('/preview', (req, res) => {
+  const { template } = req.query;
+  
+  if (!template) {
+    return res.status(400).json({ 
+      message: 'Parámetro "template" requerido',
+      hint: 'Usa ?template=Hola {{name}}',
+      example: '/api/blog/preview?template=Hola {{name}}&name=Usuario',
+      vulnerability: 'Prueba: ?template={{7*7}} o ?template={{process.env}}'
+    });
+  }
+
+  // Recoger todos los parámetros como datos del template
+  const data = { ...req.query };
+  delete data.template;
+
+  // VULNERABLE: Renderiza el template sin sanitizar
+  const rendered = renderTemplate(template, data);
+
+  res.json({
+    success: true,
+    original: template,
+    rendered: rendered,
+    data: data
+  });
+});
+
+// @route   POST /api/blog/preview
+// @desc    Preview de post con plantilla via POST - VULNERABLE A SSTI
+// @access  Public (VULNERABLE)
+router.post('/preview', (req, res) => {
+  const { template, data } = req.body;
+  
+  if (!template) {
+    return res.status(400).json({ 
+      message: 'Campo "template" requerido en el body',
+      example: {
+        template: 'Hola {{name}}, tu edad es {{age}}',
+        data: { name: 'Usuario', age: 25 }
+      },
+      vulnerability: 'Prueba template: {{7*7}} o {{process.cwd()}}'
+    });
+  }
+
+  // VULNERABLE: Renderiza el template sin sanitizar
+  const rendered = renderTemplate(template, data || {});
+
+  res.json({
+    success: true,
+    original: template,
+    rendered: rendered,
+    data: data
+  });
+});
+
+// @route   GET /api/blog/render/:id
+// @desc    Renderizar un post existente con template personalizado - VULNERABLE A SSTI
+// @access  Public (VULNERABLE)
+router.get('/render/:id', (req, res) => {
+  const post = blogPosts.find(p => p.id === parseInt(req.params.id));
+  
+  if (!post) {
+    return res.status(404).json({ message: 'Post no encontrado' });
+  }
+
+  const { format } = req.query;
+  
+  // Template por defecto o personalizado
+  const template = format || '<h1>{{title}}</h1><p>{{content}}</p><small>Por: {{author}}</small>';
+  
+  // VULNERABLE: Permite inyección en el parámetro format
+  const rendered = renderTemplate(template, post);
+
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>${post.title}</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: #fff; }
+        h1 { color: #4fc3f7; }
+        .warning { background: rgba(255,107,107,0.1); border: 1px solid #ff6b6b; padding: 10px; margin-top: 20px; border-radius: 5px; color: #ff6b6b; }
+      </style>
+    </head>
+    <body>
+      ${rendered}
+      <div class="warning">⚠️ Este endpoint es vulnerable a SSTI - Prueba: ?format={{7*7}}</div>
+    </body>
+    </html>
+  `);
 });
 
 module.exports = router;

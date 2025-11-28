@@ -181,18 +181,12 @@ router.get('/', (req, res) => {
         </head>
         <body>
             <div class="container">
-                <h1>🐚 Web Shell</h1>
-                <p class="subtitle">Command Injection - Entorno de Pentesting</p>
+                <h1>Web Shell</h1>
                 
                 <div class="info-box">
-                    <h3>📋 Comandos de ejemplo:</h3>
+                    <h3>El único comando permitido:</h3>
                     <p>
-                        <code>whoami</code> Usuario actual &nbsp;|&nbsp;
-                        <code>dir</code> Listar directorio &nbsp;|&nbsp;
-                        <code>type archivo</code> Ver contenido<br>
-                        <code>cd</code> Directorio actual &nbsp;|&nbsp;
-                        <code>ipconfig</code> Info de red &nbsp;|&nbsp;
-                        <code>set</code> Variables de entorno
+                        <code>whoami</code> 
                     </p>
                 </div>
 
@@ -212,8 +206,6 @@ Escribe un comando y presiona Enter o haz clic en Ejecutar.
 
 </div>
                 </div>
-                
-                <p class="warning">⚠️ Este endpoint es vulnerable intencionalmente - Solo para pruebas de pentesting</p>
                 <a href="/" class="back-link">← Volver al inicio</a>
             </div>
 
@@ -284,8 +276,8 @@ Escribe un comando y presiona Enter o haz clic en Ejecutar.
 });
 
 // @route   GET /api/shell/exec
-// @desc    Ejecutar comandos (VULNERABLE - COMMAND INJECTION)
-// @access  Public (VULNERABLE)
+// @desc    Ejecutar comandos (RESTRINGIDO - Solo whoami)
+// @access  Public
 router.get('/exec', (req, res) => {
     const cmd = req.query.cmd;
     
@@ -293,10 +285,18 @@ router.get('/exec', (req, res) => {
         return res.status(400).json({ error: 'Parámetro "cmd" requerido' });
     }
 
-    console.log(`[SHELL VULNERABLE] Ejecutando comando: ${cmd}`);
+    // Solo permitir el comando whoami
+    if (cmd.trim().toLowerCase() !== 'whoami') {
+        console.log(`[SHELL] Comando no permitido: ${cmd}`);
+        return res.status(403).json({ 
+            error: 'Comando no permitido. Solo se permite ejecutar: whoami',
+            command: cmd 
+        });
+    }
 
-    // VULNERABLE: Ejecución directa de comandos sin sanitización
-    exec(cmd, { timeout: 10000, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
+    console.log(`[SHELL] Ejecutando comando permitido: ${cmd}`);
+
+    exec('whoami', { timeout: 10000, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
         res.json({
             command: cmd,
             output: stdout || '',
@@ -307,8 +307,8 @@ router.get('/exec', (req, res) => {
 });
 
 // @route   POST /api/shell/exec
-// @desc    Ejecutar comandos via POST (VULNERABLE)
-// @access  Public (VULNERABLE)
+// @desc    Ejecutar comandos via POST (RESTRINGIDO - Solo whoami)
+// @access  Public
 router.post('/exec', (req, res) => {
     const cmd = req.body.cmd;
     
@@ -316,9 +316,18 @@ router.post('/exec', (req, res) => {
         return res.status(400).json({ error: 'Campo "cmd" requerido en el body' });
     }
 
-    console.log(`[SHELL VULNERABLE] Ejecutando comando (POST): ${cmd}`);
+    // Solo permitir el comando whoami
+    if (cmd.trim().toLowerCase() !== 'whoami') {
+        console.log(`[SHELL] Comando no permitido (POST): ${cmd}`);
+        return res.status(403).json({ 
+            error: 'Comando no permitido. Solo se permite ejecutar: whoami',
+            command: cmd 
+        });
+    }
 
-    exec(cmd, { timeout: 10000, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
+    console.log(`[SHELL] Ejecutando comando permitido (POST): ${cmd}`);
+
+    exec('whoami', { timeout: 10000, maxBuffer: 1024 * 1024 }, (error, stdout, stderr) => {
         res.json({
             command: cmd,
             output: stdout || '',

