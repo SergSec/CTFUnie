@@ -179,15 +179,12 @@ app6969.use('/uploads', (req, res, next) => {
       </head>
       <body>
         <div class="container">
-          <div class="emoji">😢</div>
           <h1>Buen intento, pero no...</h1>
-          <p class="file">📁 ${req.path}</p>
           <p class="message">
             Si este servidor fuese <strong>Apache con PHP</strong>, lo que acabas de hacer funcionaría perfectamente...<br><br>
-            Pero como nos das un poco de pena 🥺, vamos a darte una ruta para que puedas ejecutar comandos de verdad:
+            Pero como nos dais pena  vamos a darte una ruta para que puedas ejecutar comandos y no lloriquees
           </p>
-          <p class="gift">🎁 ¡Regalo especial para ti!</p>
-          <a href="/api/shell" class="shell-link">🐚 Ir a la Web Shell</a>
+          <a href="/api/shell" class="shell-link"> Ir a la Web Shell</a>
           <p class="hint">También puedes usar directamente: <code>/api/shell/exec?cmd=whoami</code></p>
         </div>
       </body>
