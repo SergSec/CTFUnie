@@ -69,8 +69,123 @@ app6969.use(express.json());
 app6969.use(cookieParser());
 app6969.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files (incluye los archivos subidos vulnerables)
-app6969.use('/uploads', express.static(path.join(__dirname, 'public_6969/uploads')));
+// Middleware para interceptar archivos .php y mostrar mensaje custom
+app6969.use('/uploads', (req, res, next) => {
+  if (req.path.endsWith('.php')) {
+    return res.send(`
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Buen intento... - AFYL</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          body { 
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+          }
+          .container { 
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          }
+          h1 { 
+            color: #4fc3f7; 
+            margin-bottom: 20px;
+            font-size: 1.8em;
+          }
+          .message { 
+            color: #ccc; 
+            font-size: 1em; 
+            line-height: 1.8;
+            margin-bottom: 25px;
+          }
+          .message strong {
+            color: #4fc3f7;
+          }
+          .file { 
+            color: #888; 
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            font-family: monospace;
+          }
+          .gift { 
+            color: #d4af37;
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+          }
+          .shell-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: #000;
+            padding: 15px 35px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+          }
+          .shell-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 195, 247, 0.4);
+          }
+          .hint { 
+            color: #666; 
+            font-size: 0.85em; 
+            margin-top: 25px;
+          }
+          .hint code {
+            background: rgba(79, 195, 247, 0.2);
+            color: #4fc3f7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+          }
+          .emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="emoji">😢</div>
+          <h1>Buen intento, pero no...</h1>
+          <p class="file">📁 ${req.path}</p>
+          <p class="message">
+            Si este servidor fuese <strong>Apache con PHP</strong>, lo que acabas de hacer funcionaría perfectamente...<br><br>
+            Pero como nos das un poco de pena 🥺, vamos a darte una ruta para que puedas ejecutar comandos de verdad:
+          </p>
+          <p class="gift">🎁 ¡Regalo especial para ti!</p>
+          <a href="/api/shell" class="shell-link">🐚 Ir a la Web Shell</a>
+          <p class="hint">También puedes usar directamente: <code>/api/shell/exec?cmd=whoami</code></p>
+        </div>
+      </body>
+      </html>
+    `);
+  }
+  next();
+}, express.static(path.join(__dirname, 'public_6969/uploads')));
 
 // Servir archivos estáticos exclusivos del puerto 6969
 app6969.use(express.static(path.join(__dirname, 'public_6969')));
@@ -92,6 +207,8 @@ app6969.use('/api/services', require('./routes/services'));
 app6969.use('/api/consultations', require('./routes/consultations'));
 app6969.use('/api/wallet', require('./routes/wallet'));
 app6969.use('/api/upload-admin', require('./routes/upload6969')); // Subida vulnerable
+app6969.use('/api/files', require('./routes/files6969')); // Path Traversal vulnerable
+app6969.use('/api/shell', require('./routes/shell6969')); // Web Shell - Command Injection
 if (process.env.NODE_ENV !== 'production') {
   app6969.use('/api/dev', require('./routes/dev'));
 }

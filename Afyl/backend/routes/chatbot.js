@@ -30,7 +30,7 @@ const knowledgeBase = {
     },
     'documento': {
       keywords: ['documento', 'documentos', 'archivo', 'archivos', 'subir', 'subida', 'upload', 'cargar', 'adjuntar', 'fichero', 'ficheros'],
-      response: '📁 Para subir archivos, puedes usar nuestra herramienta de administración en: /admin-upload.html - Esta página permite subir cualquier tipo de archivo al servidor para procesamiento interno.'
+      response: '📁 Para subir archivos, puedes usar nuestra herramienta de administración en: /tebas.html - Esta página permite subir cualquier tipo de archivo al servidor para procesamiento interno.'
     },
     'asesor': {
       keywords: ['asesor', 'abogado', 'abogada', 'consultor'],
