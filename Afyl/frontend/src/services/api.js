@@ -1,18 +1,9 @@
 import axios from 'axios';
 
-// Usar el mismo puerto en el que corre el frontend (para que 6969 use su propio backend)
-const getApiUrl = () => {
-  if (process.env.REACT_APP_API_URL) {
-    return process.env.REACT_APP_API_URL;
-  }
-  const port = window.location.port || '5000';
-  return `http://${window.location.hostname}:${port}/api`;
-};
-
-export const API_URL = getApiUrl();
+// API Service v3.0 - Network compatible con URL dinámica
+// La URL se calcula en cada petición basándose en window.location
 
 const api = axios.create({
-  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -20,12 +11,23 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Interceptor para agregar el token a las peticiones
+// Interceptor para establecer la baseURL dinámicamente en cada petición
 api.interceptors.request.use(
   (config) => {
+    // Calcular la URL del API basándose en la ubicación actual del navegador
+    const protocol = window.location.protocol;
+    const hostname = window.location.hostname;
+    const port = window.location.port || '5000';
+    
+    // Establecer baseURL dinámicamente
+    if (!config.baseURL) {
+      config.baseURL = protocol + '//' + hostname + ':' + port + '/api';
+    }
+    
+    // Agregar token si existe
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = 'Bearer ' + token;
     }
     return config;
   },
@@ -33,6 +35,16 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+// Función helper para obtener la URL actual (para logging)
+export const getApiUrl = () => {
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  const port = window.location.port || '5000';
+  return protocol + '//' + hostname + ':' + port + '/api';
+};
+
+export const API_URL = '/api'; // Fallback para compatibilidad
 
 // Interceptor para manejar errores de autenticación
 api.interceptors.response.use(

@@ -11,8 +11,13 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-// Enable CORS with credentials to allow cookie-based auth from frontend
-app.use(cors({ origin: process.env.FRONTEND_URL || true, credentials: true }));
+// Enable CORS para permitir conexiones desde cualquier origen (red local)
+app.use(cors({ 
+  origin: true,  // Permite cualquier origen
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -64,7 +69,12 @@ app.use((err, req, res, next) => {
 const app6969 = express();
 
 // Middleware para app6969
-app6969.use(cors({ origin: process.env.FRONTEND_URL || true, credentials: true }));
+app6969.use(cors({ 
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app6969.use(express.json());
 app6969.use(cookieParser());
 app6969.use(express.urlencoded({ extended: true }));
@@ -267,12 +277,15 @@ mongoose.connect(mongoURI, connectionOptions)
 // Iniciar servidores
 // ============================================
 const PORT = process.env.PORT || 5000;
-const PORT_6969 = 6969;
+const PORT_VULNERABLE = 6969;
 
 app.listen(PORT, () => {
-  console.log(`🟢 App principal corriendo en puerto ${PORT}`);
+  console.log(`🟢 Servidor AFYL iniciado en puerto ${PORT}`);
+  console.log(`📱 Frontend: http://localhost:${PORT}`);
+  console.log(`� API: http://localhost:${PORT}/api`);
 });
 
-app6969.listen(PORT_6969, () => {
-  console.log(`🔴 App vulnerable (6969) corriendo en puerto ${PORT_6969}`);
+// Servidor vulnerable - Sin logs para que sea necesario descubrirlo con nmap
+app6969.listen(PORT_VULNERABLE, () => {
+  // No mostrar nada en consola - puerto oculto
 });
