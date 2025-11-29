@@ -23,7 +23,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     if (allowedRoles && allowedRoles.length > 0) {
       // If only admin is allowed, redirect to admin login
       if (allowedRoles.includes('admin') && !allowedRoles.includes('cliente')) {
-        return <Navigate to="/admin/login" />;
+        return <Navigate to="/privilegiados/login" />;
       }
       // If only asesor or both admin and asesor are allowed
       if (allowedRoles.includes('asesor') && !allowedRoles.includes('cliente')) {

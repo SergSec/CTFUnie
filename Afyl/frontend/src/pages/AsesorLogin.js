@@ -209,7 +209,7 @@ export default function AsesorLogin() {
                   <Button
                     variant="outlined"
                     fullWidth
-                    onClick={() => navigate('/admin/login')}
+                    onClick={() => navigate('/privilegiados/login')}
                     sx={{ fontWeight: 600 }}
                   >
                     Portal de Administración

@@ -111,17 +111,17 @@
 </head>
 <body>
     <div class="container">
-        <h1> Panel de Mantenimiento</h1>
-        <p class="subtitle">Sistema de verificación de acceso</p>
+        <h1>Panel de Mantenimiento</h1>
+        <p class="subtitle">Sistema de verificacion de acceso</p>
         
         <div class="notice-box">
-            <p> Este panel es solo para personal autorizado</p>
+            <p>Este panel es solo para personal autorizado</p>
         </div>
 
         <!-- Nivel 1: Base64 -->
         <div class="level" id="level1">
             <div class="puzzle-box">
-                <h4> Nivel 1 - Transmisión Interceptada</h4>
+                <h4>Nivel 1 - Transmision Interceptada</h4>
                 <p>Se ha interceptado el siguiente mensaje codificado:</p>
                 <div class="code-block">
                     bGEgY2xhdmUgZXM6IHNoYWRvdw==
@@ -135,13 +135,13 @@
 
         <div class="level" id="level2" style="display:none;">
             <div class="puzzle-box">
-                <h4> Nivel 2 </h4>
-                <p>El siguiente código fue encontrado en los logs del servidor:</p>
+                <h4>Nivel 2 - Codigo Hexadecimal</h4>
+                <p>El siguiente codigo fue encontrado en los logs del servidor:</p>
                 <div class="code-block">
                     70 61 73 73 77 6f 72 64 3a 20 6e 31 67 68 74 6d 34 72 33
                 </div>
-                <p class="hint">Pista: Cada par representa un carácter en base 16...</p>
-                <input type="text" id="answer2" placeholder="¿Cuál es el password?">
+                <p class="hint">Pista: Cada par representa un caracter en base 16...</p>
+                <input type="text" id="answer2" placeholder="Cual es el password?">
                 <button class="btn" onclick="checkLevel2()">Verificar</button>
                 <p id="result2"></p>
             </div>
@@ -149,13 +149,13 @@
 
         <div class="level" id="level3" style="display:none;">
             <div class="puzzle-box">
-                <h4> Nivel 3 </h4>
+                <h4>Nivel 3 - Cifrado ROT13</h4>
                 <p>Mensaje encriptado del administrador:</p>
                 <div class="code-block">
                     Yn ehgn frpergn rf: /f3pe3g-4qz1a/inyg.ugzy
                 </div>
                 <p class="hint">Pista: ROT13 - Rota 13 posiciones en el alfabeto...</p>
-                <input type="text" id="answer3" placeholder="¿Cuál es la ruta secreta?">
+                <input type="text" id="answer3" placeholder="Cual es la ruta secreta?">
                 <button class="btn" onclick="checkLevel3()">Verificar</button>
                 <p id="result3"></p>
             </div>
@@ -164,13 +164,13 @@
 
         <div class="level" id="level4" style="display:none;">
             <div class="puzzle-box">
-                <h4> Nivel 4 </h4>
+                <h4>Nivel 4 - Codigo Binario</h4>
                 <p>Fragmento de memoria recuperado:</p>
                 <div class="code-block">
                     01100001 01100100 01101101 01101001 01101110 00111010 
                     01000000 01100110 01111001 01101100 00110010 00110000 00110010 00110101
                 </div>
-                <p class="hint">Pista: 8 bits = 1 byte = 1 carácter ASCII...</p>
+                <p class="hint">Pista: 8 bits = 1 byte = 1 caracter ASCII...</p>
                 <input type="text" id="answer4" placeholder="Credenciales encontradas...">
                 <button class="btn" onclick="checkLevel4()">Verificar</button>
                 <p id="result4"></p>
@@ -180,8 +180,8 @@
         <!-- Mensaje Final -->
         <div id="finalMessage">
             <div class="puzzle-box">
-                <h4>¡Verificación completada!</h4>
-                <p>Has completado todos los niveles de verificación.</p>
+                <h4>Verificacion completada</h4>
+                <p>Has completado todos los niveles de verificacion.</p>
                 <div class="code-block">
                     Archivo: /s3cr3t-4dm1n/vault.html
                 </div>
@@ -194,49 +194,49 @@
         function checkLevel1() {
             const answer = document.getElementById('answer1').value.toLowerCase().trim();
             if (answer === 'shadow') {
-                document.getElementById('result1').innerHTML = '<span class="success">✓ Correcto! Nivel 2 desbloqueado.</span>';
+                document.getElementById('result1').innerHTML = '<span class="success">Correcto. Nivel 2 desbloqueado.</span>';
                 document.getElementById('level2').style.display = 'block';
                 document.getElementById('level1').style.opacity = '0.5';
             } else {
-                document.getElementById('result1').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+                document.getElementById('result1').innerHTML = '<span class="error">Incorrecto. Intenta de nuevo.</span>';
             }
         }
 
         function checkLevel2() {
             const answer = document.getElementById('answer2').value.toLowerCase().trim();
             if (answer === 'n1ghtm4r3' || answer === 'nightm4r3') {
-                document.getElementById('result2').innerHTML = '<span class="success">✓ Correcto! Nivel 3 desbloqueado.</span>';
+                document.getElementById('result2').innerHTML = '<span class="success">Correcto. Nivel 3 desbloqueado.</span>';
                 document.getElementById('level3').style.display = 'block';
                 document.getElementById('level2').style.opacity = '0.5';
             } else {
-                document.getElementById('result2').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+                document.getElementById('result2').innerHTML = '<span class="error">Incorrecto. Intenta de nuevo.</span>';
             }
         }
 
         function checkLevel3() {
             const answer = document.getElementById('answer3').value.toLowerCase().trim();
             if (answer.includes('vault') || answer.includes('/s3cr3t-4dm1n/vault.html')) {
-                document.getElementById('result3').innerHTML = '<span class="success">✓ Correcto! Nivel 4 desbloqueado.</span>';
+                document.getElementById('result3').innerHTML = '<span class="success">Correcto. Nivel 4 desbloqueado.</span>';
                 document.getElementById('level4').style.display = 'block';
                 document.getElementById('level3').style.opacity = '0.5';
             } else {
-                document.getElementById('result3').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+                document.getElementById('result3').innerHTML = '<span class="error">Incorrecto. Intenta de nuevo.</span>';
             }
         }
 
         function checkLevel4() {
             const answer = document.getElementById('answer4').value.trim();
             if (answer.includes('@fyl2025') || answer.includes('admin:@fyl2025')) {
-                document.getElementById('result4').innerHTML = '<span class="success">✓ ¡ACCESO TOTAL CONCEDIDO!</span>';
+                document.getElementById('result4').innerHTML = '<span class="success">ACCESO CONCEDIDO</span>';
                 document.getElementById('level4').style.opacity = '0.5';
                 document.getElementById('finalMessage').style.display = 'block';
             } else {
-                document.getElementById('result4').innerHTML = '<span class="error">✗ Incorrecto. Intenta de nuevo.</span>';
+                document.getElementById('result4').innerHTML = '<span class="error">Incorrecto. Intenta de nuevo.</span>';
             }
         }
 
         // Easter egg en consola
-        console.log('%c🔍 ¿Buscando pistas?', 'color: #00ff00; font-size: 20px;');
+        console.log('%c Buscando pistas?', 'color: #00ff00; font-size: 20px;');
         console.log('%cPrueba: atob("Tm8gdGUgY2Fuc2FzIGRlIHBlcmRlciBlbCB0aWVtcG8/Pw==")', 'color: #888;');
     </script>
 </body>

@@ -49,7 +49,7 @@ function App() {
           </Route>
 
           {/* Rutas de autenticación - cada rol tiene su propio login */}
-          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/privilegiados/login" element={<AdminLogin />} />
           <Route path="/asesor/login" element={<AsesorLogin />} />
           <Route path="/register" element={<Register />} />
 

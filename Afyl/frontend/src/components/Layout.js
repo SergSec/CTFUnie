@@ -62,7 +62,7 @@ export default function Layout() {
   const handleLogout = () => {
     logout();
     if (user?.role === 'admin') {
-      navigate('/admin/login');
+      navigate('/privilegiados/login');
     } else if (user?.role === 'asesor') {
       navigate('/asesor/login');
     } else {

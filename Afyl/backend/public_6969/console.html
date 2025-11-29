@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Console - AFYL</title>
+    <!-- L2FmeWwvc29sdWNpb25hcmlvLmh0bWw= -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            min-height: 100vh;
+            color: #00ff00;
+            padding: 20px;
+        }
+        .terminal {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,255,0,0.2);
+        }
+        .terminal-header {
+            background: #222;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .terminal-dot.red { background: #e74c3c; }
+        .terminal-dot.yellow { background: #f39c12; }
+        .terminal-dot.green { background: #2ecc71; }
+        .terminal-title {
+            color: #888;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .terminal-body {
+            padding: 20px;
+            min-height: 400px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .line {
+            margin: 3px 0;
+            opacity: 0;
+            animation: typeIn 0.1s forwards;
+        }
+        @keyframes typeIn {
+            to { opacity: 1; }
+        }
+        .prompt { color: #4fc3f7; }
+        .error { color: #e74c3c; }
+        .warn { color: #f39c12; }
+        .success { color: #2ecc71; }
+        .dim { color: #555; }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-dot red"></div>
+            <div class="terminal-dot yellow"></div>
+            <div class="terminal-dot green"></div>
+            <span class="terminal-title">root@afyl-server:~#</span>
+        </div>
+        <div class="terminal-body" id="terminal">
+            <div class="line"><span class="dim">Last login: Sat Nov 29 02:14:33 2025 from 192.168.1.105</span></div>
+        </div>
+    </div>
+
+    <!-- 
+        TODO: Mover credenciales a vault seguro
+        temp_root_pass: ************
+        Ver archivo: /etc/shadow.bak
+    -->
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        
+        const sequence = [
+            { text: "", delay: 500 },
+            { text: '<span class="prompt">root@afyl-server:~#</span> cat /etc/passwd | grep admin', delay: 1000 },
+            { text: "admin:x:1000:1000:Administrator:/home/admin:/bin/bash", delay: 1800 },
+            { text: "", delay: 2000 },
+            { text: '<span class="prompt">root@afyl-server:~#</span> ls -la /var/backups/', delay: 2500 },
+            { text: "total 2048", delay: 3000 },
+            { text: "drwxr-xr-x  2 root root  4096 Nov 29 01:00 .", delay: 3100 },
+            { text: "drwxr-xr-x 14 root root  4096 Nov 28 12:00 ..", delay: 3200 },
+            { text: "-rw-------  1 root root 15234 Nov 29 01:00 shadow.bak", delay: 3300 },
+            { text: "-rw-r--r--  1 root root 89234 Nov 29 01:00 users.sql.gz", delay: 3400 },
+            { text: "-rw-r--r--  1 root root  2341 Nov 28 23:00 credentials.enc", delay: 3500 },
+            { text: "", delay: 3800 },
+            { text: '<span class="prompt">root@afyl-server:~#</span> cat /var/backups/shadow.bak', delay: 4200 },
+            { text: '<span class="error">cat: /var/backups/shadow.bak: Permission denied</span>', delay: 4800 },
+            { text: "", delay: 5000 },
+            { text: '<span class="prompt">root@afyl-server:~#</span> sudo cat /var/backups/shadow.bak', delay: 5500 },
+            { text: "[sudo] password for root:", delay: 6000 },
+            { text: '<span class="dim">********</span>', delay: 7000 },
+            { text: '<span class="success">Verificando credenciales...</span>', delay: 7500 },
+            { text: "", delay: 8500 },
+            { text: '<span class="warn">SECURITY ALERT: Unauthorized access attempt detected</span>', delay: 9000 },
+            { text: '<span class="warn">IP logged: ' + generateFakeIP() + '</span>', delay: 9300 },
+            { text: '<span class="error">Session terminated by administrator</span>', delay: 9800 },
+            { text: "", delay: 10200 },
+            { text: '<span class="error">Connection closed by remote host.</span>', delay: 10500 },
+            { text: "", delay: 11000 },
+            { text: '<span class="dim">Reconnecting in 5...</span>', delay: 12000 },
+            { text: '<span class="dim">Reconnecting in 4...</span>', delay: 13000 },
+            { text: '<span class="dim">Reconnecting in 3...</span>', delay: 14000 },
+            { text: '<span class="dim">Reconnecting in 2...</span>', delay: 15000 },
+            { text: '<span class="dim">Reconnecting in 1...</span>', delay: 16000 },
+            { text: "", delay: 17000 },
+            { text: '<span class="success">Connection established...</span>', delay: 17500 },
+            { text: '<span class="dim">Last login: Sat Nov 29 02:14:33 2025 from 192.168.1.105</span>', delay: 18000 },
+        ];
+
+        function generateFakeIP() {
+            return Math.floor(Math.random()*255) + '.' + 
+                   Math.floor(Math.random()*255) + '.' + 
+                   Math.floor(Math.random()*255) + '.' + 
+                   Math.floor(Math.random()*255);
+        }
+
+        function runSequence() {
+            sequence.forEach((item, i) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'line';
+                    line.innerHTML = item.text;
+                    terminal.appendChild(line);
+                    terminal.scrollTop = terminal.scrollHeight;
+                    
+                    if (i === sequence.length - 1) {
+                        setTimeout(() => {
+                            terminal.innerHTML = '<div class="line"><span class="dim">Last login: Sat Nov 29 02:14:33 2025 from 192.168.1.105</span></div>';
+                            runSequence();
+                        }, 3000);
+                    }
+                }, item.delay);
+            });
+        }
+
+        runSequence();
+
+        console.log('%cAFYL Security System', 'color: #00ff00; font-size: 16px;');
+        console.log('%cAccess Level: RESTRICTED', 'color: #e74c3c;');
+        console.log('%cTry: /api/internal/dump', 'color: #888;');
+    </script>
+</body>
+</html>

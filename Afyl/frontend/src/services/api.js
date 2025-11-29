@@ -58,7 +58,7 @@ api.interceptors.response.use(
       // Redirect to appropriate login page based on stored role or default to cliente login
       const storedRole = localStorage.getItem('userRole');
       if (storedRole === 'admin') {
-        window.location.href = '/admin/login';
+        window.location.href = '/privilegiados/login';
       } else if (storedRole === 'asesor') {
         window.location.href = '/asesor/login';
       } else {
