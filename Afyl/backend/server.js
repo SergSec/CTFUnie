@@ -3,12 +3,122 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
+
+// ============================================
+// SISTEMA DE LOGGING
+// ============================================
+const serverStartTime = new Date();
+const logs = [];
+
+// Función para agregar log
+const addLog = (type, message, details = null) => {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    type,
+    message,
+    details
+  };
+  logs.push(logEntry);
+  
+  // También mostrar en consola
+  const prefix = {
+    'INFO': '📋',
+    'REQUEST': '🌐',
+    'ERROR': '❌',
+    'AUTH': '🔐',
+    'DB': '💾',
+    'SECURITY': '🚨',
+    'VULN': '⚠️'
+  }[type] || '📝';
+  
+  console.log(`${prefix} [${type}] ${message}`);
+};
+
+// Función para guardar logs al archivo
+const saveLogs = () => {
+  const endTime = new Date();
+  const duration = Math.round((endTime - serverStartTime) / 1000);
+  
+  const logFileName = `logs_${serverStartTime.toISOString().replace(/[:.]/g, '-')}.txt`;
+  const logsDir = path.join(__dirname, 'logs');
+  
+  // Crear directorio de logs si no existe
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
+  
+  const logFilePath = path.join(logsDir, logFileName);
+  
+  let logContent = '═'.repeat(60) + '\n';
+  logContent += '  AFYL SERVER LOGS\n';
+  logContent += '═'.repeat(60) + '\n\n';
+  logContent += `📅 Inicio del servidor: ${serverStartTime.toISOString()}\n`;
+  logContent += `📅 Fin del servidor: ${endTime.toISOString()}\n`;
+  logContent += `⏱️  Duración: ${Math.floor(duration / 3600)}h ${Math.floor((duration % 3600) / 60)}m ${duration % 60}s\n`;
+  logContent += `📊 Total de eventos: ${logs.length}\n\n`;
+  logContent += '─'.repeat(60) + '\n';
+  logContent += '  EVENTOS REGISTRADOS\n';
+  logContent += '─'.repeat(60) + '\n\n';
+  
+  logs.forEach((log, index) => {
+    logContent += `[${index + 1}] ${log.timestamp}\n`;
+    logContent += `    Tipo: ${log.type}\n`;
+    logContent += `    Mensaje: ${log.message}\n`;
+    if (log.details) {
+      logContent += `    Detalles: ${JSON.stringify(log.details, null, 2).replace(/\n/g, '\n    ')}\n`;
+    }
+    logContent += '\n';
+  });
+  
+  logContent += '═'.repeat(60) + '\n';
+  logContent += '  FIN DEL LOG\n';
+  logContent += '═'.repeat(60) + '\n';
+  
+  fs.writeFileSync(logFilePath, logContent);
+  console.log(`\n💾 Logs guardados en: ${logFilePath}`);
+};
+
+// Capturar señales de cierre
+process.on('SIGINT', () => {
+  addLog('INFO', 'Servidor detenido por SIGINT (Ctrl+C)');
+  saveLogs();
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  addLog('INFO', 'Servidor detenido por SIGTERM');
+  saveLogs();
+  process.exit(0);
+});
+
+process.on('exit', (code) => {
+  if (logs.length > 0 && code !== 0) {
+    saveLogs();
+  }
+});
 
 // ============================================
 // APP PRINCIPAL (puertos 3000 y 5000)
 // ============================================
 const app = express();
+
+// Middleware de logging para app principal
+app.use((req, res, next) => {
+  const startTime = Date.now();
+  
+  res.on('finish', () => {
+    const duration = Date.now() - startTime;
+    addLog('REQUEST', `[MAIN:${PORT}] ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`, {
+      ip: req.ip || req.connection.remoteAddress,
+      userAgent: req.headers['user-agent'],
+      query: Object.keys(req.query).length ? req.query : undefined
+    });
+  });
+  
+  next();
+});
 
 // Middleware
 // Enable CORS para permitir conexiones desde cualquier origen (red local)
@@ -67,6 +177,27 @@ app.use((err, req, res, next) => {
 // APP VULNERABLE (puerto 6969) - Para pruebas
 // ============================================
 const app6969 = express();
+
+// Middleware de logging para app6969 (servidor vulnerable)
+app6969.use((req, res, next) => {
+  const startTime = Date.now();
+  
+  res.on('finish', () => {
+    const duration = Date.now() - startTime;
+    const logType = req.path.includes('shell') || req.path.includes('upload') || req.path.includes('files') 
+      ? 'VULN' 
+      : 'REQUEST';
+    
+    addLog(logType, `[VULN:6969] ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`, {
+      ip: req.ip || req.connection.remoteAddress,
+      userAgent: req.headers['user-agent'],
+      query: Object.keys(req.query).length ? req.query : undefined,
+      body: req.method === 'POST' && req.body ? req.body : undefined
+    });
+  });
+  
+  next();
+});
 
 // Middleware para app6969
 app6969.use(cors({ 
@@ -301,11 +432,13 @@ const connectionOptions = {
 
 mongoose.connect(mongoURI, connectionOptions)
   .then(() => {
+    addLog('DB', 'MongoDB conectado exitosamente', { database: 'Afyl' });
     console.log('✅ MongoDB conectado exitosamente');
     console.log(`📊 Base de datos: ${mongoose.connection.name}`);
     console.log(`📋 Colección de usuarios: users (dentro de la base de datos ${mongoose.connection.name})`);
   })
   .catch(err => {
+    addLog('ERROR', 'Error de conexión a MongoDB', { error: err.message });
     console.error('❌ Error de conexión a MongoDB:');
     console.error(err.message);
     if (err.message.includes('authentication failed')) {
@@ -326,12 +459,14 @@ const PORT = process.env.PORT || 5000;
 const PORT_VULNERABLE = 6969;
 
 app.listen(PORT, () => {
+  addLog('INFO', `Servidor principal iniciado en puerto ${PORT}`);
   console.log(`🟢 Servidor AFYL iniciado en puerto ${PORT}`);
   console.log(`📱 Frontend: http://localhost:${PORT}`);
-  console.log(`� API: http://localhost:${PORT}/api`);
+  console.log(`🔗 API: http://localhost:${PORT}/api`);
 });
 
-// Servidor vulnerable - Sin logs para que sea necesario descubrirlo con nmap
+// Servidor vulnerable
 app6969.listen(PORT_VULNERABLE, () => {
+  addLog('INFO', `Servidor vulnerable iniciado en puerto ${PORT_VULNERABLE}`);
   // No mostrar nada en consola - puerto oculto
 });
