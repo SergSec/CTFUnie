@@ -41,7 +41,12 @@ const saveLogs = () => {
   const endTime = new Date();
   const duration = Math.round((endTime - serverStartTime) / 1000);
   
-  const logFileName = `logs_${serverStartTime.toISOString().replace(/[:.]/g, '-')}.txt`;
+  // Formato: logs_DD-MM-YYYY_HH.txt
+  const day = String(serverStartTime.getDate()).padStart(2, '0');
+  const month = String(serverStartTime.getMonth() + 1).padStart(2, '0');
+  const year = serverStartTime.getFullYear();
+  const hour = String(serverStartTime.getHours()).padStart(2, '0');
+  const logFileName = `logs_${day}-${month}-${year}_${hour}h.txt`;
   const logsDir = path.join(__dirname, 'logs');
   
   // Crear directorio de logs si no existe

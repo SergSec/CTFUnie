@@ -1,0 +1,126 @@
+════════════════════════════════════════════════════════════
+  AFYL SERVER LOGS
+════════════════════════════════════════════════════════════
+
+📅 Inicio del servidor: 2025-11-30T19:18:23.189Z
+📅 Fin del servidor: 2025-11-30T19:18:45.215Z
+⏱️  Duración: 0h 0m 22s
+📊 Total de eventos: 14
+
+────────────────────────────────────────────────────────────
+  EVENTOS REGISTRADOS
+────────────────────────────────────────────────────────────
+
+[1] 2025-11-30T19:18:23.601Z
+    Tipo: INFO
+    Mensaje: Servidor principal iniciado en puerto 5000
+
+[2] 2025-11-30T19:18:23.602Z
+    Tipo: INFO
+    Mensaje: Servidor vulnerable iniciado en puerto 6969
+
+[3] 2025-11-30T19:18:24.029Z
+    Tipo: DB
+    Mensaje: MongoDB conectado exitosamente
+    Detalles: {
+      "database": "Afyl"
+    }
+
+[4] 2025-11-30T19:18:35.605Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET / - 304 (6ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[5] 2025-11-30T19:18:35.661Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /static/css/main.3fe45102.css - 304 (4ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[6] 2025-11-30T19:18:35.675Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /static/js/main.f6d57fb4.js - 304 (2ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[7] 2025-11-30T19:18:35.800Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /logo-afyl.png - 304 (6ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[8] 2025-11-30T19:18:35.849Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET / - 304 (53ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[9] 2025-11-30T19:18:35.869Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /me - 200 (92ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[10] 2025-11-30T19:18:35.877Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /favicon.ico - 304 (7ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[11] 2025-11-30T19:18:37.784Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /api/auditlogs - 404 (3ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0",
+      "query": {
+        "limit": "1"
+      }
+    }
+
+[12] 2025-11-30T19:18:37.805Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] GET /favicon.ico - 304 (5ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0"
+    }
+
+[13] 2025-11-30T19:18:39.722Z
+    Tipo: REQUEST
+    Mensaje: [VULN:6969] POST /login - 401 (52ms)
+    Detalles: {
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0",
+      "body": {
+        "identifier": "sdfsf",
+        "password": "sdfsf",
+        "loginSource": "cliente"
+      }
+    }
+
+[14] 2025-11-30T19:18:45.214Z
+    Tipo: INFO
+    Mensaje: Servidor detenido por SIGINT (Ctrl+C)
+
+════════════════════════════════════════════════════════════
+  FIN DEL LOG
+════════════════════════════════════════════════════════════
