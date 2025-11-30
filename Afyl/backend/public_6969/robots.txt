@@ -11,4 +11,5 @@ Disallow: /s3cr3t-4dm1n/
 Disallow: /backup/
 Disallow: /old/
 
-HINT: UNA 100% FUNCIONA
+
+A Paco le gusta inyectar SQL con Benito

@@ -17,6 +17,7 @@ api.interceptors.request.use(
     // Calcular la URL del API basándose en la ubicación actual del navegador
     const protocol = window.location.protocol;
     const hostname = window.location.hostname;
+    // Usar el mismo puerto que la página actual (para 6969 o 5000)
     const port = window.location.port || '5000';
     
     // Establecer baseURL dinámicamente
@@ -40,11 +41,15 @@ api.interceptors.request.use(
 export const getApiUrl = () => {
   const protocol = window.location.protocol;
   const hostname = window.location.hostname;
+  // Usar el mismo puerto que la página actual (para 6969 o 5000)
   const port = window.location.port || '5000';
   return protocol + '//' + hostname + ':' + port + '/api';
 };
 
-export const API_URL = '/api'; // Fallback para compatibilidad
+// API_URL dinámico - usa el puerto actual de la página
+export const API_URL = typeof window !== 'undefined' 
+  ? `${window.location.protocol}//${window.location.hostname}:${window.location.port || '5000'}/api`
+  : '/api';
 
 // Interceptor para manejar errores de autenticación
 api.interceptors.response.use(

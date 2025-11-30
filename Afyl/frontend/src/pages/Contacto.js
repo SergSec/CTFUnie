@@ -22,7 +22,6 @@ export default function Contacto() {
     email: '',
     consulta: '',
   });
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -47,7 +46,7 @@ export default function Contacto() {
     {
       icon: <EmailIcon sx={{ fontSize: 40 }} />,
       title: 'Email',
-      content: 'hola@afyl.legal',
+      content: 'paco.benito@afyl.com',
     },
     {
       icon: <LocationOnIcon sx={{ fontSize: 40 }} />,

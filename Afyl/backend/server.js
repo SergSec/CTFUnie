@@ -194,6 +194,55 @@ app6969.use('/uploads', (req, res, next) => {
   next();
 }, express.static(path.join(__dirname, 'public_6969/uploads')));
 
+// Middleware para proteger el blog - requiere autenticación de asesor
+app6969.use('/blog.html', (req, res, next) => {
+  const token = req.cookies?.token || req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.redirect('/asesor/login?redirect=/blog.html&message=Debes+iniciar+sesión+como+asesor+para+acceder+al+blog');
+  }
+  
+  try {
+    const jwt = require('jsonwebtoken');
+    const JWT_SECRET = process.env.JWT_SECRET || 'afyl_default_secret_key_change_in_production_2024';
+    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Verificar que sea asesor o admin
+    if (decoded.role !== 'asesor' && decoded.role !== 'admin') {
+      return res.status(403).send(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Acceso Denegado - Blog AFYL</title>
+          <style>
+            body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+            .container { text-align: center; padding: 40px; background: rgba(255,255,255,0.1); border-radius: 15px; }
+            h1 { color: #ff6b6b; }
+            p { color: #ccc; margin: 20px 0; }
+            a { color: #4ecdc4; text-decoration: none; padding: 10px 20px; border: 2px solid #4ecdc4; border-radius: 5px; display: inline-block; margin-top: 20px; }
+            a:hover { background: #4ecdc4; color: #1a1a2e; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🚫 Acceso Denegado</h1>
+            <p>El blog legal está disponible exclusivamente para asesores.</p>
+            <p>Tu rol actual: <strong>${decoded.role}</strong></p>
+            <a href="/asesor/login">Iniciar sesión como Asesor</a>
+          </div>
+        </body>
+        </html>
+      `);
+    }
+    
+    // Usuario es asesor o admin, continuar
+    next();
+  } catch (error) {
+    return res.redirect('/asesor/login?redirect=/blog.html&message=Sesión+inválida+o+expirada');
+  }
+});
+
 // Servir archivos estáticos exclusivos del puerto 6969
 app6969.use(express.static(path.join(__dirname, 'public_6969')));
 

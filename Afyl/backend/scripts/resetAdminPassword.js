@@ -35,18 +35,18 @@ const resetAdminPassword = async () => {
     console.log('');
 
     // Nueva contraseña (puedes cambiarla aquí)
-    const newPassword = 'admin123'; // Cambia esto a la contraseña que quieras
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const newPassword = 'YWRtaW4xMjMK'; // Cambia esto a la contraseña que quieras
+    // NO hashear aquí - el modelo User tiene un pre-save hook que lo hace automáticamente
     
-    // Actualizar la contraseña
-    user.password = hashedPassword;
+    // Actualizar la contraseña (el hook pre-save la hasheará)
+    user.password = newPassword;
     await user.save();
     
     console.log('✅ Contraseña actualizada exitosamente');
     console.log('');
     console.log('📋 Credenciales de acceso:');
     console.log('   Email: admin@afyl.com');
-    console.log('   Contraseña: admin123');
+    console.log('   Contraseña: YWRtaW4xMjMK');
     console.log('');
     console.log('💡 Ahora puedes hacer login con estas credenciales');
 
