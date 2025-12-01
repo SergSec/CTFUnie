@@ -1,0 +1,711 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  AFYL - REGISTRO DE ACTIVIDAD
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+📅 Inicio: 2025-12-01T18:55:10.595Z
+📅 Fin: 2025-12-01T20:05:29.923Z
+⏱️  Duración: 1h 10m 19s
+📊 Total peticiones registradas: 110
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📈 ESTADÍSTICAS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Métodos: {"undefined":3,"GET":84,"POST":20,"DELETE":2,"PUT":1}
+Códigos de respuesta: {"200":31,"201":1,"304":38,"401":12,"403":1,"404":24,"undefined":3}
+Logins exitosos: 0 | Fallidos: 0
+Archivos subidos: 2
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🌐 ACTIVIDAD POR IP
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  ::ffff:10.104.1.22: 107 peticiones
+    Rutas: /, /me, /api/conflicts/service/test%202, /api/auditlogs, /login, /api/conflicts/service/laboral, /api/conflicts/service/mercantil, /api/conflicts/service/familia, /privilegiados/login, /pending-confirmation ...
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📋 REGISTRO DETALLADO
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+[1] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[2] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[3] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[4] 2025-12-01T18:55:44.238Z
+    ✅ GET / → 200 (6ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[5] 2025-12-01T18:55:44.415Z
+    ⚠️ GET /me → 401 (2ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"message":"No autorizado, token no proporcionado"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[6] 2025-12-01T18:55:44.494Z
+    ✅ GET / → 304 (35ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[7] 2025-12-01T18:55:46.141Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[8] 2025-12-01T18:55:46.181Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[9] 2025-12-01T18:55:48.792Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[10] 2025-12-01T18:55:49.225Z
+    ✅ GET / → 304 (25ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[11] 2025-12-01T18:55:49.263Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[12] 2025-12-01T18:55:49.960Z
+    ✅ GET / → 304 (25ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[13] 2025-12-01T18:55:50.422Z
+    ⚠️ GET /api/auditlogs → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"limit":"1"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[14] 2025-12-01T18:56:07.788Z
+    ⚠️ POST /login → 401 (137ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[15] 2025-12-01T18:56:11.428Z
+    ⚠️ POST /login → 401 (104ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[16] 2025-12-01T18:56:11.596Z
+    ⚠️ POST /login → 401 (89ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[17] 2025-12-01T18:56:11.881Z
+    ⚠️ POST /login → 401 (86ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[18] 2025-12-01T18:56:13.355Z
+    ⚠️ POST /login → 401 (87ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[19] 2025-12-01T18:56:13.713Z
+    ⚠️ POST /login → 401 (86ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[20] 2025-12-01T18:56:14.121Z
+    ⚠️ POST /login → 401 (86ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[21] 2025-12-01T18:56:14.310Z
+    ⚠️ POST /login → 401 (92ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"fgasdfgasdfgasdf","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[22] 2025-12-01T18:56:16.232Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[23] 2025-12-01T18:56:16.258Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[24] 2025-12-01T18:56:17.280Z
+    ⚠️ GET /api/conflicts/service/laboral → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[25] 2025-12-01T18:56:18.498Z
+    ⚠️ GET /api/conflicts/service/mercantil → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[26] 2025-12-01T18:56:19.792Z
+    ⚠️ GET /api/conflicts/service/familia → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[27] 2025-12-01T18:56:32.334Z
+    ✅ GET / → 304 (25ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[28] 2025-12-01T18:56:32.723Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[29] 2025-12-01T18:56:32.750Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[30] 2025-12-01T18:56:33.144Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[31] 2025-12-01T18:56:33.516Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[32] 2025-12-01T18:56:33.543Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[33] 2025-12-01T18:56:33.882Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[34] 2025-12-01T18:56:34.189Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[35] 2025-12-01T18:56:34.216Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[36] 2025-12-01T18:56:36.648Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[37] 2025-12-01T18:56:37.491Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[38] 2025-12-01T18:56:37.529Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[39] 2025-12-01T18:56:37.852Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[40] 2025-12-01T18:56:38.257Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[41] 2025-12-01T18:56:38.282Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[42] 2025-12-01T18:56:49.212Z
+    ✅ GET / → 304 (27ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[43] 2025-12-01T18:56:49.522Z
+    ✅ GET / → 304 (23ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[44] 2025-12-01T18:56:49.551Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[45] 2025-12-01T18:56:50.300Z
+    ✅ GET / → 304 (24ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[46] 2025-12-01T18:56:50.325Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[47] 2025-12-01T18:56:50.576Z
+    ✅ GET / → 304 (23ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[48] 2025-12-01T18:57:26.407Z
+    ✅ GET /privilegiados/login → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[49] 2025-12-01T18:57:26.565Z
+    ⚠️ GET /me → 401 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"message":"No autorizado, token no proporcionado"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[50] 2025-12-01T18:57:42.841Z
+    ⚠️ POST /login → 401 (86ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"admin@afyl.com","password":"123456","loginSource":"admin"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[51] 2025-12-01T18:57:45.802Z
+    ⚠️ GET /api/auditlogs → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"limit":"1"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[52] 2025-12-01T18:57:51.844Z
+    ⚠️ POST /login → 401 (89ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"mosi@gmail.com","password":"dgDRHRTFHRATH","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[53] 2025-12-01T18:58:39.154Z
+    ✅ POST /login → 200 (120ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"identifier":"admin@afyl.com","password":"YWRtaW4xMjMK","loginSource":"admin"}
+    📤 RESPONSE: {"success":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGNmYmMwNjQ5ODA5ODNlYzE0MmMyMyIsInJvbGUiOiJhZG1pbiIsImxvZ2luU291cmNlIjoiYWRtaW4iLCJ0aW1lc3RhbXAiOjE3NjQ2MTU1MTkxMjEsImlhdCI6MTc2NDYxNTUxOSwiZXhwIjoxNzY1MjIwMzE5fQ.5BwTDoNcHsoQoMxK5FRIv-6_C1hGMDlTDSW5xllCjrg","user":{"id":"690c...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[54] 2025-12-01T18:58:39.288Z
+    ✅ GET / → 200 (94ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[55] 2025-12-01T18:58:39.289Z
+    ✅ GET / → 200 (96ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[56] 2025-12-01T18:58:39.497Z
+    ✅ GET / → 200 (305ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaf...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[57] 2025-12-01T18:58:41.441Z
+    ✅ GET / → 200 (44ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"role":"asesor"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":2,\"users\":[{\"_id\":\"692c94c7b0fdd878e6017a53\",\"name\":\"paco.benito@afyl.com\",\"email\":\"paco.benito@afyl.com\",\"role\":\"asesor\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":n...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[58] 2025-12-01T18:58:41.449Z
+    ✅ GET / → 200 (51ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"role":"cliente"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[59] 2025-12-01T18:58:41.508Z
+    ✅ GET / → 304 (110ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaf...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[60] 2025-12-01T18:58:41.845Z
+    ✅ GET /pending-confirmation → 200 (45ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"count":0,"appointments":[]}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[61] 2025-12-01T18:58:42.161Z
+    ✅ GET / → 304 (47ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"role":"asesor"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":2,\"users\":[{\"_id\":\"692c94c7b0fdd878e6017a53\",\"name\":\"paco.benito@afyl.com\",\"email\":\"paco.benito@afyl.com\",\"role\":\"asesor\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":n...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[62] 2025-12-01T18:58:42.510Z
+    ✅ GET /all → 200 (71ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[63] 2025-12-01T18:58:42.570Z
+    ⚠️ GET /api/conflicts/all/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[64] 2025-12-01T18:58:42.780Z
+    ✅ GET / → 304 (75ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[65] 2025-12-01T18:58:43.151Z
+    ✅ GET / → 200 (53ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"wallet":{"_id":"69219c2bfb3a3f5bb1974218","userId":"690cfbc064980983ec142c23","balance":0,"currency":"AFYL","transactions":[],"createdAt":"2025-11-22T11:19:07.285Z","updatedAt":"2025-11-22T11:19:07.285Z","__v":0}}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[66] 2025-12-01T18:58:43.162Z
+    ✅ GET / → 304 (63ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[67] 2025-12-01T18:58:43.528Z
+    ✅ GET /admin/wallets → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[68] 2025-12-01T18:58:43.601Z
+    ✅ GET /me → 200 (41ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"user":{"temporaryPassword":null,"expiresAt":null,"deleteAt":null,"caseId":null,"_id":"690cfbc064980983ec142c23","name":"Administrador","email":"admin@afyl.com","role":"admin","phone":"123456789","profilePicture":null,"isActive":true,"createdAt":"2025-11-06T19:49:20.673Z","updatedAt"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[69] 2025-12-01T18:58:43.674Z
+    ✅ GET / → 304 (42ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"role":"cliente"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[70] 2025-12-01T18:58:44.877Z
+    ✅ GET /user/691cd3a3f2f2445dbf121298 → 200 (81ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"wallet":{"userId":"691cd3a3f2f2445dbf121298","balance":0,"currency":"AFYL","_id":"692de564f193b8e17bf11d02","transactions":[],"createdAt":"2025-12-01T18:58:44.841Z","updatedAt":"2025-12-01T18:58:44.841Z","__v":0}}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[71] 2025-12-01T18:58:50.310Z
+    ✅ POST /topup → 200 (78ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"userId":"691cd3a3f2f2445dbf121298","amount":1000,"description":"Recarga manual por admin"}
+    📤 RESPONSE: {"success":true,"wallet":{"_id":"692de564f193b8e17bf11d02","userId":"691cd3a3f2f2445dbf121298","balance":1000,"currency":"AFYL","transactions":[{"type":"topup","amount":1000,"description":"Recarga manual por admin","paymentId":null,"createdAt":"2025-12-01T18:58:50.283Z"}],"createdAt":"2025-12-01T18:...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[72] 2025-12-01T18:58:50.356Z
+    ✅ GET / → 304 (43ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"role":"cliente"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[73] 2025-12-01T18:58:57.217Z
+    ✅ GET / → 304 (42ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"wallet":{"_id":"69219c2bfb3a3f5bb1974218","userId":"690cfbc064980983ec142c23","balance":0,"currency":"AFYL","transactions":[],"createdAt":"2025-11-22T11:19:07.285Z","updatedAt":"2025-11-22T11:19:07.285Z","__v":0}}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[74] 2025-12-01T18:58:57.239Z
+    ✅ GET / → 304 (65ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[75] 2025-12-01T18:58:59.518Z
+    ✅ GET / → 304 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[76] 2025-12-01T18:59:00.752Z
+    ✅ GET /all → 304 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[77] 2025-12-01T18:59:00.813Z
+    ⚠️ GET /api/conflicts/all/service/test%202 → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[78] 2025-12-01T18:59:27.852Z
+    ✅ POST / → 201 (81ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"id":"test3","title":"test3","description":"fdrghsdfh","order":0,"isActive":true,"parentId":null,"tags":[],"formFields":[]}
+    📤 RESPONSE: {"success":true,"message":"Servicio creado exitosamente","data":{"id":"test3","title":"test3","description":"fdrghsdfh","isActive":true,"order":0,"parent":null,"level":0,"problems":[],"formFields":[],"tags":[],"createdBy":"690cfbc064980983ec142c23","_id":"692de58ff193b8e17bf11d19","createdAt":"2025-...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[79] 2025-12-01T18:59:27.927Z
+    ✅ GET /all → 200 (70ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[80] 2025-12-01T18:59:31.899Z
+    ⚠️ GET /api/conflicts/all/service/test3 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[81] 2025-12-01T18:59:36.555Z
+    ⚠️ POST /api/conflicts → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"title":"fhsdfhdfhfg","description":"hshsdfhsh","order":0,"isActive":true,"serviceId":"test3"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[82] 2025-12-01T18:59:38.435Z
+    ⚠️ POST /api/conflicts → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"title":"fhsdfhdfhfg","description":"hshsdfhsh","order":0,"isActive":true,"serviceId":"test3"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[83] 2025-12-01T18:59:38.610Z
+    ⚠️ POST /api/conflicts → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"title":"fhsdfhdfhfg","description":"hshsdfhsh","order":0,"isActive":true,"serviceId":"test3"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[84] 2025-12-01T18:59:38.762Z
+    ⚠️ POST /api/conflicts → 404 (0ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"title":"fhsdfhdfhfg","description":"hshsdfhsh","order":0,"isActive":true,"serviceId":"test3"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[85] 2025-12-01T18:59:44.600Z
+    ✅ DELETE /test3 → 200 (71ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"message":"Servicio desactivado exitosamente","data":{"_id":"692de58ff193b8e17bf11d19","id":"test3","title":"test3","description":"fdrghsdfh","isActive":false,"order":0,"parent":null,"level":0,"problems":[],"formFields":[],"tags":[],"createdBy":"690cfbc064980983ec142c23","createdAt":...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[86] 2025-12-01T18:59:44.672Z
+    ✅ GET /all → 200 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[87] 2025-12-01T18:59:50.656Z
+    ✅ PUT /test3 → 200 (70ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"id":"test3","title":"test3","description":"fdrghsdfhfdgadfh","order":0,"isActive":false,"parentId":null,"tags":[],"formFields":[]}
+    📤 RESPONSE: {"success":true,"message":"Servicio actualizado exitosamente","data":{"_id":"692de58ff193b8e17bf11d19","id":"test3","title":"test3","description":"fdrghsdfhfdgadfh","isActive":false,"order":0,"parent":null,"level":0,"problems":[],"formFields":[],"tags":[],"createdBy":"690cfbc064980983ec142c23","crea...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[88] 2025-12-01T18:59:50.731Z
+    ✅ GET /all → 200 (71ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[89] 2025-12-01T18:59:52.982Z
+    ✅ DELETE /test3 → 200 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"message":"Servicio desactivado exitosamente","data":{"_id":"692de58ff193b8e17bf11d19","id":"test3","title":"test3","description":"fdrghsdfhfdgadfh","isActive":false,"order":0,"parent":null,"level":0,"problems":[],"formFields":[],"tags":[],"createdBy":"690cfbc064980983ec142c23","crea...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[90] 2025-12-01T18:59:53.053Z
+    ✅ GET /all → 304 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[91] 2025-12-01T19:00:01.680Z
+    ✅ GET / → 304 (68ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[92] 2025-12-01T19:00:01.681Z
+    ✅ GET / → 304 (69ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\"...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[93] 2025-12-01T19:00:01.701Z
+    ✅ GET / → 304 (88ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaf...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[94] 2025-12-01T19:00:03.955Z
+    ✅ POST /message → 200 (504ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📥 INPUT: {"message":"subir archivos"}
+    📤 RESPONSE: {"success":true,"response":"📁 Para subir archivos, puedes usar nuestra herramienta de administración en: /tebas.html - Esta página permite subir cualquier tipo de archivo al servidor para procesamiento interno.","timestamp":"2025-12-01T19:00:03.955Z"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[95] 2025-12-01T19:00:13.092Z
+    ✅ GET /tebas.html → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[96] 2025-12-01T19:00:40.139Z
+    ✅ POST / → 200 (49ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"message":"Archivo subido correctamente","filePath":"C:\\Users\\CursosTardes\\Desktop\\Grupo2_aplicativo_Afyl\\Afyl\\backend\\public_6969\\uploads\\Captura de pantalla 2025-11-28 172353.png","url":"/uploads/Captura de pantalla 2025-11-28 172353.png","filename":"Captura de pantalla 20...
+    📁 FILE: {"name":"Captura de pantalla 2025-11-28 172353.png","type":"image/png","size":254069}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[97] 2025-12-01T19:01:44.790Z
+    ✅ POST / → 200 (83ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"message":"Archivo subido correctamente","filePath":"C:\\Users\\CursosTardes\\Desktop\\Grupo2_aplicativo_Afyl\\Afyl\\backend\\public_6969\\uploads\\shell.php","url":"/uploads/shell.php","filename":"shell.php","size":0,"mimetype":"application/octet-stream"}
+    📁 FILE: {"name":"shell.php","type":"application/octet-stream","size":0}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[98] 2025-12-01T19:02:00.724Z
+    ✅ GET /shell.php → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[99] 2025-12-01T19:02:02.921Z
+    ✅ GET / → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[100] 2025-12-01T19:02:28.148Z
+    ✅ GET /exec → 200 (44ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"cmd":"whoami"}
+    📤 RESPONSE: {"command":"whoami","output":"t04w21\\cursostardes\r\n","error":"","exitCode":0}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[101] 2025-12-01T19:02:53.443Z
+    ⚠️ GET /exec → 403 (2ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"cmd":"ping 10.104.1.21"}
+    📤 RESPONSE: {"error":"Comando no permitido. Solo se permite ejecutar: whoami","command":"ping 10.104.1.21"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[102] 2025-12-01T19:03:02.592Z
+    ✅ GET /all → 304 (79ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[103] 2025-12-01T19:03:02.657Z
+    ⚠️ GET /api/conflicts/all/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[104] 2025-12-01T19:03:03.387Z
+    ✅ GET / → 304 (26ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[105] 2025-12-01T19:03:20.900Z
+    ✅ GET / → 304 (26ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[106] 2025-12-01T19:03:20.932Z
+    ⚠️ GET /api/conflicts/service/test%202 → 404 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[107] 2025-12-01T19:03:23.348Z
+    ✅ GET / → 304 (25ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[108] 2025-12-01T19:03:36.161Z
+    ✅ GET /robots.txt → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[109] 2025-12-01T19:03:44.961Z
+    ✅ GET //s3cr3t-4dm1n/ → 200 (1ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[110] 2025-12-01T19:40:24.298Z
+    ✅ GET /s3cr3t-4dm1n/vault.html → 200 (2ms)
+    IP: ::ffff:10.104.1.22 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  FIN DEL REGISTRO
+════════════════════════════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,1950 @@
+{
+  "metadata": {
+    "startTime": "2025-12-01T18:55:10.595Z",
+    "endTime": "2025-12-01T20:05:29.923Z",
+    "durationSeconds": 4219,
+    "totalEvents": 110
+  },
+  "stats": {
+    "totalRequests": 110,
+    "byMethod": {
+      "undefined": 3,
+      "GET": 84,
+      "POST": 20,
+      "DELETE": 2,
+      "PUT": 1
+    },
+    "byStatus": {
+      "200": 31,
+      "201": 1,
+      "304": 38,
+      "401": 12,
+      "403": 1,
+      "404": 24,
+      "undefined": 3
+    },
+    "byIP": {
+      "::ffff:10.104.1.22": {
+        "requests": 107,
+        "paths": [
+          "/",
+          "/me",
+          "/api/conflicts/service/test%202",
+          "/api/auditlogs",
+          "/login",
+          "/api/conflicts/service/laboral",
+          "/api/conflicts/service/mercantil",
+          "/api/conflicts/service/familia",
+          "/privilegiados/login",
+          "/pending-confirmation",
+          "/all",
+          "/api/conflicts/all/service/test%202",
+          "/admin/wallets",
+          "/user/691cd3a3f2f2445dbf121298",
+          "/topup",
+          "/api/conflicts/all/service/test3",
+          "/api/conflicts",
+          "/test3",
+          "/message",
+          "/tebas.html",
+          "/shell.php",
+          "/exec",
+          "/robots.txt",
+          "//s3cr3t-4dm1n/",
+          "/s3cr3t-4dm1n/vault.html"
+        ]
+      }
+    },
+    "authAttempts": {
+      "success": 0,
+      "failed": 0
+    },
+    "uploads": 2
+  },
+  "events": [
+    "INFO",
+    "INFO",
+    "DB",
+    {
+      "timestamp": "2025-12-01T18:55:44.238Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/",
+      "statusCode": 200,
+      "duration": "6ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:55:44.415Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/me",
+      "fullUrl": "/api/auth/me",
+      "statusCode": 401,
+      "duration": "2ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "message": "No autorizado, token no proporcionado"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:44.494Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "35ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:46.141Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:46.181Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:55:48.792Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:49.225Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "25ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:49.263Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:55:49.960Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "25ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:55:50.422Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/auditlogs",
+      "fullUrl": "/api/auditlogs?limit=1",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "limit": "1"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:07.788Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "137ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:11.428Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "104ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:11.596Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "89ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:11.881Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "86ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:13.355Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "87ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:13.713Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "86ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:14.121Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "86ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:14.310Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "92ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "fgasdfgasdfgasdf",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:16.232Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:16.258Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:17.280Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/laboral",
+      "fullUrl": "/api/conflicts/service/laboral",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:18.498Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/mercantil",
+      "fullUrl": "/api/conflicts/service/mercantil",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:19.792Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/familia",
+      "fullUrl": "/api/conflicts/service/familia",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:32.334Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "25ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:32.723Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:32.750Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:33.144Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:33.516Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:33.543Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:33.882Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:34.189Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:34.216Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:36.648Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:37.491Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:37.529Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:37.852Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:38.257Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:38.282Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:49.212Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "27ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:49.522Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "23ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:49.551Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:50.300Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "24ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:56:50.325Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:56:50.576Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "23ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:57:26.407Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/privilegiados/login",
+      "fullUrl": "/privilegiados/login",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:57:26.565Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/me",
+      "fullUrl": "/api/auth/me",
+      "statusCode": 401,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "message": "No autorizado, token no proporcionado"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:57:42.841Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "86ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "admin@afyl.com",
+        "password": "123456",
+        "loginSource": "admin"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:57:45.802Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/auditlogs",
+      "fullUrl": "/api/auditlogs?limit=1",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "limit": "1"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:57:51.844Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "89ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "mosi@gmail.com",
+        "password": "dgDRHRTFHRATH",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:39.154Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 200,
+      "duration": "120ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "admin@afyl.com",
+        "password": "YWRtaW4xMjMK",
+        "loginSource": "admin"
+      },
+      "response": {
+        "success": true,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGNmYmMwNjQ5ODA5ODNlYzE0MmMyMyIsInJvbGUiOiJhZG1pbiIsImxvZ2luU291cmNlIjoiYWRtaW4iLCJ0aW1lc3RhbXAiOjE3NjQ2MTU1MTkxMjEsImlhdCI6MTc2NDYxNTUxOSwiZXhwIjoxNzY1MjIwMzE5fQ.5BwTDoNcHsoQoMxK5FRIv-6_C1hGMDlTDSW5xllCjrg",
+        "user": {
+          "id": "690cfbc064980983ec142c23",
+          "name": "Administrador",
+          "email": "admin@afyl.com",
+          "role": "admin"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:39.288Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/payments",
+      "statusCode": 200,
+      "duration": "94ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\":100,\"currency\":\"EUR\",\"status\":\"pendiente\",\"paymentMethod\":\"transferencia\",\"gatewayResponse\":null,\"paidAt\":null,\"description\":\"Solicitud de cita 29/11/2025\",\"createdAt\":\"2025-11-28T19:26:06.473Z\",\"updatedAt\":\"2025-11-28T19:26:06.473Z\",\"__v\":0},{\"_id\":\"6922079a08922f..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:39.289Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/appointments",
+      "statusCode": 200,
+      "duration": "96ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\":\"fefw@gmail.com\",\"phone\":\"66\"},\"advisorId\":null,\"scheduledDate\":\"2025-11-21T15:40:00.000Z\",\"duration\":30,\"type\":\"videollamada\",\"status\":\"rechazada\",\"teamsLink\":null,\"calendlyEventId\":null,\"notes\":\"hgyugfuyv\",\"rejectionReason\":\"w\",\"confirmedAt\":null,\"rejectedAt\":\"20..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:39.497Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/cases",
+      "statusCode": 200,
+      "duration": "305ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaflf\",\"category\":\"otro\",\"conflictId\":null,\"problemId\":null,\"status\":\"pendiente_revision\",\"reviewedAt\":null,\"rejectionReason\":null,\"serviceType\":\"8\",\"consultationId\":null,\"priority\":\"media\",\"documents\":[],\"estimatedCost\":0,\"finalCost\":0,\"paymentStatus\":\"pendiente\",\"clos..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:41.441Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/users?role=asesor",
+      "statusCode": 200,
+      "duration": "44ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "role": "asesor"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":2,\"users\":[{\"_id\":\"692c94c7b0fdd878e6017a53\",\"name\":\"paco.benito@afyl.com\",\"email\":\"paco.benito@afyl.com\",\"role\":\"asesor\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":null,\"expiresAt\":null,\"deleteAt\":null,\"caseId\":null,\"specialization\":\"\",\"workingHours\":[],\"createdAt\":\"2025-11-30T19:02:31.493Z\",\"updatedAt\":\"2025-11-30T19:02:31.493Z\",\"__v\":0},{\"_id\":\"692d9ec2daf29b5ffe15113c\",\"name\":\"Ana Belen\",\"email\":\"ana.belen@afyl.com\",\"role\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:41.449Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/users?role=cliente",
+      "statusCode": 200,
+      "duration": "51ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "role": "cliente"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",\"expiresAt\":null,\"deleteAt\":null,\"caseId\":\"691cd61356731fba48304103\",\"createdAt\":\"2025-11-18T20:14:27.397Z\",\"updatedAt\":\"2025-11-18T20:26:19.991Z\",\"__v\":0,\"workingHours\":[]},{\"_id\":\"691de97de798e458ff553acf\",\"name\":\"sdfsdf\",\"email\":\"sdfsdf@gmail.com\",\"role\":\"cliente..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:41.508Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/cases",
+      "statusCode": 304,
+      "duration": "110ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaflf\",\"category\":\"otro\",\"conflictId\":null,\"problemId\":null,\"status\":\"pendiente_revision\",\"reviewedAt\":null,\"rejectionReason\":null,\"serviceType\":\"8\",\"consultationId\":null,\"priority\":\"media\",\"documents\":[],\"estimatedCost\":0,\"finalCost\":0,\"paymentStatus\":\"pendiente\",\"clos..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:41.845Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/pending-confirmation",
+      "fullUrl": "/api/appointments/pending-confirmation",
+      "statusCode": 200,
+      "duration": "45ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "count": 0,
+        "appointments": []
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:42.161Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/users?role=asesor",
+      "statusCode": 304,
+      "duration": "47ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "role": "asesor"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":2,\"users\":[{\"_id\":\"692c94c7b0fdd878e6017a53\",\"name\":\"paco.benito@afyl.com\",\"email\":\"paco.benito@afyl.com\",\"role\":\"asesor\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":null,\"expiresAt\":null,\"deleteAt\":null,\"caseId\":null,\"specialization\":\"\",\"workingHours\":[],\"createdAt\":\"2025-11-30T19:02:31.493Z\",\"updatedAt\":\"2025-11-30T19:02:31.493Z\",\"__v\":0},{\"_id\":\"692d9ec2daf29b5ffe15113c\",\"name\":\"Ana Belen\",\"email\":\"ana.belen@afyl.com\",\"role\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:42.510Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 200,
+      "duration": "71ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"la..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:42.570Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/all/service/test%202",
+      "fullUrl": "/api/conflicts/all/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:58:42.780Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/appointments",
+      "statusCode": 304,
+      "duration": "75ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\":\"fefw@gmail.com\",\"phone\":\"66\"},\"advisorId\":null,\"scheduledDate\":\"2025-11-21T15:40:00.000Z\",\"duration\":30,\"type\":\"videollamada\",\"status\":\"rechazada\",\"teamsLink\":null,\"calendlyEventId\":null,\"notes\":\"hgyugfuyv\",\"rejectionReason\":\"w\",\"confirmedAt\":null,\"rejectedAt\":\"20..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:43.151Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/wallet",
+      "statusCode": 200,
+      "duration": "53ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "wallet": {
+          "_id": "69219c2bfb3a3f5bb1974218",
+          "userId": "690cfbc064980983ec142c23",
+          "balance": 0,
+          "currency": "AFYL",
+          "transactions": [],
+          "createdAt": "2025-11-22T11:19:07.285Z",
+          "updatedAt": "2025-11-22T11:19:07.285Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:43.162Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/payments",
+      "statusCode": 304,
+      "duration": "63ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\":100,\"currency\":\"EUR\",\"status\":\"pendiente\",\"paymentMethod\":\"transferencia\",\"gatewayResponse\":null,\"paidAt\":null,\"description\":\"Solicitud de cita 29/11/2025\",\"createdAt\":\"2025-11-28T19:26:06.473Z\",\"updatedAt\":\"2025-11-28T19:26:06.473Z\",\"__v\":0},{\"_id\":\"6922079a08922f..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:43.528Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/admin/wallets",
+      "fullUrl": "/admin/wallets",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:58:43.601Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/me",
+      "fullUrl": "/api/auth/me",
+      "statusCode": 200,
+      "duration": "41ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "user": {
+          "temporaryPassword": null,
+          "expiresAt": null,
+          "deleteAt": null,
+          "caseId": null,
+          "_id": "690cfbc064980983ec142c23",
+          "name": "Administrador",
+          "email": "admin@afyl.com",
+          "role": "admin",
+          "phone": "123456789",
+          "profilePicture": null,
+          "isActive": true,
+          "createdAt": "2025-11-06T19:49:20.673Z",
+          "updatedAt": "2025-11-30T18:34:37.652Z",
+          "__v": 1,
+          "isTemporary": false,
+          "workingHours": []
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:43.674Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/users?role=cliente",
+      "statusCode": 304,
+      "duration": "42ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "role": "cliente"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",\"expiresAt\":null,\"deleteAt\":null,\"caseId\":\"691cd61356731fba48304103\",\"createdAt\":\"2025-11-18T20:14:27.397Z\",\"updatedAt\":\"2025-11-18T20:26:19.991Z\",\"__v\":0,\"workingHours\":[]},{\"_id\":\"691de97de798e458ff553acf\",\"name\":\"sdfsdf\",\"email\":\"sdfsdf@gmail.com\",\"role\":\"cliente..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:44.877Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/user/691cd3a3f2f2445dbf121298",
+      "fullUrl": "/api/wallet/user/691cd3a3f2f2445dbf121298",
+      "statusCode": 200,
+      "duration": "81ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "wallet": {
+          "userId": "691cd3a3f2f2445dbf121298",
+          "balance": 0,
+          "currency": "AFYL",
+          "_id": "692de564f193b8e17bf11d02",
+          "transactions": [],
+          "createdAt": "2025-12-01T18:58:44.841Z",
+          "updatedAt": "2025-12-01T18:58:44.841Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:50.310Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/topup",
+      "fullUrl": "/api/wallet/topup",
+      "statusCode": 200,
+      "duration": "78ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "userId": "691cd3a3f2f2445dbf121298",
+        "amount": 1000,
+        "description": "Recarga manual por admin"
+      },
+      "response": {
+        "success": true,
+        "wallet": {
+          "_id": "692de564f193b8e17bf11d02",
+          "userId": "691cd3a3f2f2445dbf121298",
+          "balance": 1000,
+          "currency": "AFYL",
+          "transactions": [
+            {
+              "type": "topup",
+              "amount": 1000,
+              "description": "Recarga manual por admin",
+              "paymentId": null,
+              "createdAt": "2025-12-01T18:58:50.283Z"
+            }
+          ],
+          "createdAt": "2025-12-01T18:58:44.841Z",
+          "updatedAt": "2025-12-01T18:58:50.285Z",
+          "__v": 1
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:50.356Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/users?role=cliente",
+      "statusCode": 304,
+      "duration": "43ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "role": "cliente"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":15,\"users\":[{\"_id\":\"691cd3a3f2f2445dbf121298\",\"name\":\"asdfas\",\"email\":\"dlasdlasld@gmail.com\",\"role\":\"cliente\",\"phone\":\"\",\"profilePicture\":null,\"isActive\":true,\"isTemporary\":false,\"temporaryPassword\":\"69ab59f9\",\"expiresAt\":null,\"deleteAt\":null,\"caseId\":\"691cd61356731fba48304103\",\"createdAt\":\"2025-11-18T20:14:27.397Z\",\"updatedAt\":\"2025-11-18T20:26:19.991Z\",\"__v\":0,\"workingHours\":[]},{\"_id\":\"691de97de798e458ff553acf\",\"name\":\"sdfsdf\",\"email\":\"sdfsdf@gmail.com\",\"role\":\"cliente..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:57.217Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/wallet",
+      "statusCode": 304,
+      "duration": "42ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "wallet": {
+          "_id": "69219c2bfb3a3f5bb1974218",
+          "userId": "690cfbc064980983ec142c23",
+          "balance": 0,
+          "currency": "AFYL",
+          "transactions": [],
+          "createdAt": "2025-11-22T11:19:07.285Z",
+          "updatedAt": "2025-11-22T11:19:07.285Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:57.239Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/payments",
+      "statusCode": 304,
+      "duration": "65ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\":100,\"currency\":\"EUR\",\"status\":\"pendiente\",\"paymentMethod\":\"transferencia\",\"gatewayResponse\":null,\"paidAt\":null,\"description\":\"Solicitud de cita 29/11/2025\",\"createdAt\":\"2025-11-28T19:26:06.473Z\",\"updatedAt\":\"2025-11-28T19:26:06.473Z\",\"__v\":0},{\"_id\":\"6922079a08922f..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:58:59.518Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/appointments",
+      "statusCode": 304,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\":\"fefw@gmail.com\",\"phone\":\"66\"},\"advisorId\":null,\"scheduledDate\":\"2025-11-21T15:40:00.000Z\",\"duration\":30,\"type\":\"videollamada\",\"status\":\"rechazada\",\"teamsLink\":null,\"calendlyEventId\":null,\"notes\":\"hgyugfuyv\",\"rejectionReason\":\"w\",\"confirmedAt\":null,\"rejectedAt\":\"20..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:00.752Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 304,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"la..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:00.813Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/all/service/test%202",
+      "fullUrl": "/api/conflicts/all/service/test%202",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:27.852Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/",
+      "fullUrl": "/api/services",
+      "statusCode": 201,
+      "duration": "81ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "id": "test3",
+        "title": "test3",
+        "description": "fdrghsdfh",
+        "order": 0,
+        "isActive": true,
+        "parentId": null,
+        "tags": [],
+        "formFields": []
+      },
+      "response": {
+        "success": true,
+        "message": "Servicio creado exitosamente",
+        "data": {
+          "id": "test3",
+          "title": "test3",
+          "description": "fdrghsdfh",
+          "isActive": true,
+          "order": 0,
+          "parent": null,
+          "level": 0,
+          "problems": [],
+          "formFields": [],
+          "tags": [],
+          "createdBy": "690cfbc064980983ec142c23",
+          "_id": "692de58ff193b8e17bf11d19",
+          "createdAt": "2025-12-01T18:59:27.821Z",
+          "updatedAt": "2025-12-01T18:59:27.821Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:27.927Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 200,
+      "duration": "70ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"_id\":\"692de58ff193b8e17bf11d19\",\"id\":\"test3\",\"title\":\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:31.899Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/all/service/test3",
+      "fullUrl": "/api/conflicts/all/service/test3",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:36.555Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/api/conflicts",
+      "fullUrl": "/api/conflicts",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "title": "fhsdfhdfhfg",
+        "description": "hshsdfhsh",
+        "order": 0,
+        "isActive": true,
+        "serviceId": "test3"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:38.435Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/api/conflicts",
+      "fullUrl": "/api/conflicts",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "title": "fhsdfhdfhfg",
+        "description": "hshsdfhsh",
+        "order": 0,
+        "isActive": true,
+        "serviceId": "test3"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:38.610Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/api/conflicts",
+      "fullUrl": "/api/conflicts",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "title": "fhsdfhdfhfg",
+        "description": "hshsdfhsh",
+        "order": 0,
+        "isActive": true,
+        "serviceId": "test3"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:38.762Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/api/conflicts",
+      "fullUrl": "/api/conflicts",
+      "statusCode": 404,
+      "duration": "0ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "title": "fhsdfhdfhfg",
+        "description": "hshsdfhsh",
+        "order": 0,
+        "isActive": true,
+        "serviceId": "test3"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:59:44.600Z",
+      "server": "VULN:6969",
+      "method": "DELETE",
+      "path": "/test3",
+      "fullUrl": "/api/services/test3",
+      "statusCode": 200,
+      "duration": "71ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "message": "Servicio desactivado exitosamente",
+        "data": {
+          "_id": "692de58ff193b8e17bf11d19",
+          "id": "test3",
+          "title": "test3",
+          "description": "fdrghsdfh",
+          "isActive": false,
+          "order": 0,
+          "parent": null,
+          "level": 0,
+          "problems": [],
+          "formFields": [],
+          "tags": [],
+          "createdBy": "690cfbc064980983ec142c23",
+          "createdAt": "2025-12-01T18:59:27.821Z",
+          "updatedAt": "2025-12-01T18:59:44.574Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:44.672Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 200,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"_id\":\"692de58ff193b8e17bf11d19\",\"id\":\"test3\",\"title\":\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:50.656Z",
+      "server": "VULN:6969",
+      "method": "PUT",
+      "path": "/test3",
+      "fullUrl": "/api/services/test3",
+      "statusCode": 200,
+      "duration": "70ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "id": "test3",
+        "title": "test3",
+        "description": "fdrghsdfhfdgadfh",
+        "order": 0,
+        "isActive": false,
+        "parentId": null,
+        "tags": [],
+        "formFields": []
+      },
+      "response": {
+        "success": true,
+        "message": "Servicio actualizado exitosamente",
+        "data": {
+          "_id": "692de58ff193b8e17bf11d19",
+          "id": "test3",
+          "title": "test3",
+          "description": "fdrghsdfhfdgadfh",
+          "isActive": false,
+          "order": 0,
+          "parent": null,
+          "level": 0,
+          "problems": [],
+          "formFields": [],
+          "tags": [],
+          "createdBy": "690cfbc064980983ec142c23",
+          "createdAt": "2025-12-01T18:59:27.821Z",
+          "updatedAt": "2025-12-01T18:59:50.631Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:50.731Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 200,
+      "duration": "71ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"_id\":\"692de58ff193b8e17bf11d19\",\"id\":\"test3\",\"title\":\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:52.982Z",
+      "server": "VULN:6969",
+      "method": "DELETE",
+      "path": "/test3",
+      "fullUrl": "/api/services/test3",
+      "statusCode": 200,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "message": "Servicio desactivado exitosamente",
+        "data": {
+          "_id": "692de58ff193b8e17bf11d19",
+          "id": "test3",
+          "title": "test3",
+          "description": "fdrghsdfhfdgadfh",
+          "isActive": false,
+          "order": 0,
+          "parent": null,
+          "level": 0,
+          "problems": [],
+          "formFields": [],
+          "tags": [],
+          "createdBy": "690cfbc064980983ec142c23",
+          "createdAt": "2025-12-01T18:59:27.821Z",
+          "updatedAt": "2025-12-01T18:59:50.631Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:59:53.053Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 304,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"_id\":\"692de58ff193b8e17bf11d19\",\"id\":\"test3\",\"title\":\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:00:01.680Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/appointments",
+      "statusCode": 304,
+      "duration": "68ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"appointments\":[{\"_id\":\"691f4467da4b2b2ee1fcf2e0\",\"caseId\":{\"_id\":\"691e21c433eea793dc932bff\",\"title\":\"Consulta de mercantil\",\"category\":\"otro\"},\"clientId\":{\"_id\":\"691e21c433eea793dc932bfd\",\"name\":\"f\",\"email\":\"fefw@gmail.com\",\"phone\":\"66\"},\"advisorId\":null,\"scheduledDate\":\"2025-11-21T15:40:00.000Z\",\"duration\":30,\"type\":\"videollamada\",\"status\":\"rechazada\",\"teamsLink\":null,\"calendlyEventId\":null,\"notes\":\"hgyugfuyv\",\"rejectionReason\":\"w\",\"confirmedAt\":null,\"rejectedAt\":\"20..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:00:01.681Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/payments",
+      "statusCode": 304,
+      "duration": "69ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":7,\"payments\":[{\"_id\":\"6929f74ee9528c7ad5f112ac\",\"caseId\":{\"_id\":\"6929f64ee9528c7ad5f11182\",\"title\":\"Consulta de dfsg\"},\"clientId\":{\"_id\":\"6929f64ee9528c7ad5f11180\",\"name\":\"fsdga\",\"email\":\"g@gmail.com\"},\"amount\":100,\"currency\":\"EUR\",\"status\":\"pendiente\",\"paymentMethod\":\"transferencia\",\"gatewayResponse\":null,\"paidAt\":null,\"description\":\"Solicitud de cita 29/11/2025\",\"createdAt\":\"2025-11-28T19:26:06.473Z\",\"updatedAt\":\"2025-11-28T19:26:06.473Z\",\"__v\":0},{\"_id\":\"6922079a08922f..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:00:01.701Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/cases",
+      "statusCode": 304,
+      "duration": "88ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":36,\"cases\":[{\"_id\":\"692dd45fa75526cb87c9c206\",\"clientId\":{\"_id\":\"692dd45ea75526cb87c9c204\",\"name\":\"mosi\",\"email\":\"mosi@gmail.com\",\"phone\":\"\"},\"advisorId\":null,\"title\":\"Consulta de 8\",\"description\":\"dyudgfusdaflf\",\"category\":\"otro\",\"conflictId\":null,\"problemId\":null,\"status\":\"pendiente_revision\",\"reviewedAt\":null,\"rejectionReason\":null,\"serviceType\":\"8\",\"consultationId\":null,\"priority\":\"media\",\"documents\":[],\"estimatedCost\":0,\"finalCost\":0,\"paymentStatus\":\"pendiente\",\"clos..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:00:03.955Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/message",
+      "fullUrl": "/api/chatbot/message",
+      "statusCode": 200,
+      "duration": "504ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "message": "subir archivos"
+      },
+      "response": {
+        "success": true,
+        "response": "📁 Para subir archivos, puedes usar nuestra herramienta de administración en: /tebas.html - Esta página permite subir cualquier tipo de archivo al servidor para procesamiento interno.",
+        "timestamp": "2025-12-01T19:00:03.955Z"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:00:13.092Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/tebas.html",
+      "fullUrl": "/tebas.html",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:00:40.139Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/",
+      "fullUrl": "/api/upload-admin",
+      "statusCode": 200,
+      "duration": "49ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "message": "Archivo subido correctamente",
+        "filePath": "C:\\Users\\CursosTardes\\Desktop\\Grupo2_aplicativo_Afyl\\Afyl\\backend\\public_6969\\uploads\\Captura de pantalla 2025-11-28 172353.png",
+        "url": "/uploads/Captura de pantalla 2025-11-28 172353.png",
+        "filename": "Captura de pantalla 2025-11-28 172353.png",
+        "size": 254069,
+        "mimetype": "image/png"
+      },
+      "file": {
+        "name": "Captura de pantalla 2025-11-28 172353.png",
+        "type": "image/png",
+        "size": 254069
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:01:44.790Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/",
+      "fullUrl": "/api/upload-admin",
+      "statusCode": 200,
+      "duration": "83ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "message": "Archivo subido correctamente",
+        "filePath": "C:\\Users\\CursosTardes\\Desktop\\Grupo2_aplicativo_Afyl\\Afyl\\backend\\public_6969\\uploads\\shell.php",
+        "url": "/uploads/shell.php",
+        "filename": "shell.php",
+        "size": 0,
+        "mimetype": "application/octet-stream"
+      },
+      "file": {
+        "name": "shell.php",
+        "type": "application/octet-stream",
+        "size": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:02:00.724Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/shell.php",
+      "fullUrl": "/uploads/shell.php",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:02:02.921Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/shell",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:02:28.148Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/exec",
+      "fullUrl": "/api/shell/exec?cmd=whoami",
+      "statusCode": 200,
+      "duration": "44ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "cmd": "whoami"
+      },
+      "response": {
+        "command": "whoami",
+        "output": "t04w21\\cursostardes\r\n",
+        "error": "",
+        "exitCode": 0
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:02:53.443Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/exec",
+      "fullUrl": "/api/shell/exec?cmd=ping%2010.104.1.21",
+      "statusCode": 403,
+      "duration": "2ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "cmd": "ping 10.104.1.21"
+      },
+      "response": {
+        "error": "Comando no permitido. Solo se permite ejecutar: whoami",
+        "command": "ping 10.104.1.21"
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:03:02.592Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/all",
+      "fullUrl": "/api/services/all?format=tree",
+      "statusCode": 304,
+      "duration": "79ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":11,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":{\"_id\":\"690cfbc064980983ec142c23\",\"name\":\"Administrador\",\"email\":\"admin@afyl.com\",\"id\":\"690cfbc064980983ec142c23\"},\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"_id\":\"692de58ff193b8e17bf11d19\",\"id\":\"test3\",\"title\":\"..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:03:02.657Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/all/service/test%202",
+      "fullUrl": "/api/conflicts/all/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:03:03.387Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "26ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:03:20.900Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "26ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:03:20.932Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "fullUrl": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:03:23.348Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "25ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T19:03:36.161Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/robots.txt",
+      "fullUrl": "/robots.txt",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:03:44.961Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "//s3cr3t-4dm1n/",
+      "fullUrl": "//s3cr3t-4dm1n/",
+      "statusCode": 200,
+      "duration": "1ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T19:40:24.298Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/s3cr3t-4dm1n/vault.html",
+      "fullUrl": "/s3cr3t-4dm1n/vault.html",
+      "statusCode": 200,
+      "duration": "2ms",
+      "ip": "::ffff:10.104.1.22",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    }
+  ]
+}

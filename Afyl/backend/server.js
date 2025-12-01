@@ -7,101 +7,183 @@ const fs = require('fs');
 require('dotenv').config();
 
 // ============================================
-// SISTEMA DE LOGGING
+// SISTEMA DE LOGGING PARA BLUE TEAM
 // ============================================
 const serverStartTime = new Date();
 const logs = [];
 
+// Contadores para estadísticas
+const stats = {
+  totalRequests: 0,
+  byMethod: {},
+  byStatus: {},
+  byIP: {},
+  authAttempts: { success: 0, failed: 0 },
+  uploads: 0
+};
+
+// Rutas a ignorar (solo assets estáticos del frontend)
+const IGNORE_ROUTES = [
+  /\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map)$/i,
+  /^\/static\//,
+  /^\/favicon\.ico$/,
+  /^\/manifest\.json$/
+];
+
+// Función para determinar si es una ruta a ignorar
+const isStaticAsset = (reqPath, statusCode) => {
+  // No ignorar si hay error
+  if (statusCode >= 400) return false;
+  return IGNORE_ROUTES.some(pattern => pattern.test(reqPath));
+};
+
 // Función para agregar log
-const addLog = (type, message, details = null) => {
-  const logEntry = {
-    timestamp: new Date().toISOString(),
-    type,
-    message,
-    details
-  };
-  logs.push(logEntry);
+const addLog = (entry) => {
+  logs.push(entry);
   
-  // También mostrar en consola
-  const prefix = {
-    'INFO': '📋',
-    'REQUEST': '🌐',
-    'ERROR': '❌',
-    'AUTH': '🔐',
-    'DB': '💾',
-    'SECURITY': '🚨',
-    'VULN': '⚠️'
-  }[type] || '📝';
+  // Actualizar estadísticas
+  stats.totalRequests++;
+  stats.byMethod[entry.method] = (stats.byMethod[entry.method] || 0) + 1;
+  stats.byStatus[entry.statusCode] = (stats.byStatus[entry.statusCode] || 0) + 1;
   
-  console.log(`${prefix} [${type}] ${message}`);
+  if (entry.ip) {
+    if (!stats.byIP[entry.ip]) {
+      stats.byIP[entry.ip] = { requests: 0, paths: [] };
+    }
+    stats.byIP[entry.ip].requests++;
+    if (!stats.byIP[entry.ip].paths.includes(entry.path)) {
+      stats.byIP[entry.ip].paths.push(entry.path);
+    }
+  }
+  
+  // Mostrar en consola
+  const statusEmoji = entry.statusCode >= 500 ? '❌' : 
+                      entry.statusCode >= 400 ? '⚠️' : 
+                      entry.statusCode >= 300 ? '↪️' : '✅';
+  
+  console.log(`${statusEmoji} [${entry.server}] ${entry.method} ${entry.path} → ${entry.statusCode} (${entry.duration}) | IP: ${entry.ip}`);
+  
+  // Si hay input, mostrarlo
+  if (entry.input && Object.keys(entry.input).length > 0) {
+    console.log(`   📥 Input: ${JSON.stringify(entry.input)}`);
+  }
 };
 
 // Función para guardar logs al archivo
 const saveLogs = () => {
+  if (logs.length === 0) {
+    console.log('📋 No hay logs para guardar');
+    return;
+  }
+
   const endTime = new Date();
   const duration = Math.round((endTime - serverStartTime) / 1000);
   
-  // Formato: logs_DD-MM-YYYY_HH.txt
   const day = String(serverStartTime.getDate()).padStart(2, '0');
   const month = String(serverStartTime.getMonth() + 1).padStart(2, '0');
   const year = serverStartTime.getFullYear();
   const hour = String(serverStartTime.getHours()).padStart(2, '0');
-  const logFileName = `logs_${day}-${month}-${year}_${hour}h.txt`;
+  const minute = String(serverStartTime.getMinutes()).padStart(2, '0');
+  const logFileName = `logs_${day}-${month}-${year}_${hour}h${minute}m`;
   const logsDir = path.join(__dirname, 'logs');
   
-  // Crear directorio de logs si no existe
   if (!fs.existsSync(logsDir)) {
     fs.mkdirSync(logsDir, { recursive: true });
   }
   
-  const logFilePath = path.join(logsDir, logFileName);
+  // ========== GENERAR TXT ==========
+  let txt = '';
+  txt += '═'.repeat(100) + '\n';
+  txt += '  AFYL - REGISTRO DE ACTIVIDAD\n';
+  txt += '═'.repeat(100) + '\n\n';
   
-  let logContent = '═'.repeat(60) + '\n';
-  logContent += '  AFYL SERVER LOGS\n';
-  logContent += '═'.repeat(60) + '\n\n';
-  logContent += `📅 Inicio del servidor: ${serverStartTime.toISOString()}\n`;
-  logContent += `📅 Fin del servidor: ${endTime.toISOString()}\n`;
-  logContent += `⏱️  Duración: ${Math.floor(duration / 3600)}h ${Math.floor((duration % 3600) / 60)}m ${duration % 60}s\n`;
-  logContent += `📊 Total de eventos: ${logs.length}\n\n`;
-  logContent += '─'.repeat(60) + '\n';
-  logContent += '  EVENTOS REGISTRADOS\n';
-  logContent += '─'.repeat(60) + '\n\n';
+  txt += `📅 Inicio: ${serverStartTime.toISOString()}\n`;
+  txt += `📅 Fin: ${endTime.toISOString()}\n`;
+  txt += `⏱️  Duración: ${Math.floor(duration / 3600)}h ${Math.floor((duration % 3600) / 60)}m ${duration % 60}s\n`;
+  txt += `📊 Total peticiones registradas: ${logs.length}\n\n`;
   
-  logs.forEach((log, index) => {
-    logContent += `[${index + 1}] ${log.timestamp}\n`;
-    logContent += `    Tipo: ${log.type}\n`;
-    logContent += `    Mensaje: ${log.message}\n`;
-    if (log.details) {
-      logContent += `    Detalles: ${JSON.stringify(log.details, null, 2).replace(/\n/g, '\n    ')}\n`;
+  txt += '─'.repeat(100) + '\n';
+  txt += '📈 ESTADÍSTICAS\n';
+  txt += '─'.repeat(100) + '\n';
+  txt += `Métodos: ${JSON.stringify(stats.byMethod)}\n`;
+  txt += `Códigos de respuesta: ${JSON.stringify(stats.byStatus)}\n`;
+  txt += `Logins exitosos: ${stats.authAttempts.success} | Fallidos: ${stats.authAttempts.failed}\n`;
+  txt += `Archivos subidos: ${stats.uploads}\n\n`;
+  
+  txt += '─'.repeat(100) + '\n';
+  txt += '🌐 ACTIVIDAD POR IP\n';
+  txt += '─'.repeat(100) + '\n';
+  for (const [ip, data] of Object.entries(stats.byIP)) {
+    txt += `  ${ip}: ${data.requests} peticiones\n`;
+    if (data.paths.length > 0) {
+      txt += `    Rutas: ${data.paths.slice(0, 10).join(', ')}${data.paths.length > 10 ? ' ...' : ''}\n`;
     }
-    logContent += '\n';
+  }
+  txt += '\n';
+  
+  txt += '═'.repeat(100) + '\n';
+  txt += '📋 REGISTRO DETALLADO\n';
+  txt += '═'.repeat(100) + '\n\n';
+  
+  logs.forEach((log, i) => {
+    const status = log.statusCode >= 500 ? '❌' : log.statusCode >= 400 ? '⚠️' : '✅';
+    
+    txt += `[${i + 1}] ${log.timestamp}\n`;
+    txt += `    ${status} ${log.method} ${log.path} → ${log.statusCode} (${log.duration})\n`;
+    txt += `    IP: ${log.ip} | Server: ${log.server}\n`;
+    
+    if (log.input && Object.keys(log.input).length > 0) {
+      txt += `    📥 INPUT: ${JSON.stringify(log.input)}\n`;
+    }
+    if (log.query && Object.keys(log.query).length > 0) {
+      txt += `    🔍 QUERY: ${JSON.stringify(log.query)}\n`;
+    }
+    if (log.response) {
+      const respStr = typeof log.response === 'string' ? log.response : JSON.stringify(log.response);
+      txt += `    📤 RESPONSE: ${respStr.substring(0, 300)}${respStr.length > 300 ? '...' : ''}\n`;
+    }
+    if (log.file) {
+      txt += `    📁 FILE: ${JSON.stringify(log.file)}\n`;
+    }
+    if (log.userAgent) {
+      txt += `    🖥️  UA: ${log.userAgent}\n`;
+    }
+    txt += '\n';
   });
   
-  logContent += '═'.repeat(60) + '\n';
-  logContent += '  FIN DEL LOG\n';
-  logContent += '═'.repeat(60) + '\n';
+  txt += '═'.repeat(100) + '\n';
+  txt += '  FIN DEL REGISTRO\n';
+  txt += '═'.repeat(100) + '\n';
   
-  fs.writeFileSync(logFilePath, logContent);
-  console.log(`\n💾 Logs guardados en: ${logFilePath}`);
+  fs.writeFileSync(path.join(logsDir, logFileName + '.txt'), txt);
+  console.log(`\n💾 Log TXT: logs/${logFileName}.txt`);
+  
+  // ========== GENERAR JSON ==========
+  const jsonData = {
+    metadata: {
+      startTime: serverStartTime.toISOString(),
+      endTime: endTime.toISOString(),
+      durationSeconds: duration,
+      totalEvents: logs.length
+    },
+    stats,
+    events: logs
+  };
+  
+  fs.writeFileSync(path.join(logsDir, logFileName + '.json'), JSON.stringify(jsonData, null, 2));
+  console.log(`📊 Log JSON: logs/${logFileName}.json`);
 };
 
 // Capturar señales de cierre
 process.on('SIGINT', () => {
-  addLog('INFO', 'Servidor detenido por SIGINT (Ctrl+C)');
+  console.log('\n🛑 Cerrando servidor...');
   saveLogs();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
-  addLog('INFO', 'Servidor detenido por SIGTERM');
   saveLogs();
   process.exit(0);
-});
-
-process.on('exit', (code) => {
-  if (logs.length > 0 && code !== 0) {
-    saveLogs();
-  }
 });
 
 // ============================================
@@ -109,17 +191,99 @@ process.on('exit', (code) => {
 // ============================================
 const app = express();
 
-// Middleware de logging para app principal
+// Middleware de logging COMPLETO para app principal
 app.use((req, res, next) => {
   const startTime = Date.now();
   
+  // Capturar el body original
+  let requestBody = {};
+  
+  // Interceptar respuesta para capturar el body de respuesta
+  const originalSend = res.send;
+  let responseBody;
+  
+  res.send = function(body) {
+    responseBody = body;
+    return originalSend.call(this, body);
+  };
+  
   res.on('finish', () => {
     const duration = Date.now() - startTime;
-    addLog('REQUEST', `[MAIN:${PORT}] ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`, {
-      ip: req.ip || req.connection.remoteAddress,
+    const reqPath = req.path;
+    const ip = req.ip || req.connection?.remoteAddress || 'unknown';
+    
+    // Ignorar assets estáticos con respuesta OK
+    if (isStaticAsset(reqPath, res.statusCode)) {
+      return;
+    }
+    
+    // Preparar body de entrada (sanitizar passwords)
+    let input = {};
+    if (req.body && Object.keys(req.body).length > 0) {
+      input = { ...req.body };
+      if (input.password) input.password = '***';
+      if (input.newPassword) input.newPassword = '***';
+      if (input.currentPassword) input.currentPassword = '***';
+    }
+    
+    // Preparar respuesta (solo primeros 500 chars si es muy larga)
+    let response = null;
+    if (responseBody) {
+      try {
+        if (typeof responseBody === 'string') {
+          const parsed = JSON.parse(responseBody);
+          response = parsed;
+        } else {
+          response = responseBody;
+        }
+        // Limitar tamaño
+        const respStr = JSON.stringify(response);
+        if (respStr.length > 500) {
+          response = { _truncated: true, preview: respStr.substring(0, 500) + '...' };
+        }
+      } catch(e) {
+        if (typeof responseBody === 'string' && responseBody.length < 200) {
+          response = responseBody;
+        }
+      }
+    }
+    
+    // Crear entrada de log
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      server: 'MAIN:5000',
+      method: req.method,
+      path: reqPath,
+      
+      fullUrl: req.originalUrl,
+      statusCode: res.statusCode,
+      duration: `${duration}ms`,
+      ip: ip,
       userAgent: req.headers['user-agent'],
-      query: Object.keys(req.query).length ? req.query : undefined
-    });
+      input: Object.keys(input).length > 0 ? input : undefined,
+      query: Object.keys(req.query).length > 0 ? req.query : undefined,
+      response: response,
+      file: req.file ? {
+        name: req.file.originalname,
+        type: req.file.mimetype,
+        size: req.file.size
+      } : undefined
+    };
+    
+    // Actualizar estadísticas de auth
+    if (reqPath.includes('/auth/login')) {
+      if (res.statusCode === 200) {
+        stats.authAttempts.success++;
+      } else if (res.statusCode === 401) {
+        stats.authAttempts.failed++;
+      }
+    }
+    
+    if (req.file) {
+      stats.uploads++;
+    }
+    
+    addLog(logEntry);
   });
   
   next();
@@ -179,26 +343,95 @@ app.use((err, req, res, next) => {
 });
 
 // ============================================
-// APP VULNERABLE (puerto 6969) - Para pruebas
+// APP VULNERABLE (puerto 6969) - Para pruebas de pentesting
 // ============================================
 const app6969 = express();
 
-// Middleware de logging para app6969 (servidor vulnerable)
+// Middleware de logging COMPLETO para app6969 (servidor vulnerable)
 app6969.use((req, res, next) => {
   const startTime = Date.now();
   
+  // Interceptar respuesta
+  const originalSend = res.send;
+  let responseBody;
+  
+  res.send = function(body) {
+    responseBody = body;
+    return originalSend.call(this, body);
+  };
+  
   res.on('finish', () => {
     const duration = Date.now() - startTime;
-    const logType = req.path.includes('shell') || req.path.includes('upload') || req.path.includes('files') 
-      ? 'VULN' 
-      : 'REQUEST';
+    const reqPath = req.path;
+    const ip = req.ip || req.connection?.remoteAddress || 'unknown';
     
-    addLog(logType, `[VULN:6969] ${req.method} ${req.path} - ${res.statusCode} (${duration}ms)`, {
-      ip: req.ip || req.connection.remoteAddress,
+    // Ignorar solo assets estáticos
+    if (isStaticAsset(reqPath, res.statusCode)) {
+      return;
+    }
+    
+    // Preparar input (mostrar TODO incluyendo passwords en servidor vulnerable)
+    let input = {};
+    if (req.body && Object.keys(req.body).length > 0) {
+      input = { ...req.body };
+    }
+    
+    // Preparar respuesta
+    let response = null;
+    if (responseBody) {
+      try {
+        if (typeof responseBody === 'string') {
+          const parsed = JSON.parse(responseBody);
+          response = parsed;
+        } else {
+          response = responseBody;
+        }
+        const respStr = JSON.stringify(response);
+        if (respStr.length > 500) {
+          response = { _truncated: true, preview: respStr.substring(0, 500) + '...' };
+        }
+      } catch(e) {
+        if (typeof responseBody === 'string' && responseBody.length < 200) {
+          response = responseBody;
+        }
+      }
+    }
+    
+    // Crear entrada de log
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      server: 'VULN:6969',
+      method: req.method,
+      path: reqPath,
+      fullUrl: req.originalUrl,
+      statusCode: res.statusCode,
+      duration: `${duration}ms`,
+      ip: ip,
       userAgent: req.headers['user-agent'],
-      query: Object.keys(req.query).length ? req.query : undefined,
-      body: req.method === 'POST' && req.body ? req.body : undefined
-    });
+      input: Object.keys(input).length > 0 ? input : undefined,
+      query: Object.keys(req.query).length > 0 ? req.query : undefined,
+      response: response,
+      file: req.file ? {
+        name: req.file.originalname,
+        type: req.file.mimetype,
+        size: req.file.size
+      } : undefined
+    };
+    
+    // Estadísticas
+    if (reqPath.includes('/auth/login')) {
+      if (res.statusCode === 200) {
+        stats.authAttempts.success++;
+      } else if (res.statusCode === 401) {
+        stats.authAttempts.failed++;
+      }
+    }
+    
+    if (req.file) {
+      stats.uploads++;
+    }
+    
+    addLog(logEntry);
   });
   
   next();
@@ -437,13 +670,11 @@ const connectionOptions = {
 
 mongoose.connect(mongoURI, connectionOptions)
   .then(() => {
-    addLog('DB', 'MongoDB conectado exitosamente', { database: 'Afyl' });
     console.log('✅ MongoDB conectado exitosamente');
     console.log(`📊 Base de datos: ${mongoose.connection.name}`);
     console.log(`📋 Colección de usuarios: users (dentro de la base de datos ${mongoose.connection.name})`);
   })
   .catch(err => {
-    addLog('ERROR', 'Error de conexión a MongoDB', { error: err.message });
     console.error('❌ Error de conexión a MongoDB:');
     console.error(err.message);
     if (err.message.includes('authentication failed')) {
@@ -464,7 +695,6 @@ const PORT = process.env.PORT || 5000;
 const PORT_VULNERABLE = 6969;
 
 app.listen(PORT, () => {
-  addLog('INFO', `Servidor principal iniciado en puerto ${PORT}`);
   console.log(`🟢 Servidor AFYL iniciado en puerto ${PORT}`);
   console.log(`📱 Frontend: http://localhost:${PORT}`);
   console.log(`🔗 API: http://localhost:${PORT}/api`);
@@ -472,6 +702,5 @@ app.listen(PORT, () => {
 
 // Servidor vulnerable
 app6969.listen(PORT_VULNERABLE, () => {
-  addLog('INFO', `Servidor vulnerable iniciado en puerto ${PORT_VULNERABLE}`);
-  // No mostrar nada en consola - puerto oculto
+  console.log(`🔴 Servidor VULNERABLE en puerto ${PORT_VULNERABLE}`);
 });

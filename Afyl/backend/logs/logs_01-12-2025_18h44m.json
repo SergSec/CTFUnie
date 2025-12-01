@@ -1,0 +1,1669 @@
+{
+  "metadata": {
+    "startTime": "2025-12-01T17:44:36.065Z",
+    "endTime": "2025-12-01T17:46:52.617Z",
+    "duration": 137
+  },
+  "stats": {
+    "total": 36,
+    "critical": 12,
+    "high": 20,
+    "medium": 0,
+    "low": 0,
+    "authFails": 0,
+    "attacks": 0,
+    "injections": 32,
+    "uploads": 0
+  },
+  "suspiciousIps": {
+    "::1": {
+      "requests": 32,
+      "attacks": 32,
+      "authFails": 0,
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "paths": [
+        "/",
+        "/me",
+        "/api/conflicts/service/test%202",
+        "/api/auditlogs",
+        "/api/conflicts/service/laboral",
+        "/api/conflicts/service/mercantil",
+        "/api/conflicts/service/familia",
+        "/api/conflicts/service/test2",
+        "/api/conflicts/service/extranjeria",
+        "/api/conflicts/service/7",
+        "/api/conflicts/service/8",
+        "/login",
+        "/cliente/dashboard",
+        "/692dd45fa75526cb87c9c206"
+      ]
+    }
+  },
+  "criticalEvents": [
+    {
+      "timestamp": "2025-12-01T17:45:17.520Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/",
+        "statusCode": 200,
+        "duration": "7ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:17.618Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /me - 401",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/me",
+        "fullUrl": "/api/auth/me",
+        "statusCode": 401,
+        "duration": "2ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:17.671Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 200,
+        "duration": "40ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:18.953Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "26ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:19.002Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "2ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.454Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "25ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.480Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.747Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "24ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:21.054Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "26ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:21.081Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:22.481Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/auditlogs - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/auditlogs",
+        "fullUrl": "/api/auditlogs?limit=1",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "limit": "1"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:28.585Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "24ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:28.611Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:46.726Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/laboral - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/laboral",
+        "fullUrl": "/api/conflicts/service/laboral",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:48.557Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/mercantil - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/mercantil",
+        "fullUrl": "/api/conflicts/service/mercantil",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:50.441Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/familia - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/familia",
+        "fullUrl": "/api/conflicts/service/familia",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:51.382Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test2 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test2",
+        "fullUrl": "/api/conflicts/service/test2",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:52.436Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/extranjeria - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/extranjeria",
+        "fullUrl": "/api/conflicts/service/extranjeria",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:54.314Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/7 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/7",
+        "fullUrl": "/api/conflicts/service/7",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:57.134Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/8 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/8",
+        "fullUrl": "/api/conflicts/service/8",
+        "statusCode": 404,
+        "duration": "2ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:07.157Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] POST / - 201",
+      "details": {
+        "ip": "::1",
+        "method": "POST",
+        "path": "/",
+        "fullUrl": "/api/consultations",
+        "statusCode": 201,
+        "duration": "363ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "payload": {},
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "origin": "http://localhost:6969",
+        "referer": "http://localhost:6969/consulta-online",
+        "uploadedFiles": [
+          {
+            "originalName": "Doc1 2.docx",
+            "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "size": 1218528
+          }
+        ]
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:13.801Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/auditlogs - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/auditlogs",
+        "fullUrl": "/api/auditlogs?limit=1",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "limit": "1"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:22.771Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] POST /login - 200",
+      "details": {
+        "ip": "::1",
+        "method": "POST",
+        "path": "/login",
+        "fullUrl": "/api/auth/login",
+        "statusCode": 200,
+        "duration": "96ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "payload": {},
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "origin": "http://localhost:6969",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.072Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /cliente/dashboard - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/cliente/dashboard",
+        "fullUrl": "/cliente/dashboard",
+        "statusCode": 200,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.180Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /me - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/me",
+        "fullUrl": "/api/auth/me",
+        "statusCode": 200,
+        "duration": "51ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/dashboard",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.310Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /692dd45fa75526cb87c9c206 - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/692dd45fa75526cb87c9c206",
+        "fullUrl": "/api/cases/692dd45fa75526cb87c9c206",
+        "statusCode": 200,
+        "duration": "74ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/dashboard",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:29.773Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "23ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:31.310Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "23ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:31.341Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:39.732Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/cases",
+        "statusCode": 200,
+        "duration": "70ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/casos",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:40.663Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/appointments",
+        "statusCode": 200,
+        "duration": "48ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/citas",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:40.686Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/cases",
+        "statusCode": 304,
+        "duration": "71ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/citas",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    }
+  ],
+  "allEvents": [
+    {
+      "timestamp": "2025-12-01T17:44:36.297Z",
+      "type": "INFO",
+      "message": "Servidor principal iniciado en puerto 5000",
+      "details": null,
+      "riskLevel": "INFO"
+    },
+    {
+      "timestamp": "2025-12-01T17:44:36.298Z",
+      "type": "INFO",
+      "message": "Servidor vulnerable iniciado en puerto 6969",
+      "details": null,
+      "riskLevel": "INFO"
+    },
+    {
+      "timestamp": "2025-12-01T17:44:36.720Z",
+      "type": "DB",
+      "message": "MongoDB conectado exitosamente",
+      "details": {
+        "database": "Afyl"
+      },
+      "riskLevel": "INFO"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:17.520Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/",
+        "statusCode": 200,
+        "duration": "7ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:17.618Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /me - 401",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/me",
+        "fullUrl": "/api/auth/me",
+        "statusCode": 401,
+        "duration": "2ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:17.671Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 200,
+        "duration": "40ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:18.953Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "26ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:19.002Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "2ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.454Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "25ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.480Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:20.747Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "24ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:21.054Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "26ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:21.081Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:22.481Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/auditlogs - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/auditlogs",
+        "fullUrl": "/api/auditlogs?limit=1",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "limit": "1"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:28.585Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "24ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:28.611Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:46.726Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/laboral - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/laboral",
+        "fullUrl": "/api/conflicts/service/laboral",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:48.557Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/mercantil - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/mercantil",
+        "fullUrl": "/api/conflicts/service/mercantil",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:50.441Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/familia - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/familia",
+        "fullUrl": "/api/conflicts/service/familia",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:51.382Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test2 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test2",
+        "fullUrl": "/api/conflicts/service/test2",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:52.436Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/extranjeria - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/extranjeria",
+        "fullUrl": "/api/conflicts/service/extranjeria",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:54.314Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/7 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/7",
+        "fullUrl": "/api/conflicts/service/7",
+        "statusCode": 404,
+        "duration": "0ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:45:57.134Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/8 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/8",
+        "fullUrl": "/api/conflicts/service/8",
+        "statusCode": 404,
+        "duration": "2ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:07.157Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] POST / - 201",
+      "details": {
+        "ip": "::1",
+        "method": "POST",
+        "path": "/",
+        "fullUrl": "/api/consultations",
+        "statusCode": 201,
+        "duration": "363ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "payload": {},
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "origin": "http://localhost:6969",
+        "referer": "http://localhost:6969/consulta-online",
+        "uploadedFiles": [
+          {
+            "originalName": "Doc1 2.docx",
+            "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "size": 1218528
+          }
+        ]
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:13.801Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/auditlogs - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/auditlogs",
+        "fullUrl": "/api/auditlogs?limit=1",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "limit": "1"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:22.771Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] POST /login - 200",
+      "details": {
+        "ip": "::1",
+        "method": "POST",
+        "path": "/login",
+        "fullUrl": "/api/auth/login",
+        "statusCode": 200,
+        "duration": "96ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "payload": {},
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "origin": "http://localhost:6969",
+        "referer": "http://localhost:6969/login"
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.072Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /cliente/dashboard - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/cliente/dashboard",
+        "fullUrl": "/cliente/dashboard",
+        "statusCode": 200,
+        "duration": "1ms",
+        "riskLevel": "HIGH",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+      },
+      "riskLevel": "HIGH"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.180Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /me - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/me",
+        "fullUrl": "/api/auth/me",
+        "statusCode": 200,
+        "duration": "51ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/dashboard",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:28.310Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /692dd45fa75526cb87c9c206 - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/692dd45fa75526cb87c9c206",
+        "fullUrl": "/api/cases/692dd45fa75526cb87c9c206",
+        "statusCode": 200,
+        "duration": "74ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/dashboard",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:29.773Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "23ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:31.310Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/services?format=tree",
+        "statusCode": 304,
+        "duration": "23ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "query": {
+          "format": "tree"
+        },
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:31.341Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET /api/conflicts/service/test%202 - 404",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/api/conflicts/service/test%202",
+        "fullUrl": "/api/conflicts/service/test%202",
+        "statusCode": 404,
+        "duration": "1ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/consulta-online",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:39.732Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/cases",
+        "statusCode": 200,
+        "duration": "70ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/casos",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:40.663Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 200",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/appointments",
+        "statusCode": 200,
+        "duration": "48ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/citas",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:40.686Z",
+      "type": "INJECTION",
+      "message": "[VULN:6969] GET / - 304",
+      "details": {
+        "ip": "::1",
+        "method": "GET",
+        "path": "/",
+        "fullUrl": "/api/cases",
+        "statusCode": 304,
+        "duration": "71ms",
+        "riskLevel": "CRITICAL",
+        "server": "VULNERABLE:6969",
+        "attacks": [
+          "SQLI",
+          "COMMANDINJECTION",
+          "BRUTEFORCE"
+        ],
+        "attackCategory": "SQL Injection",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+        "referer": "http://localhost:6969/cliente/citas",
+        "hasAuthToken": true
+      },
+      "riskLevel": "CRITICAL"
+    },
+    {
+      "timestamp": "2025-12-01T17:46:52.613Z",
+      "type": "INFO",
+      "message": "Servidor detenido por SIGINT (Ctrl+C)",
+      "details": null,
+      "riskLevel": "INFO"
+    }
+  ]
+}

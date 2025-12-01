@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
+const securityLogger = require('../utils/securityLogger');
 
 const router = express.Router();
 
@@ -89,7 +90,18 @@ router.post('/login', async (req, res) => {
     const { identifier, password, loginSource } = req.body;
 
     if (!identifier || !password) {
+      securityLogger.logAuth(req, false, null, { reason: 'Campos vacíos' });
       return res.status(400).json({ message: 'Email/Usuario y contraseña son requeridos' });
+    }
+
+    // 🚨 DETECCIÓN DE NOSQL INJECTION - LOG PARA BLUE TEAM
+    const isNoSQLInjection = typeof identifier === 'object' || typeof password === 'object';
+    if (isNoSQLInjection) {
+      securityLogger.logInjection(req, 'nosql', { 
+        identifier, 
+        password: typeof password === 'object' ? password : '[REDACTED]',
+        loginSource 
+      });
     }
 
     // Determine the expected role based on login source
@@ -131,12 +143,18 @@ router.post('/login', async (req, res) => {
     
     if (!user) {
       console.log('Login failed: User not found with identifier:', identifier);
+      securityLogger.logAuth(req, false, null, { 
+        reason: 'Usuario no encontrado',
+        identifierType: typeof identifier,
+        loginSource
+      });
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
     // Check if user is active
     if (!user.isActive) {
       console.log('Login failed: User is inactive:', user.email);
+      securityLogger.logAuth(req, false, user, { reason: 'Usuario inactivo' });
       return res.status(401).json({ message: 'Usuario inactivo' });
     }
 
@@ -177,9 +195,26 @@ router.post('/login', async (req, res) => {
       
       if (!isMatch) {
         console.log('Login failed: Password does not match for user:', user.email);
+        securityLogger.logAuth(req, false, user, { reason: 'Contraseña incorrecta' });
         return res.status(401).json({ message: 'Credenciales inválidas' });
       }
       console.log('Password verified successfully for user:', user.email);
+    }
+
+    // Si llegamos aquí con NoSQL injection, loguear éxito del ataque
+    if (isNoSQLInjection) {
+      securityLogger.logSecurityEvent(
+        securityLogger.SECURITY_EVENT_TYPES.NOSQL_INJECTION,
+        securityLogger.SEVERITY.CRITICAL,
+        {
+          message: '⚠️ NOSQL INJECTION EXITOSO - Bypass de autenticación',
+          ip: req.ip || req.connection?.remoteAddress,
+          userAgent: req.headers['user-agent'],
+          userCompromised: user.email,
+          userRole: user.role,
+          payload: { identifier, passwordType: typeof password }
+        }
+      );
     }
 
     // Allow all roles (cliente, asesor, admin) to login
@@ -189,12 +224,23 @@ router.post('/login', async (req, res) => {
     // Validate if user is trying to access from the correct login page
     if (expectedRole && userRole !== expectedRole) {
       console.log(`Login failed: User role "${userRole}" does not match expected role "${expectedRole}" for login source`);
+      securityLogger.logAuth(req, false, user, { 
+        reason: 'Rol incorrecto para fuente de login',
+        expectedRole,
+        actualRole: userRole
+      });
       return res.status(403).json({ 
         message: `Este formulario de acceso es exclusivo para ${expectedRole}s. Por favor, usa el formulario de inicio de sesión correcto para tu rol.`,
         wrongLoginSource: true,
         userRole: userRole
       });
     }
+    
+    // 🔐 LOG DE AUTENTICACIÓN EXITOSA
+    securityLogger.logAuth(req, true, user, { 
+      loginSource: loginSource || 'general',
+      wasNoSQLInjection: isNoSQLInjection
+    });
     
     console.log(`Login successful - User role: "${user.role}" for user: ${user.email} from source: ${loginSource || 'general'}`);
 

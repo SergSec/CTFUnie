@@ -1,0 +1,73 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  AFYL - REGISTRO DE ACTIVIDAD
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+📅 Inicio: 2025-12-01T18:03:11.635Z
+📅 Fin: 2025-12-01T18:03:58.255Z
+⏱️  Duración: 0h 0m 47s
+📊 Total peticiones registradas: 8
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+📈 ESTADÍSTICAS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Métodos: {"undefined":3,"GET":4,"POST":1}
+Códigos de respuesta: {"304":3,"401":1,"404":1,"undefined":3}
+Logins exitosos: 0 | Fallidos: 0
+Archivos subidos: 0
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+🌐 ACTIVIDAD POR IP
+────────────────────────────────────────────────────────────────────────────────────────────────────
+  ::1: 5 peticiones
+    Rutas: /, /me, /api/auditlogs, /login
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+📋 REGISTRO DETALLADO
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+[1] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[2] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[3] undefined
+    ✅ undefined undefined → undefined (undefined)
+    IP: undefined | Server: undefined
+
+[4] 2025-12-01T18:03:33.393Z
+    ✅ GET / → 304 (5ms)
+    IP: ::1 | Server: VULN:6969
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[5] 2025-12-01T18:03:33.491Z
+    ✅ GET / → 304 (32ms)
+    IP: ::1 | Server: VULN:6969
+    🔍 QUERY: {"format":"tree"}
+    📤 RESPONSE: {"_truncated":true,"preview":"{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"69...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[6] 2025-12-01T18:03:33.521Z
+    ✅ GET /me → 304 (71ms)
+    IP: ::1 | Server: VULN:6969
+    📤 RESPONSE: {"success":true,"user":{"_id":"692dd45ea75526cb87c9c204","name":"mosi","email":"mosi@gmail.com","role":"cliente","phone":"","profilePicture":null,"isActive":true,"isTemporary":true,"temporaryPassword":"82161c7e","expiresAt":"2025-12-11T17:46:06.912Z","deleteAt":null,"caseId":"692dd45fa75526cb87c9c20...
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[7] 2025-12-01T18:03:45.560Z
+    ⚠️ GET /api/auditlogs → 404 (2ms)
+    IP: ::1 | Server: VULN:6969
+    🔍 QUERY: {"limit":"1"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[8] 2025-12-01T18:03:48.343Z
+    ⚠️ POST /login → 401 (38ms)
+    IP: ::1 | Server: VULN:6969
+    📥 INPUT: {"identifier":"sdf","password":"gtrgdfgsdg","loginSource":"cliente"}
+    📤 RESPONSE: {"message":"Credenciales inválidas"}
+    🖥️  UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  FIN DEL REGISTRO
+════════════════════════════════════════════════════════════════════════════════════════════════════

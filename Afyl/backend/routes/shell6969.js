@@ -1,5 +1,6 @@
 const express = require('express');
 const { exec } = require('child_process');
+const securityLogger = require('../utils/securityLogger');
 
 const router = express.Router();
 
@@ -285,6 +286,14 @@ router.get('/exec', (req, res) => {
         return res.status(400).json({ error: 'Parámetro "cmd" requerido' });
     }
 
+    // 🚨 LOG: Intento de ejecución de comando
+    securityLogger.logAttack(req, securityLogger.SECURITY_EVENT_TYPES.COMMAND_INJECTION, {
+      message: `Intento de ejecución de comando: ${cmd}`,
+      command: cmd,
+      method: 'GET',
+      allowed: cmd.trim().toLowerCase() === 'whoami'
+    });
+
     // Solo permitir el comando whoami
     if (cmd.trim().toLowerCase() !== 'whoami') {
         console.log(`[SHELL] Comando no permitido: ${cmd}`);
@@ -315,6 +324,14 @@ router.post('/exec', (req, res) => {
     if (!cmd) {
         return res.status(400).json({ error: 'Campo "cmd" requerido en el body' });
     }
+
+    // 🚨 LOG: Intento de ejecución de comando via POST
+    securityLogger.logAttack(req, securityLogger.SECURITY_EVENT_TYPES.COMMAND_INJECTION, {
+      message: `Intento de ejecución de comando (POST): ${cmd}`,
+      command: cmd,
+      method: 'POST',
+      allowed: cmd.trim().toLowerCase() === 'whoami'
+    });
 
     // Solo permitir el comando whoami
     if (cmd.trim().toLowerCase() !== 'whoami') {

@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "startTime": "2025-12-01T18:03:11.635Z",
+    "endTime": "2025-12-01T18:03:58.255Z",
+    "durationSeconds": 47,
+    "totalEvents": 8
+  },
+  "stats": {
+    "totalRequests": 8,
+    "byMethod": {
+      "undefined": 3,
+      "GET": 4,
+      "POST": 1
+    },
+    "byStatus": {
+      "304": 3,
+      "401": 1,
+      "404": 1,
+      "undefined": 3
+    },
+    "byIP": {
+      "::1": {
+        "requests": 5,
+        "paths": [
+          "/",
+          "/me",
+          "/api/auditlogs",
+          "/login"
+        ]
+      }
+    },
+    "authAttempts": {
+      "success": 0,
+      "failed": 0
+    },
+    "uploads": 0
+  },
+  "events": [
+    "INFO",
+    "INFO",
+    "DB",
+    {
+      "timestamp": "2025-12-01T18:03:33.393Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/",
+      "statusCode": 304,
+      "duration": "5ms",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:03:33.491Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/",
+      "fullUrl": "/api/services?format=tree",
+      "statusCode": 304,
+      "duration": "32ms",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      },
+      "response": {
+        "_truncated": true,
+        "preview": "{\"success\":true,\"count\":10,\"data\":[{\"_id\":\"6929f6bce9528c7ad5f111fb\",\"id\":\"test 2\",\"title\":\"teste 2\",\"description\":\"dhsfhsjj\",\"isActive\":true,\"order\":0,\"parent\":null,\"level\":0,\"problems\":[],\"formFields\":[],\"tags\":[],\"createdBy\":\"690cfbc064980983ec142c23\",\"createdAt\":\"2025-11-28T19:23:40.791Z\",\"updatedAt\":\"2025-11-28T19:23:40.791Z\",\"__v\":0,\"children\":[]},{\"parent\":null,\"_id\":\"691c9aea10a08390f5b9ccb5\",\"id\":\"laboral\",\"title\":\"Laboral\",\"description\":\"Despidos, contratos, indemnizaciones, incapacida..."
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:03:33.521Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/me",
+      "fullUrl": "/api/auth/me",
+      "statusCode": 304,
+      "duration": "71ms",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "response": {
+        "success": true,
+        "user": {
+          "_id": "692dd45ea75526cb87c9c204",
+          "name": "mosi",
+          "email": "mosi@gmail.com",
+          "role": "cliente",
+          "phone": "",
+          "profilePicture": null,
+          "isActive": true,
+          "isTemporary": true,
+          "temporaryPassword": "82161c7e",
+          "expiresAt": "2025-12-11T17:46:06.912Z",
+          "deleteAt": null,
+          "caseId": "692dd45fa75526cb87c9c206",
+          "workingHours": [],
+          "createdAt": "2025-12-01T17:46:06.914Z",
+          "updatedAt": "2025-12-01T17:46:07.087Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "timestamp": "2025-12-01T18:03:45.560Z",
+      "server": "VULN:6969",
+      "method": "GET",
+      "path": "/api/auditlogs",
+      "fullUrl": "/api/auditlogs?limit=1",
+      "statusCode": 404,
+      "duration": "2ms",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "limit": "1"
+      },
+      "response": null
+    },
+    {
+      "timestamp": "2025-12-01T18:03:48.343Z",
+      "server": "VULN:6969",
+      "method": "POST",
+      "path": "/login",
+      "fullUrl": "/api/auth/login",
+      "statusCode": 401,
+      "duration": "38ms",
+      "ip": "::1",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "input": {
+        "identifier": "sdf",
+        "password": "gtrgdfgsdg",
+        "loginSource": "cliente"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    }
+  ]
+}

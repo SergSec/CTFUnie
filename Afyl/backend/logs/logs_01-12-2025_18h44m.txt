@@ -1,0 +1,876 @@
+════════════════════════════════════════════════════════════════════════════════
+  AFYL BLUE TEAM - SECURITY LOG REPORT
+════════════════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  📊 RESUMEN EJECUTIVO                                                        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  Inicio: 2025-12-01T17:44:36.065Z                                          │
+│  Fin: 2025-12-01T17:46:52.617Z                                             │
+│  Duración: 0h 2m 17s                                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  🚨 ESTADÍSTICAS DE SEGURIDAD                                                │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  Total eventos: 36                                                         │
+│  🔴 CRÍTICOS: 12                                                           │
+│  🟠 ALTOS: 20                                                              │
+│  🟡 MEDIOS: 0                                                              │
+│  🔵 BAJOS: 0                                                               │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  ⚔️  Ataques detectados: 0                                                 │
+│  💉 Intentos de inyección: 32                                              │
+│  🚫 Fallos de autenticación: 0                                             │
+│  📁 Uploads de archivos: 0                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  🕵️ IPs SOSPECHOSAS                                                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│  IP: ::1                                                                    │
+│    → Requests: 32 | Ataques: 32 | Auth Fails: 0                    │
+│    → Rutas: /, /me, /api/conflicts/service/test%202                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  � EVENTOS CRÍTICOS Y ALTOS                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+[HIGH] 2025-12-01T17:45:17.520Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 200
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:45:17.618Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /me - 401
+  IP: ::1
+  Método: GET
+  Ruta: /me
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:17.671Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 200
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:18.953Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:19.002Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test%202 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test%202
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:20.454Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:20.480Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test%202 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test%202
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:20.747Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:21.054Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:21.081Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test%202 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test%202
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:45:22.481Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/auditlogs - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/auditlogs
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:28.585Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:28.611Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test%202 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test%202
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:46.726Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/laboral - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/laboral
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:48.557Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/mercantil - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/mercantil
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:50.441Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/familia - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/familia
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:51.382Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test2 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test2
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:52.436Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/extranjeria - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/extranjeria
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:54.314Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/7 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/7
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:45:57.134Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/8 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/8
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:46:07.157Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] POST / - 201
+  IP: ::1
+  Método: POST
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION
+  Payload: {}
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:13.801Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/auditlogs - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/auditlogs
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:22.771Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] POST /login - 200
+  IP: ::1
+  Método: POST
+  Ruta: /login
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  Payload: {}
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[HIGH] 2025-12-01T17:46:28.072Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /cliente/dashboard - 200
+  IP: ::1
+  Método: GET
+  Ruta: /cliente/dashboard
+  Ataques detectados: SQLI, COMMANDINJECTION
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:28.180Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /me - 200
+  IP: ::1
+  Método: GET
+  Ruta: /me
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:28.310Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /692dd45fa75526cb87c9c206 - 200
+  IP: ::1
+  Método: GET
+  Ruta: /692dd45fa75526cb87c9c206
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:29.773Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:31.310Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:31.341Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET /api/conflicts/service/test%202 - 404
+  IP: ::1
+  Método: GET
+  Ruta: /api/conflicts/service/test%202
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:39.732Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 200
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:40.663Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 200
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+[CRITICAL] 2025-12-01T17:46:40.686Z
+  Tipo: INJECTION
+  Mensaje: [VULN:6969] GET / - 304
+  IP: ::1
+  Método: GET
+  Ruta: /
+  Ataques detectados: SQLI, COMMANDINJECTION, BRUTEFORCE
+  User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+
+────────────────────────────────────────────────────────────────────────────────
+  📋 TODOS LOS EVENTOS REGISTRADOS
+────────────────────────────────────────────────────────────────────────────────
+
+[i] [1] 2025-12-01T17:44:36.297Z
+    Tipo: INFO | Riesgo: INFO
+    Servidor principal iniciado en puerto 5000
+
+[i] [2] 2025-12-01T17:44:36.298Z
+    Tipo: INFO | Riesgo: INFO
+    Servidor vulnerable iniciado en puerto 6969
+
+[i] [3] 2025-12-01T17:44:36.720Z
+    Tipo: DB | Riesgo: INFO
+    MongoDB conectado exitosamente
+
+[!!] [4] 2025-12-01T17:45:17.520Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [5] 2025-12-01T17:45:17.618Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /me - 401
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/me",
+      "statusCode": 401,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [6] 2025-12-01T17:45:17.671Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [7] 2025-12-01T17:45:18.953Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [8] 2025-12-01T17:45:19.002Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/test%202 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [9] 2025-12-01T17:45:20.454Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [10] 2025-12-01T17:45:20.480Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/test%202 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [11] 2025-12-01T17:45:20.747Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [12] 2025-12-01T17:45:21.054Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [13] 2025-12-01T17:45:21.081Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/test%202 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [14] 2025-12-01T17:45:22.481Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /api/auditlogs - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/auditlogs",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "limit": "1"
+      }
+    }
+
+[!!] [15] 2025-12-01T17:45:28.585Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!] [16] 2025-12-01T17:45:28.611Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/test%202 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [17] 2025-12-01T17:45:46.726Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/laboral - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/laboral",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [18] 2025-12-01T17:45:48.557Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/mercantil - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/mercantil",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [19] 2025-12-01T17:45:50.441Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/familia - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/familia",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [20] 2025-12-01T17:45:51.382Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/test2 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test2",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [21] 2025-12-01T17:45:52.436Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/extranjeria - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/extranjeria",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [22] 2025-12-01T17:45:54.314Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/7 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/7",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [23] 2025-12-01T17:45:57.134Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /api/conflicts/service/8 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/8",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [24] 2025-12-01T17:46:07.157Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] POST / - 201
+    Detalles: {
+      "ip": "::1",
+      "method": "POST",
+      "path": "/",
+      "statusCode": 201,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "payload": {},
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [25] 2025-12-01T17:46:13.801Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /api/auditlogs - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/auditlogs",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "limit": "1"
+      }
+    }
+
+[!!!] [26] 2025-12-01T17:46:22.771Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] POST /login - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "POST",
+      "path": "/login",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "payload": {},
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!] [27] 2025-12-01T17:46:28.072Z
+    Tipo: INJECTION | Riesgo: HIGH
+    [VULN:6969] GET /cliente/dashboard - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/cliente/dashboard",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [28] 2025-12-01T17:46:28.180Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /me - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/me",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [29] 2025-12-01T17:46:28.310Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /692dd45fa75526cb87c9c206 - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/692dd45fa75526cb87c9c206",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [30] 2025-12-01T17:46:29.773Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!!] [31] 2025-12-01T17:46:31.310Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+      "query": {
+        "format": "tree"
+      }
+    }
+
+[!!!] [32] 2025-12-01T17:46:31.341Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET /api/conflicts/service/test%202 - 404
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/api/conflicts/service/test%202",
+      "statusCode": 404,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [33] 2025-12-01T17:46:39.732Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET / - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [34] 2025-12-01T17:46:40.663Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET / - 200
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 200,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[!!!] [35] 2025-12-01T17:46:40.686Z
+    Tipo: INJECTION | Riesgo: CRITICAL
+    [VULN:6969] GET / - 304
+    Detalles: {
+      "ip": "::1",
+      "method": "GET",
+      "path": "/",
+      "statusCode": 304,
+      "attacks": [
+        "SQLI",
+        "COMMANDINJECTION",
+        "BRUTEFORCE"
+      ],
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    }
+
+[i] [36] 2025-12-01T17:46:52.613Z
+    Tipo: INFO | Riesgo: INFO
+    Servidor detenido por SIGINT (Ctrl+C)
+
+════════════════════════════════════════════════════════════════════════════════
+  FIN DEL REPORTE DE SEGURIDAD
+════════════════════════════════════════════════════════════════════════════════

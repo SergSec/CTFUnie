@@ -2,8 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const securityLogger = require('../utils/securityLogger');
 
 const router = express.Router();
+
+// Extensiones sospechosas para detectar webshells
+const SUSPICIOUS_EXTENSIONS = ['.php', '.php3', '.php4', '.php5', '.phtml', '.asp', '.aspx', '.jsp', '.jspx', '.cgi', '.pl', '.py', '.rb', '.sh', '.bat', '.exe', '.dll', '.com'];
 
 // Directorio de subida vulnerable - permite ejecución
 const uploadDir = path.join(__dirname, '../public_6969/uploads');
@@ -43,6 +47,32 @@ router.post('/', upload.single('file'), (req, res) => {
 
         const filePath = `/uploads/${req.file.filename}`;
         const fullPath = path.join(uploadDir, req.file.filename);
+        const extension = path.extname(req.file.filename).toLowerCase();
+        const isSuspicious = SUSPICIOUS_EXTENSIONS.includes(extension);
+
+        // 🚨 LOG: Subida de archivo
+        securityLogger.logFileUpload(req, req.file, isSuspicious);
+
+        // Si es un archivo sospechoso (posible webshell), log adicional
+        if (isSuspicious) {
+            securityLogger.logSecurityEvent(
+                securityLogger.SECURITY_EVENT_TYPES.WEBSHELL_ATTEMPT,
+                securityLogger.SEVERITY.CRITICAL,
+                {
+                    message: `🚨 POSIBLE WEBSHELL SUBIDO: ${req.file.originalname}`,
+                    ip: req.ip || req.connection?.remoteAddress,
+                    userAgent: req.headers['user-agent'],
+                    file: {
+                        originalName: req.file.originalname,
+                        savedAs: req.file.filename,
+                        mimeType: req.file.mimetype,
+                        size: req.file.size,
+                        extension: extension,
+                        path: fullPath
+                    }
+                }
+            );
+        }
 
         res.json({
             success: true,
