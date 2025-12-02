@@ -28,7 +28,7 @@ export default function AsesorLogin() {
   // Si ya está autenticado y es asesor, redirigir al dashboard
   useEffect(() => {
     if (isAuthenticated && user?.role === 'asesor') {
-      navigate('/admin/dashboard');
+      navigate('/privilegiados/dashboard');
     }
   }, [isAuthenticated, user, navigate]);
 
@@ -42,7 +42,7 @@ export default function AsesorLogin() {
     if (result.success) {
       // Verificar que el usuario sea realmente asesor
       if (result.user?.role === 'asesor') {
-        navigate('/admin/dashboard');
+        navigate('/privilegiados/dashboard');
       } else {
         setError('Este formulario es exclusivo para asesores. Por favor, usa el formulario de inicio de sesión correcto.');
         // Cerrar sesión automáticamente si no es asesor

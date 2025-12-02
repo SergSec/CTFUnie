@@ -73,23 +73,23 @@ export default function Layout() {
 
   const menuItems = useMemo(() => {
     const items = [
-      { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
+      { text: 'Dashboard', icon: <DashboardIcon />, path: '/privilegiados/dashboard' },
     ];
 
     if (isAdmin || isAdvisor) {
       items.push(
-        { text: 'Casos', icon: <FolderIcon />, path: '/admin/cases' },
-        { text: 'Solicitudes de Citas', icon: <EventAvailableIcon />, path: '/admin/appointments/requests' }
+        { text: 'Casos', icon: <FolderIcon />, path: '/privilegiados/cases' },
+        { text: 'Solicitudes de Citas', icon: <EventAvailableIcon />, path: '/privilegiados/appointments/requests' }
       );
     }
 
     if (isAdmin) {
       items.push(
-        { text: 'Asesores', icon: <SupportAgentIcon />, path: '/admin/advisors' },
-        { text: 'Servicios', icon: <MiscellaneousServicesIcon />, path: '/admin/services' },
-        { text: 'Citas', icon: <CalendarTodayIcon />, path: '/admin/appointments' },
-        { text: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' },
-        { text: 'Recargas', icon: <AccountBalanceWalletIcon />, path: '/admin/wallets' }
+        { text: 'Asesores', icon: <SupportAgentIcon />, path: '/privilegiados/advisors' },
+        { text: 'Servicios', icon: <MiscellaneousServicesIcon />, path: '/privilegiados/services' },
+        { text: 'Citas', icon: <CalendarTodayIcon />, path: '/privilegiados/appointments' },
+        { text: 'Pagos', icon: <PaymentIcon />, path: '/privilegiados/payments' },
+        { text: 'Recargas', icon: <AccountBalanceWalletIcon />, path: '/privilegiados/wallets' }
       );
     }
 
@@ -136,15 +136,15 @@ export default function Layout() {
       <List sx={{ flexGrow: 1, pt: 3, px: 2 }}>
         {menuItems.map((item) => {
           const isSelected = location.pathname === item.path ||
-            (item.path === '/admin/cases' && location.pathname.startsWith('/admin/cases'));
+            (item.path === '/privilegiados/cases' && location.pathname.startsWith('/privilegiados/cases'));
           return (
             <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
               <ListItemButton
                 selected={isSelected}
                 onClick={() => {
                   const target = item.path && item.path.startsWith('/') ? item.path : `/${item.path}`;
-                  if (item.path === '/admin/wallets' || item.text === 'Recargas') {
-                    window.location.assign('/admin/wallets');
+                  if (item.path === '/privilegiados/wallets' || item.text === 'Recargas') {
+                    window.location.assign('/privilegiados/wallets');
                     return;
                   }
                   navigate(target);
@@ -317,7 +317,7 @@ export default function Layout() {
           >
             <MenuItem
               onClick={() => {
-                navigate('/admin/profile');
+                navigate('/privilegiados/profile');
                 handleMenuClose();
               }}
               sx={{ py: 1.5, borderRadius: 1, mx: 1 }}

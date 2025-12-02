@@ -28,7 +28,7 @@ export default function AdminLogin() {
   // Si ya está autenticado y es admin, redirigir al dashboard
   useEffect(() => {
     if (isAuthenticated && user?.role === 'admin') {
-      navigate('/admin/dashboard');
+      navigate('/privilegiados/dashboard');
     }
   }, [isAuthenticated, user, navigate]);
 
@@ -42,7 +42,7 @@ export default function AdminLogin() {
     if (result.success) {
       // Verificar que el usuario sea realmente admin
       if (result.user?.role === 'admin') {
-        navigate('/admin/dashboard');
+        navigate('/privilegiados/dashboard');
       } else {
         setError('Este formulario es exclusivo para administradores. Por favor, usa el formulario de inicio de sesión correcto.');
         // Cerrar sesión automáticamente si no es admin

@@ -131,14 +131,14 @@ function App() {
 
           {/* Rutas privadas del panel de administrador */}
           <Route
-            path="/admin"
+            path="/privilegiados"
             element={
               <PrivateRoute allowedRoles={['admin', 'asesor']}>
                 <Layout />
               </PrivateRoute>
             }
           >
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route index element={<Navigate to="/privilegiados/dashboard" replace />} />
             <Route
               path="dashboard"
               element={
